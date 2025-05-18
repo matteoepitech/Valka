@@ -18,5 +18,7 @@
 int
 main(UNUSED int argc, UNUSED char *argv[])
 {
-    return OK_OUTPUT;
+    UNUSED char *hello = MALLOC(sizeof(char) * 10);
+
+    return cleanup_mem(OK_OUTPUT);
 }
