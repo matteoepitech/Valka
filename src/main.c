@@ -18,7 +18,11 @@
 int
 main(UNUSED int argc, UNUSED char *argv[])
 {
-    UNUSED char *hello = MALLOC(sizeof(char) * 10);
+    parsing_src_file_t *p = NULL;
 
+    if (argc <= 1)
+        return cleanup_mem(KO_OUTPUT);
+    p = tokenize_source_code(argv[1]);
+    print_tokens(p);
     return cleanup_mem(OK_OUTPUT);
 }

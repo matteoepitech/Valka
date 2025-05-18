@@ -31,9 +31,4 @@ $(NAME): $(OBJ_SRC)
 clean:
 	@rm -f $(OBJ_SRC)
 
-fclean: clean
-	@rm -f ../../build/lib/$(NAME)
-
-re: fclean all
-
-.PHONY: all clean fclean re
+.PHONY: all clean

@@ -9,6 +9,7 @@
     #define _VALKA_PARSER_H_
 
     #include "misc/types.h"
+#include <stdint.h>
 
 /**
  * @brief Location mean the line and column of a syntax error for example.
@@ -23,9 +24,9 @@ typedef struct location_s {
  */
 typedef enum {
     TOKEN_START,
+    TOKEN_SYMBOL,
     TOKEN_IDENTIFIER,
     TOKEN_FUNC,
-    TOKEN_SYMBOL,
     TOKEN_NUMBER,
     TOKEN_STRING,
     TOKEN_COMMENT_BIG,
@@ -52,5 +53,34 @@ typedef struct token_s {
     token_type_t _type;
     struct token_s *_next;
 } token_t;
+
+/**
+ * @brief The main structure for the parsing of 1 file only.
+ */
+typedef struct {
+    token_t *_head_list;
+    token_t *_tail_list;
+    uint32_t _current_index;
+    location_t _current_loc;
+    char *_buffer;
+    uint32_t _buffer_size;
+} parsing_src_file_t;
+
+/*
+ * Folder : src/parser/tokens/
+ */
+parsing_src_file_t *tokenize_source_code(char *filepath);
+token_t *create_token(token_type_t type, const char *start, uint32_t length, location_t loc);
+token_t *push_token(token_t **tail, token_t *token);
+
+/*
+ * Folder : src/parser/tokens/dispatch/
+ */
+parsing_src_file_t *alpha_token(parsing_src_file_t *p);
+
+/*
+ * Folder : src/parser/tokens/printer/
+ */
+void print_tokens(parsing_src_file_t *p);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

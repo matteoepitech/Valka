@@ -23,6 +23,8 @@ my_malloc(IN size_t bytes)
     if (bytes == 0)
         return NULL;
     ptr_allocated = malloc(bytes);
+    if (ptr_allocated == NULL)
+        exit(2);
     tmp = (unsigned char *)ptr_allocated;
     for (size_t i = 0; i < bytes; i++)
         tmp[i] = 0;

@@ -27,25 +27,26 @@ $(NAME): $(OBJ)
 	@mkdir -p $(BUILD_PATH)
 	@printf "$(GREEN)$(PREFIX) Starting compilation libraries...$(RESET)\n"
 	@make -C ./lib/memory_lib/
-	@printf "$(GREEN)$(PREFIX) Starting compilation...$(RESET)\n"
+	@printf "$(GREEN)$(PREFIX) Starting linking...$(RESET)\n"
 	@$(COMPIL) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
 	@mv $(OBJ) $(BUILD_PATH)
 	@mv $(NAME) $(BUILD_PATH)
 	@cp $(BUILD_PATH)$(NAME) .
-	@printf "$(GREEN)$(PREFIX) Compilation done!$(RESET)\n"
+	@printf "$(GREEN)$(PREFIX) BUILD done!$(RESET)\n"
 
 %.o: %.c
 	@printf "$(YELLOW)$(PREFIX) Compiling $<...$(RESET)\n"
-	@$(COMPIL) $(CFLAGS) -c $< -o $@ $(LIBS)
+	@$(COMPIL) $(CFLAGS) -c $< -o $@
 	@printf "$(GREEN)$(PREFIX) Compiled $< successfully!$(RESET)\n"
 
 clean:
 	@make clean -C ./lib/memory_lib/
-	@printf "$(RED)$(PREFIX) Cleaning object files...$(RESET)\n"
-	@find $(BUILD_PATH) -type f -name '*.o' -delete
+	@if [ -d $(BUILD_PATH) ]; then \
+	    printf "$(RED)$(PREFIX) Cleaning object files...$(RESET)\n"; \
+	    find $(BUILD_PATH) -type f -name '*.o' -delete; \
+	fi
 
 fclean: clean
-	@make fclean -C ./lib/memory_lib/
 	@printf "$(RED)$(PREFIX) Cleaning build folder...$(RESET)\n"
 	@rm -rf $(BUILD_PATH)
 	@rm -f $(NAME)

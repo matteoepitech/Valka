@@ -13,6 +13,7 @@
     #include <stddef.h>
     #include <string.h>
     #include <unistd.h>
+    #include <ctype.h>
 
     #include "lib/memory_lib/include/mymem.h"
 
