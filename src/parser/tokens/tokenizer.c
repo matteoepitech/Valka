@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Open the file path and return a structure containing the buffer.
@@ -42,7 +43,8 @@ open_src_filepath(char *filepath)
  *
  * @param p            The structure parsing of the current file
  */
-parsing_src_file_t *dispatch_tokenizer(parsing_src_file_t *p)
+static parsing_src_file_t *
+dispatch_tokenizer(parsing_src_file_t *p)
 {
     char c = p->_buffer[p->_current_index];
 
@@ -75,5 +77,7 @@ tokenize_source_code(char *filepath)
     while (p->_current_index < p->_buffer_size) {
         dispatch_tokenizer(p);
     }
+    push_token(&p->_tail_list, create_token(TOKEN_END, p->_buffer, 0,
+        p->_current_loc));
     return p;
 }

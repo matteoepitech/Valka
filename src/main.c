@@ -19,10 +19,13 @@ int
 main(UNUSED int argc, UNUSED char *argv[])
 {
     parsing_src_file_t *p = NULL;
+    UNUSED ast_program_t *prg = NULL;
 
     if (argc <= 1)
         return cleanup_mem(KO_OUTPUT);
     p = tokenize_source_code(argv[1]);
     print_tokens(p);
+    prg = make_ast(p);
+    print_program(prg);
     return cleanup_mem(OK_OUTPUT);
 }
