@@ -26,8 +26,10 @@ typedef enum {
     TOKEN_START,
     TOKEN_SYMBOL,
     TOKEN_IDENTIFIER,
+    TOKEN_VAR_TYPE,
     TOKEN_FUNC,
-    TOKEN_NUMBER,
+    TOKEN_ASSIGN,
+    TOKEN_INT_LITERAL,
     TOKEN_STRING,
     TOKEN_COMMENT_BIG,
     TOKEN_COMMENT_SMALL,
@@ -77,7 +79,9 @@ token_t *push_token(token_t **tail, token_t *token);
  * Folder : src/parser/tokens/dispatch/
  */
 parsing_src_file_t *alpha_token(parsing_src_file_t *p);
-
+parsing_src_file_t *digit_token(parsing_src_file_t *p);
+parsing_src_file_t *var_type_token(parsing_src_file_t *p);
+parsing_src_file_t *assign_token(parsing_src_file_t *p);
 /*
  * Folder : src/parser/tokens/printer/
  */
