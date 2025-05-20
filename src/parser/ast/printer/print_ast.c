@@ -7,6 +7,9 @@
 
 #include "valka.h"
 
+// @TODO remove this.
+static void print_ast(ast_node_t *node, int indent);
+
 /**
  * @brief Print indentation spaces for pretty-printing the AST.
  *
@@ -17,6 +20,30 @@ print_indent(int indent)
 {
     for (int i = 0; i < indent; i++)
         printf("  ");
+}
+
+/**
+ * @brief Print the content of the function.
+ *
+ * @param prg           The function content called prg.
+ */
+static void
+print_function_body(ast_program_t *prg)
+{
+    ast_statement_t *current = NULL;
+
+    if (prg == NULL || prg->_statement_head == NULL) {
+        print_indent(2);
+        fflush(stdout);
+        fprintf(stderr, COLOR_RED "(empty function body)\n" COLOR_RESET);
+        return;
+    }
+    current = prg->_statement_head;
+    while (current != NULL) {
+        printf(COLOR_CYAN "  [Statement %u]\n" COLOR_RESET, current->_ast_id);
+        print_ast(current->_ast_node, 2);
+        current = current->_next;
+    }
 }
 
 /**
@@ -66,6 +93,10 @@ print_ast(ast_node_t *node, int indent)
             print_indent(indent);
             printf("Value:\n");
             print_ast(node->_ast_val._assignment._value, indent + 1);
+            break;
+        case AST_FUNCTION:
+            printf("Function: %s\n", node->_ast_val._function._func_name);
+            print_function_body(node->_ast_val._function._func_content);
             break;
         default:
             printf("Unknown AST node type: %d\n", node->_type);

@@ -10,13 +10,8 @@
 
     #include "misc/types.h"
 
-/**
- * @brief Location mean the line and column of a syntax error for example.
- */
-typedef struct location_s {
-    uint32_t _line;
-    uint32_t _col;
-} location_t;
+    #define IDENTIFIER_ID_VAR 1
+    #define IDENTIFIER_ID_FUNC 2
 
 /**
  * @brief All token types.
@@ -54,7 +49,16 @@ typedef enum {
     AST_LITERAL_STRING,
     AST_LITERAL_INT,
     AST_BINARY_OP,
+    AST_FUNCTION,
 } ast_node_type_t;
+
+/**
+ * @brief Location mean the line and column of a syntax error for example.
+ */
+typedef struct location_s {
+    uint32_t _line;
+    uint32_t _col;
+} location_t;
 
 /**
  * @brief A token which contains everything we need to know.
@@ -64,6 +68,7 @@ typedef struct token_s {
     uint32_t _length;
     location_t _loc;
     token_type_t _type;
+    uint32_t _type_id;
     struct token_s *_next;
 } token_t;
 
@@ -84,6 +89,21 @@ typedef struct {
  */
 typedef struct ast_node_s ast_node_t;
 
+typedef struct ast_program_s ast_program_t;
+
+/**
+ * @brief One statement is basically 1 line.
+ */
+typedef struct ast_statement_s {
+    ast_node_t *_ast_node;
+    uint32_t _ast_id;
+    struct ast_statement_s *_next;
+} ast_statement_t;
+
+
+/**
+ * @brief ast_node_t, using union to make all NODE.
+ */
 struct ast_node_s {
     ast_node_type_t _type;
     location_t _loc;
@@ -117,27 +137,23 @@ struct ast_node_s {
             char *_var_name;
             ast_node_t *_value;
         } _assignment;
+        // Function -> function main() { }
+        struct {
+            char *_func_name;
+            ast_program_t *_func_content;
+        } _function;
     } _ast_val;
 };
-
-/**
- * @brief One statement is basically 1 line.
- */
-typedef struct ast_statement_s {
-    ast_node_t *_ast_node;
-    uint32_t _ast_id;
-    struct ast_statement_s *_next;
-} ast_statement_t;
 
 /**
 * @brief All statement is basically the whole source code.
 *        The ast_program_t contains everything.
 */
-typedef struct ast_program_s {
+struct ast_program_s {
     ast_statement_t *_statement_head;
     ast_statement_t *_statement_tail;
     uint32_t _statements_amount;
-} ast_program_t;
+};
 
 /*
  * Folder : src/parser/tokens/
@@ -154,6 +170,7 @@ parsing_src_file_t *digit_token(parsing_src_file_t *p);
 parsing_src_file_t *var_type_token(parsing_src_file_t *p);
 parsing_src_file_t *assign_token(parsing_src_file_t *p);
 parsing_src_file_t *semicolon_token(parsing_src_file_t *p);
+parsing_src_file_t *brackets_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/
@@ -173,6 +190,7 @@ void move_token(token_t **current_token, int move_token);
  * Folder : src/parser/ast/dispatch/
  */
 ast_node_t *make_ast_var(token_t **current_token);
+ast_node_t *make_ast_func(token_t **current_token);
 ast_node_t *make_ast_int_literal(token_t **current_token);
 
 /*

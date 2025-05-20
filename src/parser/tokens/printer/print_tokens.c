@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Print the type of the token.
@@ -63,6 +62,8 @@ print_tokens(parsing_src_file_t *p)
     while (tmp != NULL) {
         printf("%s", types_color[i % 4]);
         print_type_token(tmp->_type);
+        if (tmp->_type == TOKEN_IDENTIFIER)
+            printf(" id (%d)", tmp->_type_id);
         printf(": \033[0m");
         fflush(stdout);
         for (uint32_t i = 0; i < tmp->_length; i++) {

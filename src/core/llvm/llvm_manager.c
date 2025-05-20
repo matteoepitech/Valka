@@ -21,6 +21,8 @@ static uint8_t dispatch_llvm(FILE *f, ast_statement_t *cur)
 
     if (node->_type == AST_VAR_DECL)
         return llvm_var(node, f);
+    if (node->_type == AST_FUNCTION)
+        return llvm_func(node, f);
     return KO_OUTPUT;
 }
 
@@ -73,5 +75,4 @@ generate_llvm_global(FILE *f, ast_program_t *prg)
             break;
         cur = cur->_next;
     }
-    compile_llvm_to_executable();
 }

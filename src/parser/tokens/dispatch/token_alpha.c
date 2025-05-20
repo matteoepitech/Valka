@@ -19,6 +19,9 @@ static parsing_src_file_t *
 check_identifier(token_t *token, parsing_src_file_t *p)
 {
     static const char *identifiers[] = {"var", "function", NULL};
+    static const int identifiers_id[] = {IDENTIFIER_ID_VAR,
+        IDENTIFIER_ID_FUNC, -1
+    };
 
     if (token == NULL)
         return p;
@@ -26,6 +29,7 @@ check_identifier(token_t *token, parsing_src_file_t *p)
         if (strncmp(token->_start, identifiers[i], token->_length) == 0 &&
             strlen(identifiers[i]) == token->_length) {
             token->_type = TOKEN_IDENTIFIER;
+            token->_type_id = identifiers_id[i];
             return p;
         }
     }

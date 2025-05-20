@@ -18,12 +18,11 @@
 uint8_t
 llvm_var(ast_node_t *node, FILE *f)
 {
-    const char *varname = node->_ast_val._var_decl._var_name;
-    UNUSED const char *typeval = node->_ast_val._var_decl._type_value;
+    const char *var_name = node->_ast_val._var_decl._var_name;
     ast_node_t *value_node = node->_ast_val._var_decl._value;
 
     if (value_node && value_node->_type == AST_LITERAL_INT) {
-        fprintf(f, "@%s = global %s %d\n", varname, "i32", value_node->_ast_val._int_literal._value);
+        fprintf(f, "@%s = global %s %d\n", var_name, "i32", value_node->_ast_val._int_literal._value);
     }
     return OK_OUTPUT;
 }

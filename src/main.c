@@ -31,5 +31,6 @@ main(UNUSED int argc, UNUSED char *argv[])
     out_llvm = create_llvm();
     generate_llvm_global(out_llvm, prg);
     close_llvm(out_llvm);
+    compile_llvm_to_executable();
     return cleanup_mem(OK_OUTPUT);
 }

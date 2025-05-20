@@ -6,8 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
-#include <stdio.h>
 
 /**
  * @brief Move the token.
@@ -36,10 +34,13 @@ move_token(token_t **current_token, int move_token)
 ast_node_t *
 dispatch_ast(token_t **current_token)
 {
+    uint32_t type_id = (*current_token)->_type_id;
     token_type_t type = (*current_token)->_type;
 
-    if (type == TOKEN_IDENTIFIER)
+    if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_VAR)
         return make_ast_var(current_token);
+    if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_FUNC)
+        return make_ast_func(current_token);
     if (type == TOKEN_INT_LITERAL)
         return make_ast_int_literal(current_token);
     return NULL;

@@ -1,4 +1,3 @@
-var<i32> number = 10;
-var<i32> number2 = 10000;
-var<i32> number3 = 79796969;
-var<i32> number4 = 42;
+function main()
+{
+}
