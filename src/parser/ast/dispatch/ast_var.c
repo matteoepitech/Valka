@@ -29,8 +29,7 @@ make_ast_var(token_t **current_token)
     node->_loc = curr->_loc;
     node->_ast_val._var_decl._type_value = strndup(curr->_next->_start, curr->_next->_length);
     node->_ast_val._var_decl._var_name = strndup(curr->_next->_next->_start, curr->_next->_next->_length);
-    node->_ast_val._var_decl._value = dispatch_ast(&((*current_token)->_next->_next->_next->_next));
-    move_token(current_token, 5);
-    print_type_token((*current_token)->_type);
+    move_token(current_token, 4);
+    node->_ast_val._var_decl._value = dispatch_ast(current_token);
     return node;
 }

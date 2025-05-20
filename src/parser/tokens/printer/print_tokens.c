@@ -16,11 +16,33 @@
 void
 print_type_token(token_type_t type)
 {
-    static const char *types_names[] = {"START", "SYMBOL", "IDENTIFIER",
-        "VAR_TYPE", "FUNCTION", "ASSIGN", "INT32 (LITERAL)", "END"
+    static const char *type_names[] = {
+        "START",
+        "SYMBOL",
+        "IDENTIFIER",
+        "VAR_TYPE",
+        "FUNCTION",
+        "ASSIGN",
+        "INT_LITERAL",
+        "STRING",
+        "COMMENT_BIG",
+        "COMMENT_SMALL",
+        "PARENT_OPEN",
+        "PARENT_CLOSE",
+        "BRACKET_OPEN",
+        "BRACKET_CLOSE",
+        "SQUARE_BRACKET_OPEN",
+        "SQUARE_BRACKET_CLOSE",
+        "MATH_OPERATOR",
+        "SEMICOLON",
+        "COMMA",
+        "END"
     };
-
-    printf("%s", types_names[type]);
+    if (type < 0 || type >= (sizeof(type_names) / sizeof(type_names[0]))) {
+        printf("UNKNOWN_TOKEN_TYPE");
+    } else {
+        printf("%s", type_names[type]);
+    }
     fflush(stdout);
 }
 

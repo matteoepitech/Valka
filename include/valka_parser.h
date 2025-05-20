@@ -153,6 +153,7 @@ parsing_src_file_t *alpha_token(parsing_src_file_t *p);
 parsing_src_file_t *digit_token(parsing_src_file_t *p);
 parsing_src_file_t *var_type_token(parsing_src_file_t *p);
 parsing_src_file_t *assign_token(parsing_src_file_t *p);
+parsing_src_file_t *semicolon_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/
@@ -172,6 +173,7 @@ void move_token(token_t **current_token, int move_token);
  * Folder : src/parser/ast/dispatch/
  */
 ast_node_t *make_ast_var(token_t **current_token);
+ast_node_t *make_ast_int_literal(token_t **current_token);
 
 /*
  * Folder : src/parser/ast/printer/

@@ -7,13 +7,27 @@
 
 #include "valka.h"
 
-static void print_indent(int indent)
+/**
+ * @brief Print indentation spaces for pretty-printing the AST.
+ *
+ * @param indent        Number of indentation levels (2 spaces).
+ */
+static void
+print_indent(int indent)
 {
     for (int i = 0; i < indent; i++)
         printf("  ");
 }
 
-void print_ast(ast_node_t *node, int indent)
+/**
+ * @brief Recursively print a single AST node and its children with
+ *        indentation.
+ *
+ * @param node          The AST node to print.
+ * @param indent        Indentation level for pretty-printing.
+ */
+static void
+print_ast(ast_node_t *node, int indent)
 {
     if (node == NULL) {
         print_indent(indent);
@@ -27,13 +41,13 @@ void print_ast(ast_node_t *node, int indent)
             printf("Identifier: %s\n", node->_ast_val._identifier._name);
             break;
         case AST_LITERAL_INT:
-            printf("IntLiteral: %d\n", node->_ast_val._int_literal._value);
+            printf("Int literal: %d\n", node->_ast_val._int_literal._value);
             break;
         case AST_LITERAL_STRING:
             printf("String: \"%s\"\n", node->_ast_val._string._value);
             break;
         case AST_BINARY_OP:
-            printf("BinaryOp: %s\n", node->_ast_val._binary_op._op);
+            printf("Binary operation: %s\n", node->_ast_val._binary_op._op);
             print_indent(indent);
             printf("Left:\n");
             print_ast(node->_ast_val._binary_op._left, indent + 1);
@@ -42,7 +56,7 @@ void print_ast(ast_node_t *node, int indent)
             print_ast(node->_ast_val._binary_op._right, indent + 1);
             break;
         case AST_VAR_DECL:
-            printf("VarDecl: %s %s\n", node->_ast_val._var_decl._type_value, node->_ast_val._var_decl._var_name);
+            printf("Var decl: %s %s\n", node->_ast_val._var_decl._type_value, node->_ast_val._var_decl._var_name);
             print_indent(indent);
             printf("Value:\n");
             print_ast(node->_ast_val._var_decl._value, indent + 1);
@@ -59,7 +73,13 @@ void print_ast(ast_node_t *node, int indent)
     }
 }
 
-void print_program(ast_program_t *prg)
+/**
+ * @brief Print the full program's AST, statement by statement.
+ *
+ * @param prg           Pointer to the AST program structure.
+ */
+void
+print_program(ast_program_t *prg)
 {
     ast_statement_t *current = NULL;
 

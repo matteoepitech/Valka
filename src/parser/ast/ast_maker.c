@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 #include <stdio.h>
 
 /**
@@ -39,6 +40,8 @@ dispatch_ast(token_t **current_token)
 
     if (type == TOKEN_IDENTIFIER)
         return make_ast_var(current_token);
+    if (type == TOKEN_INT_LITERAL)
+        return make_ast_int_literal(current_token);
     return NULL;
 }
 

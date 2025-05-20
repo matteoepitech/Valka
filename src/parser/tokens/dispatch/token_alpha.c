@@ -48,7 +48,8 @@ alpha_token(parsing_src_file_t *p)
     token_t *token = NULL;
 
     while (i < p->_buffer_size &&
-        (isalpha(p->_buffer[i]) || p->_buffer[i] == '_')) {
+        (isalpha(p->_buffer[i]) || p->_buffer[i] == '_' ||
+        isdigit(p->_buffer[i]))) {
         i++;
     }
     length = i - p->_current_index;

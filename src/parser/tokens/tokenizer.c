@@ -52,6 +52,8 @@ dispatch_tokenizer(parsing_src_file_t *p)
         return var_type_token(p);
     if (c == '=')
         return assign_token(p);
+    if (c == ';')
+        return semicolon_token(p);
     if (isalpha(c) || c == '_')
         return alpha_token(p);
     if (isdigit(c))
