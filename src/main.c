@@ -19,7 +19,8 @@ int
 main(UNUSED int argc, UNUSED char *argv[])
 {
     parsing_src_file_t *p = NULL;
-    UNUSED ast_program_t *prg = NULL;
+    ast_program_t *prg = NULL;
+    FILE *out_llvm = NULL;
 
     if (argc <= 1)
         return cleanup_mem(KO_OUTPUT);
@@ -27,5 +28,8 @@ main(UNUSED int argc, UNUSED char *argv[])
     print_tokens(p);
     prg = make_ast(p);
     print_program(prg);
+    out_llvm = create_llvm();
+    generate_llvm_global(out_llvm, prg);
+    close_llvm(out_llvm);
     return cleanup_mem(OK_OUTPUT);
 }
