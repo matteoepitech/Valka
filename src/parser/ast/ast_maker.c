@@ -32,19 +32,19 @@ move_token(token_t **current_token, int move_token)
  * @return The ast node.
  */
 ast_node_t *
-dispatch_ast(token_t **current_token)
+dispatch_ast(token_t **current_token, ast_program_t *parent)
 {
     uint32_t type_id = (*current_token)->_type_id;
     token_type_t type = (*current_token)->_type;
 
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_VAR)
-        return make_ast_var(current_token);
+        return make_ast_var(current_token, parent);
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_FUNC)
-        return make_ast_func(current_token);
+        return make_ast_func(current_token, parent);
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_RETURN)
-        return make_ast_return(current_token);
+        return make_ast_return(current_token, parent);
     if (type == TOKEN_INT_LITERAL)
-        return make_ast_int_literal(current_token);
+        return make_ast_int_literal(current_token, parent);
     return NULL;
 }
 
@@ -70,7 +70,7 @@ make_ast(parsing_src_file_t *p)
     prg->_statements_amount = 0;
     current = p->_head_list;
     while (current && current->_type != TOKEN_END) {
-        tmp_node = dispatch_ast(&current);
+        tmp_node = dispatch_ast(&current, NULL);
         if (tmp_node == NULL) {
             move_token(&current, 1);
             continue;

@@ -10,6 +10,21 @@
 
     #include "misc/types.h"
 
+/* All data types in Valka */
+
+    #define T_I32 1
+    #define T_BOOL 2
+    #define T_CHAR 3
+
+typedef struct data_types_s {
+    uint32_t _id;
+    char _valka_ir[32];
+    char _llvm_ir[32];
+} data_types_t;
+
+extern const data_types_t data_types[];
+
+    /* Types for somes AST */
     #define IDENTIFIER_ID_VAR 1
     #define IDENTIFIER_ID_FUNC 2
     #define IDENTIFIER_ID_RETURN 3
@@ -112,6 +127,7 @@ typedef struct ast_statement_s {
 struct ast_node_s {
     ast_node_type_t _type;
     location_t _loc;
+    ast_program_t *_parent;
     union {
         // Identifier -> if, var, function, ...
         struct {
@@ -134,7 +150,7 @@ struct ast_node_s {
         // Variable declaration -> var<i32> i = 5
         struct {
             char *_var_name;
-            char *_type_value;
+            data_types_t _var_type;
             ast_node_t *_value;
         } _var_decl;
         // Assignment -> i = 10
@@ -193,21 +209,26 @@ void print_type_token(token_type_t type);
  * Folder : src/parser/ast/
  */
 ast_program_t *make_ast(parsing_src_file_t *p);
-ast_node_t *dispatch_ast(token_t **current_token);
+ast_node_t *dispatch_ast(token_t **current_token, ast_program_t *parent);
 ast_statement_t *create_statement(ast_program_t *prg, ast_node_t *ast);
 void move_token(token_t **current_token, int move_token);
 
 /*
  * Folder : src/parser/ast/dispatch/
  */
-ast_node_t *make_ast_var(token_t **current_token);
-ast_node_t *make_ast_func(token_t **current_token);
-ast_node_t *make_ast_int_literal(token_t **current_token);
-ast_node_t *make_ast_return(token_t **current_token);
+ast_node_t *make_ast_var(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_func(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_int_literal(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_return(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/
  */
 void print_program(ast_program_t *prg);
+
+/*
+ * Folder : src/utils/data/
+ */
+data_types_t get_data_with_id(uint32_t id);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

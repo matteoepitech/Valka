@@ -31,7 +31,7 @@ is_main_function(ast_node_t *node)
  * @return The AST node.
  */
 ast_node_t *
-make_ast_func(token_t **current_token)
+make_ast_func(token_t **current_token, UNUSED ast_program_t *parent)
 {
     ast_node_t *node = MALLOC(sizeof(ast_node_t));
     token_t *curr = *current_token;
@@ -52,7 +52,7 @@ make_ast_func(token_t **current_token)
         return NULL;
     move_token(current_token, 1);
     while (curr && curr->_type != TOKEN_BRACKET_CLOSE && curr->_type != TOKEN_END) {
-        tmp_node = dispatch_ast(current_token);
+        tmp_node = dispatch_ast(current_token, node->_ast_val._function._func_content);
         if (tmp_node == NULL) {
             move_token(current_token, 1);
             curr = *current_token;

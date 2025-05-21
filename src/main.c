@@ -7,6 +7,14 @@
 
 #include "valka.h"
 
+// All Valka data types (extern in valka_parser.h)
+const data_types_t data_types[] = {
+    {T_I32, "i32", "i32"},
+    {T_BOOL, "bool", "i1"},
+    {T_CHAR, "char", "i8"},
+    {0, "", ""},
+};
+
 /**
  * @brief Main function for valka binary.
  *
@@ -25,7 +33,6 @@ main(UNUSED int argc, UNUSED char *argv[])
     if (argc <= 1)
         return cleanup_mem(KO_OUTPUT);
     p = tokenize_source_code(argv[1]);
-    print_tokens(p);
     prg = make_ast(p);
     print_program(prg);
     out_llvm = create_llvm();

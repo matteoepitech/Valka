@@ -25,7 +25,6 @@ llvm_func(ast_node_t *node, FILE *f)
     fprintf(f, "{\n");
     fprintf(f, "entry:\n\n");
     generate_llvm_global(f, func_content);
-    fprintf(f, "ret i32 0\n");
     fprintf(f, "}\n");
     return OK_OUTPUT;
 }

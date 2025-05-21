@@ -16,7 +16,7 @@
  * @return The AST node.
  */
 ast_node_t *
-make_ast_int_literal(token_t **current_token)
+make_ast_int_literal(token_t **current_token, UNUSED ast_program_t *parent)
 {
     ast_node_t *node = MALLOC(sizeof(ast_node_t));
     token_t *curr = *current_token;

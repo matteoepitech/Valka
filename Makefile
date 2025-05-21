@@ -12,14 +12,16 @@ RESET		:= \033[0m
 
 PREFIX		:= [VALKA]
 
-SRC		:= $(shell find src -name "*.c")
-OBJ		:= $(SRC:.c=.o)
+SRC_DIR		:= src
+BUILD_PATH	:= build/
+OBJ_DIR		:= $(BUILD_PATH)
 NAME		:= valkac
 COMPIL		:= gcc
 CFLAGS		:= -Wall -Wextra -Werror -Wpedantic -I./include/ -g
 LIBS		:= -L./build/lib -lmemory
 
-BUILD_PATH	:= build/
+SRC		:= $(shell find $(SRC_DIR) -name "*.c")
+OBJ		:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
 all: $(NAME)
 
@@ -29,12 +31,12 @@ $(NAME): $(OBJ)
 	@make -C ./lib/memory_lib/
 	@printf "$(GREEN)$(PREFIX) Starting linking...$(RESET)\n"
 	@$(COMPIL) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
-	@mv $(OBJ) $(BUILD_PATH)
 	@mv $(NAME) $(BUILD_PATH)
 	@cp $(BUILD_PATH)$(NAME) .
 	@printf "$(GREEN)$(PREFIX) BUILD done!$(RESET)\n"
 
-%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	@printf "$(YELLOW)$(PREFIX) Compiling $<...$(RESET)\n"
 	@$(COMPIL) $(CFLAGS) -c $< -o $@
 	@printf "$(GREEN)$(PREFIX) Compiled $< successfully!$(RESET)\n"

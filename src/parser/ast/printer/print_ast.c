@@ -82,7 +82,7 @@ print_ast(ast_node_t *node, int indent)
             print_ast(node->_ast_val._binary_op._right, indent + 1);
             break;
         case AST_VAR_DECL:
-            printf("Var decl: %s %s\n", node->_ast_val._var_decl._type_value, node->_ast_val._var_decl._var_name);
+            printf("Var decl: %s %s\n", node->_ast_val._var_decl._var_type._valka_ir, node->_ast_val._var_decl._var_name);
             print_indent(indent);
             printf("Value:\n");
             print_ast(node->_ast_val._var_decl._value, indent + 1);

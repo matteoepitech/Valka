@@ -16,7 +16,7 @@
  * @return The AST node.
  */
 ast_node_t *
-make_ast_return(token_t **current_token)
+make_ast_return(token_t **current_token, UNUSED ast_program_t *parent)
 {
     ast_node_t *node = MALLOC(sizeof(ast_node_t));
     token_t *curr = *current_token;
@@ -34,7 +34,7 @@ make_ast_return(token_t **current_token)
     if (curr->_next->_type == TOKEN_INT_LITERAL) {
         node->_ast_val._return._return_id = RETURN_ID_INT;
         move_token(current_token, 1);
-        node->_ast_val._return._value = dispatch_ast(current_token);
+        node->_ast_val._return._value = dispatch_ast(current_token, parent);
     }
     return node;
 }
