@@ -41,6 +41,8 @@ dispatch_ast(token_t **current_token)
         return make_ast_var(current_token);
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_FUNC)
         return make_ast_func(current_token);
+    if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_RETURN)
+        return make_ast_return(current_token);
     if (type == TOKEN_INT_LITERAL)
         return make_ast_int_literal(current_token);
     return NULL;

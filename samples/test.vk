@@ -1,3 +1,6 @@
 function main()
 {
+    var<i32> ok_guys = 50;
+
+    return ok_guys;
 }

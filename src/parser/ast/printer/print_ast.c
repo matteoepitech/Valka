@@ -61,7 +61,6 @@ print_ast(ast_node_t *node, int indent)
         printf("(null)\n");
         return;
     }
-
     print_indent(indent);
     switch (node->_type) {
         case AST_IDENTIFIER:
@@ -97,6 +96,12 @@ print_ast(ast_node_t *node, int indent)
         case AST_FUNCTION:
             printf("Function: %s\n", node->_ast_val._function._func_name);
             print_function_body(node->_ast_val._function._func_content);
+            break;
+        case AST_RETURN:
+            if (node->_ast_val._return._return_id == RETURN_ID_SYMBOL)
+                printf("Return: %s variable\n", node->_ast_val._return._var_name);
+            if (node->_ast_val._return._return_id == RETURN_ID_INT)
+                printf("Return: %d\n", node->_ast_val._return._value->_ast_val._int_literal._value);
             break;
         default:
             printf("Unknown AST node type: %d\n", node->_type);

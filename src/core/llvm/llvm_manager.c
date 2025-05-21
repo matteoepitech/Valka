@@ -23,6 +23,8 @@ static uint8_t dispatch_llvm(FILE *f, ast_statement_t *cur)
         return llvm_var(node, f);
     if (node->_type == AST_FUNCTION)
         return llvm_func(node, f);
+    if (node->_type == AST_RETURN)
+        return llvm_return(node, f);
     return KO_OUTPUT;
 }
 

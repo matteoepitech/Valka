@@ -12,6 +12,10 @@
 
     #define IDENTIFIER_ID_VAR 1
     #define IDENTIFIER_ID_FUNC 2
+    #define IDENTIFIER_ID_RETURN 3
+
+    #define RETURN_ID_SYMBOL 1
+    #define RETURN_ID_INT 2
 
 /**
  * @brief All token types.
@@ -50,6 +54,7 @@ typedef enum {
     AST_LITERAL_INT,
     AST_BINARY_OP,
     AST_FUNCTION,
+    AST_RETURN,
 } ast_node_type_t;
 
 /**
@@ -142,6 +147,12 @@ struct ast_node_s {
             char *_func_name;
             ast_program_t *_func_content;
         } _function;
+        // Return -> return var or a ast_node_t
+        struct {
+            size_t _return_id;
+            char *_var_name;
+            ast_node_t *_value;
+        } _return;
     } _ast_val;
 };
 
@@ -192,6 +203,7 @@ void move_token(token_t **current_token, int move_token);
 ast_node_t *make_ast_var(token_t **current_token);
 ast_node_t *make_ast_func(token_t **current_token);
 ast_node_t *make_ast_int_literal(token_t **current_token);
+ast_node_t *make_ast_return(token_t **current_token);
 
 /*
  * Folder : src/parser/ast/printer/

@@ -1,6 +1,6 @@
 /*
 ** VALKA PROJECT, 2025
-** src/parser/ast/dispatch/ast_var.c
+** src/parser/ast/dispatch/ast_var
 ** File description:
 ** The AST for a var
 */
