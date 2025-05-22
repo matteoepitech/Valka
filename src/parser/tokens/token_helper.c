@@ -18,7 +18,8 @@
  * @return The token.
  */
 token_t *
-create_token(token_type_t type, const char *start, uint32_t length, location_t loc)
+create_token(token_type_t type, const char *start, uint32_t length,
+    location_t loc)
 {
     token_t *token = MALLOC(sizeof(token_t));
 

@@ -1,8 +1,8 @@
-function main()
+function <i32> main()
 {
-    var<i32> ok_guys = 50;
-    var<bool> ok_guysa = 50;
-    var<chard> letter = 1
+    var <i32> ok_guys = 50;
+    var <bool> ok_guysa = 50;
+    var <char> letter = 1
 
     return ok_guys;
 }

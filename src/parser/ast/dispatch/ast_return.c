@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Make the AST for the variable declaration.
@@ -25,10 +24,11 @@ make_ast_return(token_t **current_token, UNUSED ast_program_t *parent)
         return NULL;
     node->_type = AST_RETURN;
     node->_loc = curr->_loc;
-    node->_ast_val._return._var_name = NULL;
+    node->_ast_val._return._sym_name = NULL;
     if (curr->_next->_type == TOKEN_SYMBOL) {
         node->_ast_val._return._return_id = RETURN_ID_SYMBOL;
-        node->_ast_val._return._var_name = strndup(curr->_next->_start, curr->_next->_length);
+        node->_ast_val._return._sym_name = strndup(curr->_next->_start,
+            curr->_next->_length);
         move_token(current_token, 2);
     }
     if (curr->_next->_type == TOKEN_INT_LITERAL) {

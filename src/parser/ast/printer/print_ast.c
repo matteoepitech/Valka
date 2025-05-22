@@ -66,12 +66,15 @@ print_ast(ast_node_t *node, int indent)
         case AST_IDENTIFIER:
             printf("Identifier: %s\n", node->_ast_val._identifier._name);
             break;
+
         case AST_LITERAL_INT:
             printf("Int literal: %d\n", node->_ast_val._int_literal._value);
             break;
+
         case AST_LITERAL_STRING:
             printf("String: \"%s\"\n", node->_ast_val._string._value);
             break;
+
         case AST_BINARY_OP:
             printf("Binary operation: %s\n", node->_ast_val._binary_op._op);
             print_indent(indent);
@@ -81,28 +84,33 @@ print_ast(ast_node_t *node, int indent)
             printf("Right:\n");
             print_ast(node->_ast_val._binary_op._right, indent + 1);
             break;
+
         case AST_VAR_DECL:
             printf("Var decl: %s %s\n", node->_ast_val._var_decl._var_type._valka_ir, node->_ast_val._var_decl._var_name);
             print_indent(indent);
             printf("Value:\n");
             print_ast(node->_ast_val._var_decl._value, indent + 1);
             break;
+
         case AST_ASSIGNMENT:
             printf("Assignment: %s\n", node->_ast_val._assignment._var_name);
             print_indent(indent);
             printf("Value:\n");
             print_ast(node->_ast_val._assignment._value, indent + 1);
             break;
+
         case AST_FUNCTION:
-            printf("Function: %s\n", node->_ast_val._function._func_name);
+            printf("Function: %s type (%s)\n", node->_ast_val._function._func_name, node->_ast_val._function._return_data._valka_ir);
             print_function_body(node->_ast_val._function._func_content);
             break;
+
         case AST_RETURN:
             if (node->_ast_val._return._return_id == RETURN_ID_SYMBOL)
-                printf("Return: %s variable\n", node->_ast_val._return._var_name);
+                printf("Return: %s variable\n", node->_ast_val._return._sym_name);
             if (node->_ast_val._return._return_id == RETURN_ID_INT)
                 printf("Return: %d\n", node->_ast_val._return._value->_ast_val._int_literal._value);
             break;
+
         default:
             printf("Unknown AST node type: %d\n", node->_type);
             break;

@@ -19,9 +19,10 @@ uint8_t
 llvm_func(ast_node_t *node, FILE *f)
 {
     const char *func_name = node->_ast_val._function._func_name;
+    data_types_t func_ret = node->_ast_val._function._return_data;
     ast_program_t *func_content = node->_ast_val._function._func_content;
 
-    fprintf(f, "define i32 @%s()\n", func_name);
+    fprintf(f, "define %s @%s()\n", func_ret._llvm_ir, func_name);
     fprintf(f, "{\n");
     fprintf(f, "entry:\n\n");
     generate_llvm_global(f, func_content);

@@ -161,13 +161,15 @@ struct ast_node_s {
         // Function -> function main() { }
         struct {
             char *_func_name;
+            data_types_t _return_data;
             ast_program_t *_func_content;
         } _function;
         // Return -> return var or a ast_node_t
         struct {
             size_t _return_id;
-            char *_var_name;
             ast_node_t *_value;
+            data_types_t _return_data;
+            char *_sym_name;
         } _return;
     } _ast_val;
 };
@@ -229,6 +231,7 @@ void print_program(ast_program_t *prg);
 /*
  * Folder : src/utils/data/
  */
+data_types_t get_data_type(token_t *token);
 data_types_t get_data_with_id(uint32_t id);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

@@ -18,7 +18,7 @@
 uint8_t
 llvm_return(ast_node_t *node, FILE *f)
 {
-    const char *ret_var = node->_ast_val._return._var_name;
+    const char *ret_var = node->_ast_val._return._sym_name;
     const char *ret_var_tmp = "__ret_val__";
 
     if (node->_ast_val._return._return_id == RETURN_ID_SYMBOL) {

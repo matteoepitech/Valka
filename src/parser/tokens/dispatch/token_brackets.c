@@ -24,9 +24,11 @@ brackets_token(parsing_src_file_t *p)
 
     length = i - p->_current_index;
     if (start[0] == '{')
-        token = create_token(TOKEN_BRACKET_OPEN, start, length, p->_current_loc);
+        token = create_token(TOKEN_BRACKET_OPEN, start, length,
+            p->_current_loc);
     if (start[0] == '}')
-        token = create_token(TOKEN_BRACKET_CLOSE, start, length, p->_current_loc);
+        token = create_token(TOKEN_BRACKET_CLOSE, start, length,
+            p->_current_loc);
     push_token(&p->_tail_list, token);
     p->_current_index = i;
     return p;

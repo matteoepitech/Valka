@@ -33,6 +33,7 @@ main(UNUSED int argc, UNUSED char *argv[])
     if (argc <= 1)
         return cleanup_mem(KO_OUTPUT);
     p = tokenize_source_code(argv[1]);
+    print_tokens(p);
     prg = make_ast(p);
     print_program(prg);
     out_llvm = create_llvm();
