@@ -36,5 +36,6 @@ make_ast_return(token_t **current_token, UNUSED ast_program_t *parent)
         move_token(current_token, 1);
         node->_ast_val._return._value = dispatch_ast(current_token, parent);
     }
+    node->_ast_val._return._return_data = parent->_parent->_ast_val._function._return_data;
     return node;
 }

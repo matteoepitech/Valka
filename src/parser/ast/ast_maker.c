@@ -67,6 +67,7 @@ make_ast(parsing_src_file_t *p)
     prg = MALLOC(sizeof(ast_program_t));
     prg->_statement_head = NULL;
     prg->_statement_tail = NULL;
+    prg->_parent = NULL;
     prg->_statements_amount = 0;
     current = p->_head_list;
     while (current && current->_type != TOKEN_END) {

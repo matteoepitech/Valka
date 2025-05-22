@@ -182,6 +182,7 @@ struct ast_program_s {
     ast_statement_t *_statement_head;
     ast_statement_t *_statement_tail;
     uint32_t _statements_amount;
+    ast_node_t *_parent;
 };
 
 /*

@@ -19,14 +19,17 @@ uint8_t
 llvm_return(ast_node_t *node, FILE *f)
 {
     const char *ret_var = node->_ast_val._return._sym_name;
+    const char *ret_type = node->_ast_val._return._return_data._llvm_ir;
     const char *ret_var_tmp = "__ret_val__";
 
     if (node->_ast_val._return._return_id == RETURN_ID_SYMBOL) {
-        fprintf(f, "%%%s = load %s, %s* %%%s\n", ret_var_tmp, "i32", "i32", ret_var);
-        fprintf(f, "ret %s %%%s\n", "i32", ret_var_tmp);
+        fprintf(f, "%%%s = load %s, %s* %%%s\n",
+            ret_var_tmp, ret_type, ret_type, ret_var);
+        fprintf(f, "ret %s %%%s\n", ret_type, ret_var_tmp);
     }
     if (node->_ast_val._return._return_id == RETURN_ID_INT) {
-        fprintf(f, "ret %s %d\n", "i32", node->_ast_val._return._value->_ast_val._int_literal._value);
+        fprintf(f, "ret %s %d\n", ret_type,
+            node->_ast_val._return._value->_ast_val._int_literal._value);
     }
     return OK_OUTPUT;
 }
