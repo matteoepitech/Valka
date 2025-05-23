@@ -37,6 +37,7 @@ void generate_llvm_global(FILE *f, ast_program_t *prg);
 uint8_t llvm_var(ast_node_t *node, FILE *f);
 uint8_t llvm_func(ast_node_t *node, FILE *f);
 uint8_t llvm_return(ast_node_t *node, FILE *f);
+uint8_t llvm_call_sym(ast_node_t *node, FILE *f, const char *dest);
 char *llvm_math(ast_node_t *node, FILE *f);
 
 /*

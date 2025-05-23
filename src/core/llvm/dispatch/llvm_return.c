@@ -15,13 +15,34 @@
  *
  * @return Everything worked?
  */
+/*
+** VALKA PROJECT, 2025
+** src/core/llvm/dispatch/llvm_return
+** File description:
+** LLVM for return declaration
+*/
+
+#include "valka.h"
+
+/**
+ * @brief LLVM return declaration.
+ *
+ * @param node           The AST node
+ * @param f              The FILE to write in
+ *
+ * @return Everything worked?
+ */
 uint8_t
 llvm_return(ast_node_t *node, FILE *f)
 {
-    const char *ret_var = node->_ast_val._return._sym_name;
     const char *ret_type = node->_ast_val._return._return_data._llvm_ir;
     const char *ret_var_tmp = "__ret_val__";
+    const char *ret_var = node->_ast_val._return._sym_name;
 
+    if (node->_ast_val._return._return_id == RETURN_ID_CALL_SYM) {
+        llvm_call_sym(node->_ast_val._return._value, f, ret_var_tmp);
+        fprintf(f, "ret %s %%%s\n", ret_type, ret_var_tmp);
+    }
     if (node->_ast_val._return._return_id == RETURN_ID_SYMBOL) {
         fprintf(f, "%%%s = load %s, %s* %%%s\n",
             ret_var_tmp, ret_type, ret_type, ret_var);

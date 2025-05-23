@@ -1,8 +1,11 @@
+function <i32> abc()
+{
+    return 19;
+}
+
 function <i32> main()
 {
-    var <char> aa = 10;
+    var <i32> out = abc();
 
-    var <i32> number = 50 + 10;
-
-    return number;
+    return out;
 }

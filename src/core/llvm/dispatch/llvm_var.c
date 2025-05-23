@@ -30,6 +30,13 @@ llvm_var(ast_node_t *node, FILE *f)
             data._llvm_ir, var_name);
         return OK_OUTPUT;
     }
+    if (value_node->_type == AST_CALL_SYM) {
+        tmp_var = get_random_var_name();
+        llvm_call_sym(value_node, f, tmp_var);
+        fprintf(f, "store %s %%%s, %s* %%%s\n\n", data._llvm_ir, tmp_var,
+            data._llvm_ir, var_name);
+        return OK_OUTPUT;
+    }
     fprintf(f, "store %s %d, %s* %%%s\n\n", data._llvm_ir,
         value_node->_ast_val._int_literal._value, data._llvm_ir, var_name);
     return OK_OUTPUT;

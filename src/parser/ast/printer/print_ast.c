@@ -109,7 +109,13 @@ print_ast(ast_node_t *node, int indent)
                 printf("Return: %s variable", node->_ast_val._return._sym_name);
             if (node->_ast_val._return._return_id == RETURN_ID_INT)
                 printf("Return: %d", node->_ast_val._return._value->_ast_val._int_literal._value);
+            if (node->_ast_val._return._return_id == RETURN_ID_CALL_SYM)
+                printf("Return: %s function", node->_ast_val._return._value->_ast_val._call_sym._sym_name);
             printf(" (%s)\n", node->_ast_val._return._return_data._valka_ir);
+            break;
+        
+        case AST_CALL_SYM:
+            printf("Call to %s()\n", node->_ast_val._call_sym._sym_name);
             break;
 
         default:

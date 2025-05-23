@@ -35,6 +35,7 @@ extern const data_types_t data_types[];
 
     #define RETURN_ID_SYMBOL 1
     #define RETURN_ID_INT 2
+    #define RETURN_ID_CALL_SYM 3
 
 /**
  * @brief All token types.
@@ -74,6 +75,7 @@ typedef enum {
     AST_BINARY_OP,
     AST_FUNCTION,
     AST_RETURN,
+    AST_CALL_SYM,
 } ast_node_type_t;
 
 /**
@@ -168,6 +170,10 @@ struct ast_node_s {
             data_types_t _return_data;
             ast_program_t *_func_content;
         } _function;
+        // Call symbol -> hello()
+        struct {
+            char *_sym_name;
+        } _call_sym;
         // Return -> return var or a ast_node_t
         struct {
             size_t _return_id;
@@ -220,6 +226,7 @@ parsing_src_file_t *var_type_token(parsing_src_file_t *p);
 parsing_src_file_t *assign_token(parsing_src_file_t *p);
 parsing_src_file_t *semicolon_token(parsing_src_file_t *p);
 parsing_src_file_t *brackets_token(parsing_src_file_t *p);
+parsing_src_file_t *parents_token(parsing_src_file_t *p);
 parsing_src_file_t *bin_operation_token(parsing_src_file_t *p);
 
 /*
@@ -245,6 +252,7 @@ ast_node_t *make_ast_int_literal(token_t **current_token, ast_program_t *parent)
 ast_node_t *make_ast_return(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_bin_ope(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_expression(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_call_sym(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/

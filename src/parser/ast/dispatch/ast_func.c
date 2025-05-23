@@ -76,7 +76,7 @@ make_ast_func(token_t **current_token, UNUSED ast_program_t *parent)
     node->_ast_val._function._func_content->_statement_tail = NULL;
     node->_ast_val._function._func_content->_parent = node;
     node->_ast_val._function._func_content->_statements_amount = 0;
-    move_token(current_token, 3);
+    move_token(current_token, 5);
     curr = *current_token;
     if (curr->_type != TOKEN_BRACKET_OPEN)
         return NULL;
