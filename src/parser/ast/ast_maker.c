@@ -38,16 +38,16 @@ dispatch_ast(token_t **current_token, ast_program_t *parent)
     uint32_t type_id = (*current_token)->_type_id;
     token_type_t type = (*current_token)->_type;
 
+    if (type == TOKEN_INT_LITERAL || (type == TOKEN_SYMBOL && (*current_token)->_next->_type == TOKEN_MATH_OPERATOR)) 
+        return make_ast_expression(current_token, parent);
     if (type == TOKEN_SYMBOL)
-        return make_ast_call_sym(current_token, parent);
+        return make_ast_symbol(current_token, parent);
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_VAR)
         return make_ast_var(current_token, parent);
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_FUNC)
         return make_ast_func(current_token, parent);
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_RETURN)
         return make_ast_return(current_token, parent);
-    if (type == TOKEN_INT_LITERAL)
-        return make_ast_expression(current_token, parent);
     return NULL;
 }
 

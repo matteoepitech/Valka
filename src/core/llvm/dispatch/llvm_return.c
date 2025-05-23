@@ -37,20 +37,27 @@ llvm_return(ast_node_t *node, FILE *f)
 {
     const char *ret_type = node->_ast_val._return._return_data._llvm_ir;
     const char *ret_var_tmp = "__ret_val__";
-    const char *ret_var = node->_ast_val._return._sym_name;
+    ast_node_t *tmp_val = node->_ast_val._return._value;
 
-    if (node->_ast_val._return._return_id == RETURN_ID_CALL_SYM) {
-        llvm_call_sym(node->_ast_val._return._value, f, ret_var_tmp);
-        fprintf(f, "ret %s %%%s\n", ret_type, ret_var_tmp);
-    }
-    if (node->_ast_val._return._return_id == RETURN_ID_SYMBOL) {
+    if (tmp_val == NULL)
+        return KO_OUTPUT;
+    if (tmp_val->_type == AST_SYMBOL) {
         fprintf(f, "%%%s = load %s, %s* %%%s\n",
-            ret_var_tmp, ret_type, ret_type, ret_var);
+            ret_var_tmp, ret_type, ret_type, tmp_val->_ast_val._symbol._sym_name);
         fprintf(f, "ret %s %%%s\n", ret_type, ret_var_tmp);
+        return OK_OUTPUT;
     }
-    if (node->_ast_val._return._return_id == RETURN_ID_INT) {
+    if (tmp_val->_type == AST_CALL_SYM) {
+        llvm_call_sym(tmp_val, f, ret_var_tmp);
+        fprintf(f, "ret %s %%%s\n", ret_type, ret_var_tmp);
+        return OK_OUTPUT;
+    }
+    if (tmp_val->_type == AST_LITERAL_INT) {
         fprintf(f, "ret %s %d\n", ret_type,
-            node->_ast_val._return._value->_ast_val._int_literal._value);
+            tmp_val->_ast_val._int_literal._value);
+        return OK_OUTPUT;
     }
+    if (tmp_val->_type == AST_BINARY_OP)
+        fprintf(f, "ret %s %%%s\n", ret_type, llvm_math(tmp_val, f));
     return OK_OUTPUT;
 }

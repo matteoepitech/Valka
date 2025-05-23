@@ -33,10 +33,6 @@ extern const data_types_t data_types[];
     #define IDENTIFIER_ID_FUNC 2
     #define IDENTIFIER_ID_RETURN 3
 
-    #define RETURN_ID_SYMBOL 1
-    #define RETURN_ID_INT 2
-    #define RETURN_ID_CALL_SYM 3
-
 /**
  * @brief All token types.
  */
@@ -76,6 +72,7 @@ typedef enum {
     AST_FUNCTION,
     AST_RETURN,
     AST_CALL_SYM,
+    AST_SYMBOL,
 } ast_node_type_t;
 
 /**
@@ -174,6 +171,10 @@ struct ast_node_s {
         struct {
             char *_sym_name;
         } _call_sym;
+        // Symbol -> hello
+        struct {
+            char *_sym_name;
+        } _symbol;
         // Return -> return var or a ast_node_t
         struct {
             size_t _return_id;
@@ -253,6 +254,7 @@ ast_node_t *make_ast_return(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_bin_ope(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_expression(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_call_sym(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_symbol(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/

@@ -52,6 +52,6 @@ compile_llvm_to_executable(void)
         PERROR("Failed to link the program.");
         return;
     }
-    printf("\033[32;1m- Compilation and linking done! -\n\033[0m");
+    printf("\n\033[32;1m- Compilation and linking done! -\n\033[0m");
     remove_useless_files();
 }

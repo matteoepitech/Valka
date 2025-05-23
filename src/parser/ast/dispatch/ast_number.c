@@ -51,8 +51,11 @@ parse_expression(token_t **current_token, ast_program_t *parent, int min_prio)
     char op;
     int precedence;
 
-    left = make_ast_int_literal(current_token, parent);
-    if (left == NULL)
+    if ((*current_token)->_type == TOKEN_INT_LITERAL)
+        left = make_ast_int_literal(current_token, parent);
+    else if ((*current_token)->_type == TOKEN_SYMBOL)
+        left = make_ast_symbol(current_token, parent);
+    else
         return NULL;
     while (1) {
         curr = *current_token;

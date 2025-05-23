@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 // @TODO remove this.
 static void print_ast(ast_node_t *node, int indent);
@@ -86,7 +87,7 @@ print_ast(ast_node_t *node, int indent)
             break;
 
         case AST_VAR_DECL:
-            printf("Var decl: %s %s\n", node->_ast_val._var_decl._var_type._valka_ir, node->_ast_val._var_decl._var_name);
+            printf("Var decl: <%s> %s\n", node->_ast_val._var_decl._var_type._valka_ir, node->_ast_val._var_decl._var_name);
             print_indent(indent);
             printf("Value:\n");
             print_ast(node->_ast_val._var_decl._value, indent + 1);
@@ -105,17 +106,16 @@ print_ast(ast_node_t *node, int indent)
             break;
 
         case AST_RETURN:
-            if (node->_ast_val._return._return_id == RETURN_ID_SYMBOL)
-                printf("Return: %s variable", node->_ast_val._return._sym_name);
-            if (node->_ast_val._return._return_id == RETURN_ID_INT)
-                printf("Return: %d", node->_ast_val._return._value->_ast_val._int_literal._value);
-            if (node->_ast_val._return._return_id == RETURN_ID_CALL_SYM)
-                printf("Return: %s function", node->_ast_val._return._value->_ast_val._call_sym._sym_name);
-            printf(" (%s)\n", node->_ast_val._return._return_data._valka_ir);
+            printf("Return value:\n");
+            print_ast(node->_ast_val._return._value, indent + 1);
             break;
         
         case AST_CALL_SYM:
             printf("Call to %s()\n", node->_ast_val._call_sym._sym_name);
+            break;
+        
+        case AST_SYMBOL:
+            printf("Symbol %s\n", node->_ast_val._symbol._sym_name);
             break;
 
         default:
@@ -140,7 +140,7 @@ print_program(ast_program_t *prg)
     }
     current = prg->_statement_head;
     while (current != NULL) {
-        printf("Statement %u:\n", current->_ast_id);
+        printf("\nStatement %u:\n", current->_ast_id);
         print_ast(current->_ast_node, 1);
         current = current->_next;
     }

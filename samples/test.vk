@@ -1,11 +1,12 @@
-function <i32> abc()
+function <i32> kaka()
 {
-    return 19;
+    return 10;
 }
 
 function <i32> main()
 {
-    var <i32> out = abc();
+    var <i32> bb = 10
+    var <i32> aa = bb;
 
-    return out;
+    return bb + 1;
 }
