@@ -67,6 +67,7 @@ make_ast_func(token_t **current_token, UNUSED ast_program_t *parent)
         return NULL;
     node->_type = AST_FUNCTION;
     node->_loc = curr->_loc;
+    node->_parent = parent;
     node->_ast_val._function._func_name = strndup(curr->_next->_next->_start,
         curr->_next->_next->_length);
     node->_ast_val._function._return_data = get_data_type(curr->_next);

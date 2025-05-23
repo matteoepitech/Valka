@@ -1,6 +1,8 @@
 function <i32> main()
 {
-    var <i32> number = 50;
+    var <char> aa = 10;
+
+    var <i32> number = 50 + 10;
 
     return number;
 }

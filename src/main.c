@@ -7,12 +7,24 @@
 
 #include "valka.h"
 
+// Used to generate random tmp variable
+uint32_t register_id = 0;
+
 // All Valka data types (extern in valka_parser.h)
 const data_types_t data_types[] = {
     {T_I32, "i32", "i32"},
     {T_BOOL, "bool", "i1"},
     {T_CHAR, "char", "i8"},
     {0, "", ""},
+};
+
+// All Valka binary operation (extern in valka_parser.h)
+const bin_ope_t bin_operations[] = {
+    {'+', "add"},
+    {'-', "sub"},
+    {'/', "div"},
+    {'*', "mul"},
+    {0, ""}
 };
 
 /**

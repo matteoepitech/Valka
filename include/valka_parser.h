@@ -10,6 +10,8 @@
 
     #include "misc/types.h"
 
+extern uint32_t register_id;
+
 /* All data types in Valka */
 
     #define T_I32 1
@@ -23,6 +25,8 @@ typedef struct data_types_s {
 } data_types_t;
 
 extern const data_types_t data_types[];
+
+    #define IS_VALID_DATA_TYPE(x) (x._id != 0)
 
     /* Types for somes AST */
     #define IDENTIFIER_ID_VAR 1
@@ -143,7 +147,7 @@ struct ast_node_s {
         } _string;
         // Binary operation -> 10 + 5, 5 / 7, 8 % 8, ...
         struct {
-            char *_op;
+            char _op;
             ast_node_t *_left;
             ast_node_t *_right;
         } _binary_op;
@@ -175,6 +179,21 @@ struct ast_node_s {
 };
 
 /**
+ * @brief Binary operation types.
+ */
+
+    #ifndef OPERATORS_STR
+        #define OPERATORS_STR "/+-*%"
+    #endif
+
+typedef struct bin_ope_s {
+    char _operator;
+    char _llvm_ir[32];
+} bin_ope_t;
+
+extern const bin_ope_t bin_operations[];
+
+/**
 * @brief All statement is basically the whole source code.
 *        The ast_program_t contains everything.
 */
@@ -201,6 +220,7 @@ parsing_src_file_t *var_type_token(parsing_src_file_t *p);
 parsing_src_file_t *assign_token(parsing_src_file_t *p);
 parsing_src_file_t *semicolon_token(parsing_src_file_t *p);
 parsing_src_file_t *brackets_token(parsing_src_file_t *p);
+parsing_src_file_t *bin_operation_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/
@@ -223,6 +243,8 @@ ast_node_t *make_ast_var(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_func(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_int_literal(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_return(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_bin_ope(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_expression(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/
@@ -234,5 +256,6 @@ void print_program(ast_program_t *prg);
  */
 data_types_t get_data_type(token_t *token);
 data_types_t get_data_with_id(uint32_t id);
+bin_ope_t get_operator_with_char(char op);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

@@ -44,7 +44,7 @@ dispatch_ast(token_t **current_token, ast_program_t *parent)
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_RETURN)
         return make_ast_return(current_token, parent);
     if (type == TOKEN_INT_LITERAL)
-        return make_ast_int_literal(current_token, parent);
+        return make_ast_expression(current_token, parent);
     return NULL;
 }
 

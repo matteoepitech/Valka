@@ -76,7 +76,7 @@ print_ast(ast_node_t *node, int indent)
             break;
 
         case AST_BINARY_OP:
-            printf("Binary operation: %s\n", node->_ast_val._binary_op._op);
+            printf("Binary operation: %c\n", node->_ast_val._binary_op._op);
             print_indent(indent);
             printf("Left:\n");
             print_ast(node->_ast_val._binary_op._left, indent + 1);

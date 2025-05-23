@@ -37,5 +37,11 @@ void generate_llvm_global(FILE *f, ast_program_t *prg);
 uint8_t llvm_var(ast_node_t *node, FILE *f);
 uint8_t llvm_func(ast_node_t *node, FILE *f);
 uint8_t llvm_return(ast_node_t *node, FILE *f);
+char *llvm_math(ast_node_t *node, FILE *f);
+
+/*
+ * Folder : utils/
+ */
+char *get_random_var_name(void);
 
 #endif /* ifndef _VALKA_H_ */
