@@ -33,6 +33,15 @@ extern const data_types_t data_types[];
     #define IDENTIFIER_ID_FUNC 2
     #define IDENTIFIER_ID_RETURN 3
 
+    #ifndef START_ENTRY_POINT
+        #define START_ENTRY_POINT "_start"
+    #endif
+
+    /* Some builtins */
+    #ifndef SYSCALL_BUILTIN_NAME
+        #define SYSCALL_BUILTIN_NAME "syscall"
+    #endif
+
 /**
  * @brief All token types.
  */

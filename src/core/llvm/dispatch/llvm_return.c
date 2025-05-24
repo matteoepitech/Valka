@@ -24,6 +24,12 @@ llvm_return(ast_node_t *node, FILE *f)
 
     if (tmp_val == NULL)
         return KO_OUTPUT;
+
+    #if defined(ARCH_X86_64)
+    if (strcmp(node->_parent->_parent->_ast_val._function._func_name, START_ENTRY_POINT) == 0)
+        llvm_syscall(node, f, NULL, 60);
+    #endif
+
     tmp = llvm_gen_value(tmp_val, f);
     if (tmp == NULL)
         return KO_OUTPUT;

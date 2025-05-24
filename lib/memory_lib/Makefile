@@ -8,7 +8,7 @@
 RED    		:= \033[0;31m
 RESET		:= \033[0m
 
-PREFIX		:= [VALKA MEMORY]
+PREFIX		:= $(RESET)[$(RED)VALKA MEMORY$(RESET)] $(RED)
 
 SRC		:=	$(shell find src -name "*.c")
 OBJ_SRC		:=	$(SRC:.c=.o)

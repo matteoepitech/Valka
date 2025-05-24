@@ -22,7 +22,7 @@ const data_types_t data_types[] = {
 const bin_ope_t bin_operations[] = {
     {'+', "add"},
     {'-', "sub"},
-    {'/', "div"},
+    {'/', "sdiv"},
     {'*', "mul"},
     {0, ""}
 };

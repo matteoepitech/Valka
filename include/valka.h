@@ -23,6 +23,19 @@
     #include "misc/macros.h"
     #include "misc/types.h"
 
+    /* Getting the architecture of the processor which we compile valkaC */
+    #if defined(__x86_64__) || defined(_M_X64)
+        #define ARCH_X86_64
+    #elif defined(__aarch64__) || defined(_M_ARM64)
+        #define ARCH_ARM64
+    #elif defined(__arm__) || defined(_M_ARM)
+        #define ARCH_ARM32
+    #elif defined(__i386__) || defined(_M_IX86)
+        #define ARCH_X86_32
+    #else
+        #define ARCH_UNKNOWN
+    #endif
+
 /*
  * Folder : core/llvm/
  */
@@ -38,8 +51,9 @@ char *llvm_gen_value(ast_node_t *node, FILE *f);
 uint8_t llvm_var(ast_node_t *node, FILE *f);
 uint8_t llvm_func(ast_node_t *node, FILE *f);
 uint8_t llvm_return(ast_node_t *node, FILE *f);
-uint8_t llvm_call_sym(ast_node_t *node, FILE *f, const char *dest);
+uint8_t llvm_call_sym(ast_node_t *node, FILE *f, char *dest);
 char *llvm_math(ast_node_t *node, FILE *f);
+uint8_t llvm_syscall(UNUSED ast_node_t *node, FILE *f, char *dest, uint32_t force_sys);
 
 /*
  * Folder : utils/

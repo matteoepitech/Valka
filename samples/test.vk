@@ -1,6 +1,6 @@
 function <i32> main()
 {
-    var <i32> my_var = 1;
+    var <i32> my_var = 1 + 1 + 1 * 5;
 
-    return my_var;
+    return my_var / 3;
 }

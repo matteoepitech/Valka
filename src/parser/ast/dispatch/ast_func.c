@@ -19,7 +19,7 @@ static ast_node_t *
 is_main_function(ast_node_t *node)
 {
     if (strcmp(node->_ast_val._function._func_name, "main") == 0) {
-        node->_ast_val._function._func_name = strdup("_start");
+        node->_ast_val._function._func_name = strdup(START_ENTRY_POINT);
     }
     return node;
 }
