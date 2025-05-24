@@ -1,0 +1,59 @@
+function <i32> fib_0()
+{
+    return 0;
+}
+
+function <i32> fib_1()
+{
+    return 1;
+}
+
+function <i32> fib_2()
+{
+    return fib_1() + fib_0();
+}
+
+function <i32> fib_3()
+{
+    return fib_2() + fib_1();
+}
+
+function <i32> fib_4()
+{
+    return fib_3() + fib_2();
+}
+
+function <i32> fib_5()
+{
+    return fib_4() + fib_3();
+}
+
+function <i32> fib_6()
+{
+    return fib_5() + fib_4();
+}
+
+function <i32> fib_7()
+{
+    return fib_6() + fib_5();
+}
+
+function <i32> fib_8()
+{
+    return fib_7() + fib_6();
+}
+
+function <i32> fib_9()
+{
+    return fib_8() + fib_7();
+}
+
+function <i32> fib_10()
+{
+    return fib_9() + fib_8();
+}
+
+function <i32> main()
+{
+    return fib_10();
+}

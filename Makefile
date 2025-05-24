@@ -51,7 +51,7 @@ clean:
 fclean: clean
 	@printf "$(RED)$(PREFIX) Cleaning build folder...$(RESET)\n"
 	@rm -rf $(BUILD_PATH)
-	@rm -f $(NAME)
+	@rm -f $(NAME) a.out out.ll
 
 re: fclean all
 
