@@ -46,3 +46,62 @@ push_token(token_t **tail, token_t *token)
     *tail = (*tail)->_next;
     return *tail;
 }
+
+/**
+ * @brief Is a start of an expression.
+ *
+ * @param token         The token
+ *
+ * @return TRUE or FALSE.
+ */
+bool_t
+is_start_of_expression(token_t *token)
+{
+    token_t *after_call = NULL;
+
+    if (token == NULL)
+        return FALSE;
+    if (token->_type == TOKEN_INT_LITERAL)
+        return TRUE;
+    if (token->_type == TOKEN_SYMBOL && token->_next &&
+        token->_next->_type == TOKEN_MATH_OPERATOR)
+        return TRUE;
+    if (is_call_sym(token)) {
+        after_call = token;
+        while (after_call && after_call->_type != TOKEN_PARENT_CLOSE)
+            after_call = after_call->_next;
+        if (after_call && after_call->_next &&
+            after_call->_next->_type == TOKEN_MATH_OPERATOR) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+/**
+ * @brief Is a call symbol.
+ *
+ * @param token         The token
+ *
+ * @return TRUE or FALSE.
+ */
+bool_t
+is_call_sym(token_t *token)
+{
+    token_t *curr = NULL;
+    int paren_count = 1;
+
+    if (token == NULL|| token->_type != TOKEN_SYMBOL)
+        return FALSE;
+    if (token->_next == NULL|| token->_next->_type != TOKEN_PARENT_OPEN)
+        return FALSE;
+    curr = token->_next->_next;
+    while (curr && paren_count > 0) {
+        if (curr->_type == TOKEN_PARENT_OPEN)
+            paren_count++;
+        else if (curr->_type == TOKEN_PARENT_CLOSE)
+            paren_count--;
+        curr = curr->_next;
+    }
+    return (paren_count == 0);
+}

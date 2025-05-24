@@ -30,6 +30,7 @@ FILE *create_llvm(void);
 uint8_t close_llvm(FILE *f);
 void compile_llvm_to_executable(void);
 void generate_llvm_global(FILE *f, ast_program_t *prg);
+char *llvm_gen_value(ast_node_t *node, FILE *f);
 
 /*
  * Folder : core/llvm/dispatch

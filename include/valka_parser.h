@@ -217,6 +217,8 @@ struct ast_program_s {
 parsing_src_file_t *tokenize_source_code(char *filepath);
 token_t *create_token(token_type_t type, const char *start, uint32_t length, location_t loc);
 token_t *push_token(token_t **tail, token_t *token);
+bool_t is_start_of_expression(token_t *token);
+bool_t is_call_sym(token_t *token);
 
 /*
  * Folder : src/parser/tokens/dispatch/

@@ -1,12 +1,6 @@
-function <i32> kaka()
-{
-    return 10;
-}
-
 function <i32> main()
 {
-    var <i32> bb = 10
-    var <i32> aa = bb;
+    var <i32> my_var = 1;
 
-    return bb + 1;
+    return my_var;
 }

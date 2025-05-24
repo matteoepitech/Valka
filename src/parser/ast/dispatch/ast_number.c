@@ -47,13 +47,18 @@ parse_expression(token_t **current_token, ast_program_t *parent, int min_prio)
     ast_node_t *left = NULL;
     ast_node_t *right = NULL;
     ast_node_t *binary_node = NULL;
-    token_t *curr = NULL;
+    token_t *curr = *current_token;
     char op;
     int precedence;
 
-    if ((*current_token)->_type == TOKEN_INT_LITERAL)
+    if (curr == NULL)
+        return NULL;
+
+    if (curr->_type == TOKEN_INT_LITERAL)
         left = make_ast_int_literal(current_token, parent);
-    else if ((*current_token)->_type == TOKEN_SYMBOL)
+    else if (is_call_sym(curr))
+        left = make_ast_call_sym(current_token, parent);
+    else if (curr->_type == TOKEN_SYMBOL)
         left = make_ast_symbol(current_token, parent);
     else
         return NULL;

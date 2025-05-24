@@ -1,0 +1,213 @@
+function <i32> get_five()
+{
+    return 5;
+}
+
+function <i32> get_ten()
+{
+    return 10;
+}
+
+function <i32> get_seven()
+{
+    return 7;
+}
+
+function <i32> get_three()
+{
+    return 3;
+}
+
+function <i32> get_eight()
+{
+    return 8;
+}
+
+function <i32> get_twelve()
+{
+    return 12;
+}
+
+function <i32> get_fifteen()
+{
+    return 15;
+}
+
+function <i32> get_twenty()
+{
+    return 20;
+}
+
+function <i32> simple_add()
+{
+    return get_five() * get_ten();
+}
+
+function <i32> simple_mult()
+{
+    return get_seven() * get_three();
+}
+
+function <i32> basic_operation()
+{
+    return get_eight() + get_twelve();
+}
+
+function <i32> basic_multiply()
+{
+    return get_fifteen() * get_three();
+}
+
+function <i32> first_calc()
+{
+    var <i32> a = simple_add();
+    var <i32> b = get_seven();
+    return a + b;
+}
+
+function <i32> second_calc()
+{
+    var <i32> x = simple_mult();
+    var <i32> y = get_eight();
+    return x * y;
+}
+
+function <i32> third_calc()
+{
+    var <i32> p = basic_operation();
+    var <i32> q = get_five();
+    return p + q;
+}
+
+function <i32> fourth_calc()
+{
+    var <i32> m = basic_multiply();
+    var <i32> n = get_ten();
+    return m + n;
+}
+
+function <i32> combine_adds()
+{
+    return first_calc() + third_calc();
+}
+
+function <i32> combine_mults()
+{
+    return second_calc() + fourth_calc();
+}
+
+function <i32> mixed_operations()
+{
+    var <i32> add_result = combine_adds();
+    var <i32> mult_result = get_twenty();
+    return add_result + mult_result;
+}
+
+function <i32> another_mix()
+{
+    var <i32> base = combine_mults();
+    var <i32> extra = get_twelve();
+    return base + extra;
+}
+
+function <i32> chain_one()
+{
+    return simple_add() + simple_mult();
+}
+
+function <i32> chain_two()
+{
+    return basic_operation() + basic_multiply();
+}
+
+function <i32> chain_three()
+{
+    return first_calc() + second_calc();
+}
+
+function <i32> chain_four()
+{
+    return third_calc() + fourth_calc();
+}
+
+function <i32> mega_chain()
+{
+    var <i32> part_a = chain_one();
+    var <i32> part_b = chain_two();
+    return part_a + part_b;
+}
+
+function <i32> ultra_chain()
+{
+    var <i32> part_c = chain_three();
+    var <i32> part_d = chain_four();
+    return part_c + part_d;
+}
+
+function <i32> function_in_expression()
+{
+    return get_five() + simple_add();
+}
+
+function <i32> double_function_expr()
+{
+    return simple_mult() + basic_operation();
+}
+
+function <i32> triple_function_call()
+{
+    var <i32> val = function_in_expression();
+    return val + double_function_expr();
+}
+
+function <i32> nested_expression()
+{
+    var <i32> inner = get_ten() + get_twenty();
+    return inner + triple_function_call();
+}
+
+function <i32> accumulate_step_one()
+{
+    var <i32> step = get_five() + get_seven();
+    return step + get_three();
+}
+
+function <i32> accumulate_step_two()
+{
+    var <i32> step = accumulate_step_one();
+    return step + get_eight();
+}
+
+function <i32> accumulate_step_three()
+{
+    var <i32> step = accumulate_step_two();
+    return step + get_twelve();
+}
+
+function <i32> final_mega_calc()
+{
+    var <i32> mega = mega_chain();
+    var <i32> ultra = ultra_chain();
+    return mega + ultra;
+}
+
+function <i32> final_expression_test()
+{
+    var <i32> nested = nested_expression();
+    var <i32> accumulated = accumulate_step_three();
+    return nested + accumulated;
+}
+
+function <i32> ultimate_combination()
+{
+    var <i32> mega_result = final_mega_calc();
+    var <i32> expr_result = final_expression_test();
+    return mega_result + expr_result;
+}
+
+function <i32> main()
+{
+    var <i32> final_result = ultimate_combination();
+    var <i32> bonus = mixed_operations() + another_mix();
+    return final_result + bonus;
+}

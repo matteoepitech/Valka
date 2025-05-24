@@ -22,10 +22,10 @@ llvm_math(ast_node_t *node, FILE *f)
     bin_ope_t op = get_operator_with_char(node->_ast_val._binary_op._op);
     ast_node_t *left = node->_ast_val._binary_op._left;
     ast_node_t *right = node->_ast_val._binary_op._right;
+    char *left_val = llvm_gen_value(left, f);
+    char *right_val = llvm_gen_value(right, f);
 
-    if (left->_type == AST_LITERAL_INT && right->_type == AST_LITERAL_INT)
-        fprintf(f, "%%%s = %s %s %d, %d\n", tmp_name, op._llvm_ir, "i32",
-            left->_ast_val._int_literal._value,
-            right->_ast_val._int_literal._value);
+    fprintf(f, "%%%s = %s i32 %%%s, %%%s\n", tmp_name, op._llvm_ir,
+        left_val, right_val);
     return tmp_name;
 }
