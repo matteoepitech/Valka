@@ -27,10 +27,11 @@ generate_tmp_casted_parameters(ast_node_t *node, uint32_t args_count,
 {
     char *arg_32 = NULL;
     char *arg_64 = NULL;
-
+    
     for (uint32_t i = 0; i < args_count && i < 6; i++) {
         arg_32 = llvm_gen_value(node->_ast_val._call_sym._args[i], f);
         arg_64 = get_random_var_name();
+        fprintf(f, "%%%s = sext i32 %%%s to i64\n", arg_64, arg_32);
         fprintf(f, "%%%s = sext i32 %%%s to i64\n", arg_64, arg_32);
         args_reg[i] = arg_64;
     }
@@ -65,11 +66,10 @@ llvm_syscall(ast_node_t *node, FILE *f, char *dest)
     char *args_reg[6] = {NULL};
     uint32_t args_count = node->_ast_val._call_sym._args_count;
 
-    generate_tmp_casted_parameters(node, args_count, args_reg, f);
     if (dest == NULL)
-        fprintf(f, "call void asm sideeffect ");
-    else
-        fprintf(f, "%%%s = call i64 asm ", dest);
+        dest = get_random_var_name();
+    generate_tmp_casted_parameters(node, args_count, args_reg, f);
+    fprintf(f, "%%%s = call i64 asm ", dest);
 
     #if defined(ARCH_X86_64)
     fprintf(f, "\"");
@@ -95,19 +95,19 @@ llvm_syscall(ast_node_t *node, FILE *f, char *dest)
 
     #elif defined(ARCH_ARM64)
     fprintf(f, "\"");
-    fprintf(f, "mov x8, $0; ");
+    fprintf(f, "mov x16, $0; ");
     fprintf(f, "mov x0, $1; ");
     fprintf(f, "mov x1, $2; ");
     fprintf(f, "mov x2, $3; ");
     fprintf(f, "mov x3, $4; ");
     fprintf(f, "mov x4, $5; ");
     fprintf(f, "mov x5, $6; ");
-    fprintf(f, "svc #0");
+    fprintf(f, "svc #0x80");
     fprintf(f, "\", ");
     fprintf(f, "\"r");
     for (int i = 1; i < 7; i++)
         fprintf(f, ",r");
-    fprintf(f, ",~{x8},~{x0},~{x1},~{x2},~{x3},~{x4},~{x5},~{memory}\" ");
+    fprintf(f, ",~{x16},~{x0},~{x1},~{x2},~{x3},~{x4},~{x5},~{memory}\" ");
     fprintf(f, "(i64 %%%s", args_reg[0] ? args_reg[0] : "0");
     for (uint32_t i = 1; i < args_count && i < 7; i++)
         fprintf(f, ", i64 %%%s", args_reg[i]);
