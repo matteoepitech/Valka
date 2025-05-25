@@ -54,7 +54,7 @@ uint8_t llvm_func(ast_node_t *node, FILE *f);
 uint8_t llvm_return(ast_node_t *node, FILE *f);
 uint8_t llvm_call_sym(ast_node_t *node, FILE *f, char *dest);
 char *llvm_math(ast_node_t *node, FILE *f);
-uint8_t llvm_syscall(UNUSED ast_node_t *node, FILE *f, char *dest, uint32_t force_sys);
+uint8_t llvm_syscall(ast_node_t *node, FILE *f, char *dest);
 
 /*
  * Folder : utils/

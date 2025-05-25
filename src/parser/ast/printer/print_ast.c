@@ -111,7 +111,19 @@ print_ast(ast_node_t *node, int indent)
             break;
         
         case AST_CALL_SYM:
-            printf("Call to %s()\n", node->_ast_val._call_sym._sym_name);
+            printf("Call to %s", node->_ast_val._call_sym._sym_name);
+            if (node->_ast_val._call_sym._args_count == 0) {
+                printf("()\n");
+                break;
+            }
+            printf("\n");
+            print_indent(indent);
+            printf("(\n");
+            for (uint32_t i = 0; i < node->_ast_val._call_sym._args_count; i++) {
+                print_ast(node->_ast_val._call_sym._args[i], indent + 1);
+            }
+            print_indent(indent);
+            printf(")\n");
             break;
         
         case AST_SYMBOL:

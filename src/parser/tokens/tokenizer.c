@@ -50,6 +50,8 @@ dispatch_tokenizer(parsing_src_file_t *p)
 
     if (strchr(OPERATORS_STR, c) != NULL)
         return bin_operation_token(p);
+    if (c == ',')
+        return comma_token(p);
     if (c == '<')
         return var_type_token(p);
     if (c == '=')

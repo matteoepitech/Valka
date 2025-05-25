@@ -243,6 +243,7 @@ parsing_src_file_t *semicolon_token(parsing_src_file_t *p);
 parsing_src_file_t *brackets_token(parsing_src_file_t *p);
 parsing_src_file_t *parents_token(parsing_src_file_t *p);
 parsing_src_file_t *bin_operation_token(parsing_src_file_t *p);
+parsing_src_file_t *comma_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/

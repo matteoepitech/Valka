@@ -27,7 +27,7 @@ llvm_return(ast_node_t *node, FILE *f)
 
     #if defined(ARCH_X86_64)
     if (strcmp(node->_parent->_parent->_ast_val._function._func_name, START_ENTRY_POINT) == 0)
-        llvm_syscall(node, f, NULL, 60);
+        llvm_syscall(node, f, NULL);
     #endif
 
     tmp = llvm_gen_value(tmp_val, f);
