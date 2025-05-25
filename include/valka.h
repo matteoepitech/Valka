@@ -15,6 +15,7 @@
     #include <unistd.h>
     #include <ctype.h>
     #include <errno.h>
+    #include <sys/syscall.h>
 
     #include "lib/memory_lib/include/mymem.h"
 

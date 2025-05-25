@@ -7,6 +7,11 @@
 
 #include "valka.h"
 
+/** 
+ * macOS ARM64 syscall : /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/syscall.h
+ * linux x86_64 syscall : /usr/include/x86_64-linux-gnu/sys/syscall.h
+ */
+
 /**
  * @brief LLVM syscall declaration.
  *
@@ -37,7 +42,8 @@ llvm_syscall(UNUSED ast_node_t *node, FILE *f, char *dest, uint32_t force_sys)
     fprintf(f, "syscall");
     fprintf(f, "\", ");
     fprintf(f, "\"r,r,r,r,r,r,r,~{rax},~{rdi},~{rsi},~{rdx},~{r10},~{r8},~{r9},~{rcx},~{r11},~{memory}\" ");
-    fprintf(f, "(i64 %d, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)\n", syscall_id);
+    fprintf(f, "(i64 %d, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)\n", syscall_id); 
+    fprintf(f, "\n");
 
     #elif defined(ARCH_ARM64)
     fprintf(f, "\"");
@@ -52,6 +58,11 @@ llvm_syscall(UNUSED ast_node_t *node, FILE *f, char *dest, uint32_t force_sys)
     fprintf(f, "\", ");
     fprintf(f, "\"r,r,r,r,r,r,r,~{x8},~{x0},~{x1},~{x2},~{x3},~{x4},~{x5},~{memory}\" ");
     fprintf(f, "(i64 %d, i64 0, i64 0, i64 0, i64 0, i64 0, i64 0)\n", syscall_id);
+
+    if (syscall_id == SYS_exit)
+        fprintf(f, "ret %s %d\n", node->_parent->_parent->_ast_val._function._return_data._llvm_ir, 0);
+
+    fprintf(f, "\n");
 
     #endif
     return OK_OUTPUT;

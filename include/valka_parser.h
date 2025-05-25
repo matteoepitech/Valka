@@ -9,6 +9,7 @@
     #define _VALKA_PARSER_H_
 
     #include "misc/types.h"
+#include <stdint.h>
 
 extern uint32_t register_id;
 
@@ -179,6 +180,8 @@ struct ast_node_s {
         // Call symbol -> hello()
         struct {
             char *_sym_name;
+            uint32_t _args_count;
+            ast_node_t **_args;
         } _call_sym;
         // Symbol -> hello
         struct {

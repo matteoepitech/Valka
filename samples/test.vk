@@ -2,5 +2,6 @@ function <i32> main()
 {
     var <i32> my_var = 1 + 1 + 1 * 5;
 
+    syscall(1, 69);
     return my_var / 3;
 }
