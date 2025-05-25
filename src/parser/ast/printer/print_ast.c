@@ -33,6 +33,12 @@ print_function_body(ast_program_t *prg)
 {
     ast_statement_t *current = NULL;
 
+    if (prg->_statements_amount == -1) {
+        print_indent(2);
+        fflush(stdout);
+        printf(COLOR_YELLOW "This is an declaration of function.\n" COLOR_RESET);
+        return;
+    }
     if (prg == NULL || prg->_statement_head == NULL) {
         print_indent(2);
         fflush(stdout);
@@ -102,6 +108,16 @@ print_ast(ast_node_t *node, int indent)
 
         case AST_FUNCTION:
             printf("Function: %s type (%s)\n", node->_ast_val._function._func_name, node->_ast_val._function._return_data._valka_ir);
+            if (node->_ast_val._function._params_count == 0) {
+                print_function_body(node->_ast_val._function._func_content);
+                break;
+            }
+            print_indent(indent + 1);
+            printf("Parameters: \n");
+            for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
+                print_indent(indent + 2);
+                printf("- %s\n", node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir);
+            }
             print_function_body(node->_ast_val._function._func_content);
             break;
 

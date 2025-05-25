@@ -15,6 +15,7 @@ const data_types_t data_types[] = {
     {T_I32, "i32", "i32"},
     {T_BOOL, "bool", "i1"},
     {T_CHAR, "char", "i8"},
+    {T_VOID, "void", "void"},
     {0, "", ""},
 };
 

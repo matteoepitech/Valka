@@ -18,6 +18,7 @@ extern uint32_t register_id;
     #define T_I32 1
     #define T_BOOL 2
     #define T_CHAR 3
+    #define T_VOID 4
 
 typedef struct data_types_s {
     uint32_t _id;
@@ -35,7 +36,7 @@ extern const data_types_t data_types[];
     #define IDENTIFIER_ID_RETURN 3
 
     #ifndef START_ENTRY_POINT
-        #define START_ENTRY_POINT "_start"
+        #define START_ENTRY_POINT "main"
     #endif
 
     /* Some builtins */
@@ -175,6 +176,8 @@ struct ast_node_s {
         struct {
             char *_func_name;
             data_types_t _return_data;
+            ast_node_t **_params;
+            uint32_t _params_count;
             ast_program_t *_func_content;
         } _function;
         // Call symbol -> hello()
@@ -219,7 +222,7 @@ extern const bin_ope_t bin_operations[];
 struct ast_program_s {
     ast_statement_t *_statement_head;
     ast_statement_t *_statement_tail;
-    uint32_t _statements_amount;
+    int32_t _statements_amount;
     ast_node_t *_parent;
 };
 

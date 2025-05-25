@@ -43,11 +43,11 @@ compile_llvm_to_executable(void)
         PERROR("Failed to assemble the file.");
         return;
     }
-    #ifdef __linux__
-        ret = system("ld -e _start -o a.out out.o");
-    #elif __APPLE__
-        ret = system("ld -e __start -o a.out out.o");
-    #endif
+#ifdef __linux__
+    ret = system("clang out.o -o a.out");
+#elif __APPLE__
+    ret = system("clang out.o -o a.out");
+#endif
     if (ret != 0) {
         PERROR("Failed to link the program.");
         return;

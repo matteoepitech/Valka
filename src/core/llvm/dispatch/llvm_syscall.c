@@ -66,6 +66,7 @@ llvm_syscall(ast_node_t *node, FILE *f, char *dest)
     char *args_reg[6] = {NULL};
     uint32_t args_count = node->_ast_val._call_sym._args_count;
 
+    PERROR("Do not use syscall() it's not working..");
     if (dest == NULL)
         dest = get_random_var_name();
     generate_tmp_casted_parameters(node, args_count, args_reg, f);
