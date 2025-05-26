@@ -227,12 +227,16 @@ typedef struct functions_prototype_s {
     ast_node_t **_params;
 } functions_prototype_t;
 
+extern functions_prototype_t *prototypes;
+extern uint32_t prototypes_count;
+
 /**
 * @brief All statement is basically the whole source code.
 *        The ast_program_t contains everything.
 */
 struct ast_program_s {
     functions_prototype_t *_prototypes;
+    uint32_t _prototypes_count;
     ast_statement_t *_statement_head;
     ast_statement_t *_statement_tail;
     int32_t _statements_amount;
@@ -293,6 +297,12 @@ ast_node_t *make_ast_string(token_t **current_token, ast_program_t *parent);
  * Folder : src/parser/ast/printer/
  */
 void print_program(ast_program_t *prg);
+
+/*
+ * Folder : src/parser/
+ */
+void add_function_prototype(ast_node_t *func_node);
+functions_prototype_t get_prototype_from_name(const char *func_name);
 
 /*
  * Folder : src/utils/data/

@@ -36,17 +36,18 @@ generate_symbol_from_param(ast_node_t *node, FILE *f, char *tmp)
  *
  * @param node          The AST node
  * @param f             The FILE to write in
+ * @param type          This can be use to detect i32 or i8...
  *
  * @return The final variable.
  */
 char *
-llvm_gen_value(ast_node_t *node, FILE *f)
+llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
 {
     char *tmp = get_random_var_name();
 
     switch (node->_type) {
         case AST_LITERAL_INT:
-            fprintf(f, "%%%s = add i32 0, %d\n", tmp,
+            fprintf(f, "%%%s = add %s 0, %d\n", tmp, type._llvm_ir,
                 node->_ast_val._int_literal._value);
             break;
         case AST_CALL_SYM:
@@ -55,8 +56,8 @@ llvm_gen_value(ast_node_t *node, FILE *f)
         case AST_SYMBOL:
             if (generate_symbol_from_param(node, f, tmp) == OK_OUTPUT)
                 break;
-            fprintf(f, "%%%s = load i32, i32* %%%s\n", tmp,
-                node->_ast_val._symbol._sym_name);
+            fprintf(f, "%%%s = load %s, %s* %%%s\n", tmp,
+                type._llvm_ir, type._llvm_ir, node->_ast_val._symbol._sym_name);
             break;
         case AST_BINARY_OP:
             llvm_math(node, f, tmp);

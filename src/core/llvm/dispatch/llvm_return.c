@@ -18,7 +18,7 @@
 uint8_t
 llvm_return(ast_node_t *node, FILE *f)
 {
-    const char *ret_type = node->_ast_val._return._return_data._llvm_ir;
+    data_types_t ret_type = node->_ast_val._return._return_data;
     ast_node_t *tmp_val = node->_ast_val._return._value;
     char *tmp = NULL;
 
@@ -30,9 +30,9 @@ llvm_return(ast_node_t *node, FILE *f)
         llvm_syscall(node, f, NULL);
     #endif
 
-    tmp = llvm_gen_value(tmp_val, f);
+    tmp = llvm_gen_value(tmp_val, f, ret_type);
     if (tmp == NULL)
         return KO_OUTPUT;
-    fprintf(f, "ret %s %%%s\n", ret_type, tmp);
+    fprintf(f, "ret %s %%%s\n", ret_type._llvm_ir, tmp);
     return OK_OUTPUT;
 }

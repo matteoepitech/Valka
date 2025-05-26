@@ -62,6 +62,7 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
     token_t *curr = *current_token;
 
     if (curr->_next && curr->_next->_type == TOKEN_PARENT_CLOSE) {
+        add_function_prototype(node);
         move_token(current_token, 2);
         return;
     }
@@ -96,6 +97,7 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
     }
     move_token(current_token, 1);
     curr = *current_token;
+    add_function_prototype(node);
 }
 
 /**

@@ -21,8 +21,8 @@ llvm_math(ast_node_t *node, FILE *f, char *dest)
     bin_ope_t op = get_operator_with_char(node->_ast_val._binary_op._op);
     ast_node_t *left = node->_ast_val._binary_op._left;
     ast_node_t *right = node->_ast_val._binary_op._right;
-    char *left_val = llvm_gen_value(left, f);
-    char *right_val = llvm_gen_value(right, f);
+    char *left_val = llvm_gen_value(left, f, get_data_with_id(T_I32));
+    char *right_val = llvm_gen_value(right, f, get_data_with_id(T_I32));
 
     fprintf(f, "%%%s = %s i32 %%%s, %%%s\n", dest, op._llvm_ir,
         left_val, right_val);

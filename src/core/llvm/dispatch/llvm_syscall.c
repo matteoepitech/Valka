@@ -29,7 +29,7 @@ generate_tmp_casted_parameters(ast_node_t *node, uint32_t args_count,
     char *arg_64 = NULL;
     
     for (uint32_t i = 0; i < args_count && i < 6; i++) {
-        arg_32 = llvm_gen_value(node->_ast_val._call_sym._args[i], f);
+        arg_32 = llvm_gen_value(node->_ast_val._call_sym._args[i], f, get_data_with_id(T_CHAR_P));
         arg_64 = get_random_var_name();
         fprintf(f, "%%%s = sext i32 %%%s to i64\n", arg_64, arg_32);
         fprintf(f, "%%%s = sext i32 %%%s to i64\n", arg_64, arg_32);
@@ -45,7 +45,7 @@ generate_tmp_casted_parameters(ast_node_t *node, uint32_t args_count,
  */
 UNUSED static void exit_specification(ast_node_t *node, FILE *f)
 {
-    char *tmp_ret = llvm_gen_value(node->_ast_val._call_sym._args[1], f);
+    char *tmp_ret = llvm_gen_value(node->_ast_val._call_sym._args[1], f, get_data_with_id(T_CHAR_P));
 
     fprintf(f, "ret %s %%%s\n\n",
         node->_parent->_parent->_ast_val._function._return_data._llvm_ir,
