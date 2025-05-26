@@ -44,7 +44,10 @@ FILE *create_llvm(void);
 uint8_t close_llvm(FILE *f);
 void compile_llvm_to_executable(void);
 void generate_llvm_global(FILE *f, ast_program_t *prg);
+
 char *llvm_gen_value(ast_node_t *node, FILE *f);
+void collect_all_strings(ast_program_t *prg, FILE *f);
+void collect_strings(ast_node_t *node, FILE *f);
 
 /*
  * Folder : core/llvm/dispatch
@@ -53,8 +56,9 @@ uint8_t llvm_var(ast_node_t *node, FILE *f);
 uint8_t llvm_func(ast_node_t *node, FILE *f);
 uint8_t llvm_return(ast_node_t *node, FILE *f);
 uint8_t llvm_call_sym(ast_node_t *node, FILE *f, char *dest);
-char *llvm_math(ast_node_t *node, FILE *f);
+uint8_t llvm_math(ast_node_t *node, FILE *f, char *dest);
 uint8_t llvm_syscall(ast_node_t *node, FILE *f, char *dest);
+uint8_t llvm_string(ast_node_t *node, FILE *f, char *dest);
 
 /*
  * Folder : utils/

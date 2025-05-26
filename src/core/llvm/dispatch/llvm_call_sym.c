@@ -34,6 +34,6 @@ llvm_call_sym(ast_node_t *node, FILE *f, char *dest)
         if (i < argc - 1)
             fprintf(f, ", ");
     }
-    fprintf(f, ")\n");
+    fprintf(f, ")\n\n");
     return OK_OUTPUT;
 }

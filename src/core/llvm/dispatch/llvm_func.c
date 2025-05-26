@@ -25,6 +25,10 @@ llvm_declare_func(ast_node_t *node, FILE *f)
     for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
         if (i != 0)
             fprintf(f, ", ");
+        if (node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._id == T_VARG) {
+            fprintf(f, "...");
+            continue;
+        }
         fprintf(f, "%s %%%s",
             node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir,
             node->_ast_val._function._params[i]->_ast_val._var_decl._var_name);

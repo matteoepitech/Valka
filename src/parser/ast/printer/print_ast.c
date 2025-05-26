@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 // @TODO remove this.
 static void print_ast(ast_node_t *node, int indent);
@@ -78,7 +77,7 @@ print_ast(ast_node_t *node, int indent)
             printf("Int literal: %d\n", node->_ast_val._int_literal._value);
             break;
 
-        case AST_LITERAL_STRING:
+        case AST_STRING:
             printf("String: \"%s\"\n", node->_ast_val._string._value);
             break;
 

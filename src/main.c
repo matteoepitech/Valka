@@ -16,6 +16,8 @@ const data_types_t data_types[] = {
     {T_BOOL, "bool", "i1"},
     {T_CHAR, "char", "i8"},
     {T_VOID, "void", "void"},
+    {T_VARG, "...", "..."},
+    {T_CHAR_P, "char*", "i8*"},
     {0, "", ""},
 };
 
@@ -50,6 +52,7 @@ main(UNUSED int argc, UNUSED char *argv[])
     prg = make_ast(p);
     print_program(prg);
     out_llvm = create_llvm();
+    collect_all_strings(prg, out_llvm);
     generate_llvm_global(out_llvm, prg);
     close_llvm(out_llvm);
     compile_llvm_to_executable();

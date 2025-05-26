@@ -21,18 +21,16 @@ fill_call_sym_parameters(token_t **current_token, ast_program_t *parent,
     ast_node_t **args = NULL;
     uint32_t args_c = 0;
 
-    node->_ast_val._call_sym._args = MALLOC(sizeof(ast_node_t *));
-    args = node->_ast_val._call_sym._args;
-    args_c++;
     while (*current_token && (*current_token)->_type != TOKEN_PARENT_CLOSE) {
-        args[args_c - 1] = dispatch_ast(current_token, parent);
-        if ((*current_token)->_type == TOKEN_COMMA) {
-            args_c++;
-            args = REALLOC(args, sizeof(ast_node_t *) * args_c);
+        args = REALLOC(args, sizeof(ast_node_t *) * (args_c + 1));
+        args[args_c] = dispatch_ast(current_token, parent);
+        args_c++;
+
+        if (*current_token && (*current_token)->_type == TOKEN_COMMA) {
             move_token(current_token, 1);
-            continue;
         }
     }
+    node->_ast_val._call_sym._args = args;
     node->_ast_val._call_sym._args_count = args_c;
 }
 

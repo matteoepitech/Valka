@@ -15,17 +15,16 @@
  *
  * @return Everything worked?
  */
-char *
-llvm_math(ast_node_t *node, FILE *f)
+uint8_t
+llvm_math(ast_node_t *node, FILE *f, char *dest)
 {
-    char *tmp_name = get_random_var_name();
     bin_ope_t op = get_operator_with_char(node->_ast_val._binary_op._op);
     ast_node_t *left = node->_ast_val._binary_op._left;
     ast_node_t *right = node->_ast_val._binary_op._right;
     char *left_val = llvm_gen_value(left, f);
     char *right_val = llvm_gen_value(right, f);
 
-    fprintf(f, "%%%s = %s i32 %%%s, %%%s\n", tmp_name, op._llvm_ir,
+    fprintf(f, "%%%s = %s i32 %%%s, %%%s\n", dest, op._llvm_ir,
         left_val, right_val);
-    return tmp_name;
+    return OK_OUTPUT;
 }

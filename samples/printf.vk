@@ -1,0 +1,7 @@
+function <i32> printf(<char*> string, <...>);
+
+function <i32> main()
+{
+    printf("coucou %s", "matthias");
+    return 0;
+}

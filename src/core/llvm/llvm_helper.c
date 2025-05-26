@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Generate the parameter loading from a function.
@@ -17,7 +16,7 @@
  * @return If we found the symbol or not.
  */
 static uint8_t
-generate_symbol_func_parameter(ast_node_t *node, FILE *f, char *tmp)
+generate_symbol_from_param(ast_node_t *node, FILE *f, char *tmp)
 {
     uint32_t func_params_count = node->_parent->_parent->_ast_val._function._params_count;
     ast_node_t **func_params = node->_parent->_parent->_ast_val._function._params;
@@ -54,14 +53,16 @@ llvm_gen_value(ast_node_t *node, FILE *f)
             llvm_call_sym(node, f, tmp);
             break;
         case AST_SYMBOL:
-            if (generate_symbol_func_parameter(node, f, tmp) == OK_OUTPUT)
+            if (generate_symbol_from_param(node, f, tmp) == OK_OUTPUT)
                 break;
             fprintf(f, "%%%s = load i32, i32* %%%s\n", tmp,
                 node->_ast_val._symbol._sym_name);
             break;
         case AST_BINARY_OP:
-            tmp = llvm_math(node, f);
+            llvm_math(node, f, tmp);
             break;
+        case AST_STRING:
+            llvm_string(node, f, tmp);
         default:
             break;
     }

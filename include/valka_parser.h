@@ -19,6 +19,8 @@ extern uint32_t register_id;
     #define T_BOOL 2
     #define T_CHAR 3
     #define T_VOID 4
+    #define T_VARG 5
+    #define T_CHAR_P 6
 
 typedef struct data_types_s {
     uint32_t _id;
@@ -77,13 +79,13 @@ typedef enum {
     AST_IDENTIFIER,
     AST_VAR_DECL,
     AST_ASSIGNMENT,
-    AST_LITERAL_STRING,
     AST_LITERAL_INT,
     AST_BINARY_OP,
     AST_FUNCTION,
     AST_RETURN,
     AST_CALL_SYM,
     AST_SYMBOL,
+    AST_STRING,
 } ast_node_type_t;
 
 /**
@@ -154,6 +156,7 @@ struct ast_node_s {
         // String -> "hello", "world", ...
         struct {
             char *_value;
+            char *_name_sym;
         } _string;
         // Binary operation -> 10 + 5, 5 / 7, 8 % 8, ...
         struct {
@@ -216,10 +219,20 @@ typedef struct bin_ope_s {
 extern const bin_ope_t bin_operations[];
 
 /**
+ * @brief Functions prototypes declarations.
+ */
+typedef struct functions_prototype_s {
+    char *_func_name;
+    data_types_t _return;
+    ast_node_t **_params;
+} functions_prototype_t;
+
+/**
 * @brief All statement is basically the whole source code.
 *        The ast_program_t contains everything.
 */
 struct ast_program_s {
+    functions_prototype_t *_prototypes;
     ast_statement_t *_statement_head;
     ast_statement_t *_statement_tail;
     int32_t _statements_amount;
@@ -247,6 +260,7 @@ parsing_src_file_t *brackets_token(parsing_src_file_t *p);
 parsing_src_file_t *parents_token(parsing_src_file_t *p);
 parsing_src_file_t *bin_operation_token(parsing_src_file_t *p);
 parsing_src_file_t *comma_token(parsing_src_file_t *p);
+parsing_src_file_t *string_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/
@@ -273,6 +287,7 @@ ast_node_t *make_ast_bin_ope(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_expression(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_call_sym(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_symbol(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_string(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/

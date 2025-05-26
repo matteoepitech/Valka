@@ -39,6 +39,8 @@ dispatch_ast(token_t **current_token, ast_program_t *parent)
 
     if (is_start_of_expression(*current_token))
         return make_ast_expression(current_token, parent);
+    if (type == TOKEN_STRING)
+        return make_ast_string(current_token, parent);
     if (type == TOKEN_SYMBOL)
         return make_ast_symbol(current_token, parent);
     if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_VAR)

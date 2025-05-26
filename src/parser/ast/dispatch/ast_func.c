@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Is the main function of the program ? (entrypoint)
@@ -83,6 +84,11 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
         node->_ast_val._function._params = REALLOC(node->_ast_val._function._params, sizeof(ast_node_t *) * node->_ast_val._function._params_count);
         node->_ast_val._function._params[node->_ast_val._function._params_count - 1] = MALLOC(sizeof(ast_node_t));
         node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_type = get_data_type(curr);
+        if (node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_type._id == T_VARG) {
+            move_token(current_token, 1);
+            curr = *current_token;
+            continue;
+        }
         node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_name = strndup(curr->_next->_start,
             curr->_next->_length);
         move_token(current_token, 2);
