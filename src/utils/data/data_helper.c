@@ -32,6 +32,8 @@ get_data_with_id(uint32_t id)
 data_types_t
 get_data_type(token_t *token)
 {
+    if (token == NULL)
+        return (data_types_t) {0};
     for (int i = 0; data_types[i]._id != 0; i++) {
         if (strncmp(&token->_start[1], data_types[i]._valka_ir,
             token->_length - 2) == 0 && 

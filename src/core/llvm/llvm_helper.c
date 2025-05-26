@@ -18,12 +18,15 @@
 static uint8_t
 generate_symbol_from_param(ast_node_t *node, FILE *f, char *tmp)
 {
-    uint32_t func_params_count = node->_parent->_parent->_ast_val._function._params_count;
-    ast_node_t **func_params = node->_parent->_parent->_ast_val._function._params;
+    ast_node_t *func_node = node->_parent->_parent;
+    uint32_t func_params_count = func_node->_ast_val._function._params_count;
+    ast_node_t **func_params = func_node->_ast_val._function._params;
 
     for (uint32_t i = 0; i < func_params_count; i++) {
-        if (strcmp(func_params[i]->_ast_val._var_decl._var_name, node->_ast_val._symbol._sym_name) == 0) {
-            fprintf(f, "%%%s = add %s 0, %%%s\n", tmp, func_params[i]->_ast_val._var_decl._var_type._llvm_ir,
+        if (strcmp(func_params[i]->_ast_val._var_decl._var_name,
+                node->_ast_val._symbol._sym_name) == 0) {
+            fprintf(f, "%%%s = add %s 0, %%%s\n", tmp,
+                func_params[i]->_ast_val._var_decl._var_type._llvm_ir,
                 func_params[i]->_ast_val._var_decl._var_name);
             return OK_OUTPUT;
         }
