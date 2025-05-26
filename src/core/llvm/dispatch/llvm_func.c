@@ -21,7 +21,15 @@ llvm_declare_func(ast_node_t *node, FILE *f)
     const char *func_name = node->_ast_val._function._func_name;
     data_types_t func_ret = node->_ast_val._function._return_data;
 
-    fprintf(f, "declare %s @%s(%s)\n\n", func_ret._llvm_ir, func_name, node->_ast_val._function._params[0]->_ast_val._var_decl._var_type._llvm_ir);
+    fprintf(f, "declare %s @%s(", func_ret._llvm_ir, func_name);
+    for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
+        if (i != 0)
+            fprintf(f, ", ");
+        fprintf(f, "%s %%%s",
+            node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir,
+            node->_ast_val._function._params[i]->_ast_val._var_decl._var_name);
+    }
+    fprintf(f, ")\n\n");
     return OK_OUTPUT;
 }
 
@@ -42,10 +50,20 @@ llvm_func(ast_node_t *node, FILE *f)
 
     if (func_content->_statements_amount == -1)
         return llvm_declare_func(node, f);
-    fprintf(f, "define %s @%s()\n", func_ret._llvm_ir, func_name);
+    fprintf(f, "define %s @%s(", func_ret._llvm_ir, func_name);
+    for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
+        if (i != 0)
+            fprintf(f, ", ");
+        fprintf(f, "%s %%%s",
+            node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir,
+            node->_ast_val._function._params[i]->_ast_val._var_decl._var_name);
+    }
+    fprintf(f, ")\n");
     fprintf(f, "{\n");
     fprintf(f, "entry:\n\n");
     generate_llvm_global(f, func_content);
+    if (node->_ast_val._function._return_data._id == T_VOID)
+        fprintf(f, "ret void\n");
     fprintf(f, "}\n\n");
     return OK_OUTPUT;
 }

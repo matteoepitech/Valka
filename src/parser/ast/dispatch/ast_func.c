@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Is the main function of the program ? (entrypoint)
@@ -50,6 +49,12 @@ fill_function_content(token_t **current_token, ast_node_t *node)
     }
 }
 
+/**
+ * @brief Fill the parameters.
+ *
+ * @param current_token The current token position
+ * @param node          The AST node
+ */
 static void
 fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
 {
@@ -65,7 +70,8 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
     node->_ast_val._function._params = MALLOC(sizeof(ast_node_t *));
     node->_ast_val._function._params[0] = MALLOC(sizeof(ast_node_t));
     node->_ast_val._function._params[0]->_ast_val._var_decl._var_type = get_data_type(curr);
-    move_token(current_token, 1);
+    node->_ast_val._function._params[0]->_ast_val._var_decl._var_name = strndup(curr->_next->_start, curr->_next->_length);
+    move_token(current_token, 2);
     curr = *current_token;
     while (curr && curr->_type != TOKEN_PARENT_CLOSE && curr->_type != TOKEN_END) {
         if (curr->_type != TOKEN_VAR_TYPE) {
@@ -77,7 +83,9 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
         node->_ast_val._function._params = REALLOC(node->_ast_val._function._params, sizeof(ast_node_t *) * node->_ast_val._function._params_count);
         node->_ast_val._function._params[node->_ast_val._function._params_count - 1] = MALLOC(sizeof(ast_node_t));
         node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_type = get_data_type(curr);
-        move_token(current_token, 1);
+        node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_name = strndup(curr->_next->_start,
+            curr->_next->_length);
+        move_token(current_token, 2);
         curr = *current_token;
     }
     move_token(current_token, 1);

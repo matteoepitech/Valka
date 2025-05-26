@@ -1,9 +1,16 @@
-function <void> exit(<i32>);
-function <i32> putchar(<i32>);
+function <void> exit(<i32> exitcode);
+function <i32> putchar(<i32> character);
 
-function <i32> main()
+function <bool> yes_or_no(<bool> value)
 {
-    putchar(72);
+    return value;
+}
+
+function <void> my_print(<i32> exitcode)
+{
+    var <i32> my_h = 72;
+
+    putchar(my_h);
     putchar(101);
     putchar(108);
     putchar(108);
@@ -15,6 +22,11 @@ function <i32> main()
     putchar(108);
     putchar(100);
     putchar(10);
-    exit(0);
+    exit(10 + 5 + yes_or_no(1));
+}
+
+function <i32> main()
+{
+    my_print(69);
     return 0;
 }
