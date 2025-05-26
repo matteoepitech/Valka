@@ -1,13 +1,12 @@
-function <i32> putchar(<i32> char);
+function <i32> puts(<char*> string);
 
-function <i32> get_result(<bool> condition)
+function <i32> my_print(<char*> string)
 {
-    return 50;
+    puts(string);
+    return 0;
 }
 
 function <i32> main()
 {
-    var <i32> my_var = get_result(0);
-    putchar(my_var);
-    return my_var;
+    return my_print("Hello Matthias and Valentino");
 }

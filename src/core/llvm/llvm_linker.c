@@ -32,7 +32,7 @@ remove_useless_files(void)
 void
 compile_llvm_to_executable(void)
 {
-    int ret = system("llc out.ll -o out.s");
+    int ret = system("llc -relocation-model=pic out.ll -o out.s");
 
     if (ret != 0) {
         PERROR("Failed to compile the LLVM IR to assembly.");

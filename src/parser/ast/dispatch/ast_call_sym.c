@@ -25,7 +25,6 @@ fill_call_sym_parameters(token_t **current_token, ast_program_t *parent,
         args = REALLOC(args, sizeof(ast_node_t *) * (args_c + 1));
         args[args_c] = dispatch_ast(current_token, parent);
         args_c++;
-
         if (*current_token && (*current_token)->_type == TOKEN_COMMA) {
             move_token(current_token, 1);
         }

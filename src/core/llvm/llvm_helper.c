@@ -12,11 +12,12 @@
  *
  * @param node          The AST node
  * @param f             The FILE to write in
+ * @param tmp           The destination
  *
  * @return If we found the symbol or not.
  */
 static uint8_t
-generate_symbol_from_param(ast_node_t *node, FILE *f, char *tmp)
+generate_symbol_from_param(ast_node_t *node, FILE *f, char **tmp)
 {
     ast_node_t *func_node = node->_parent->_parent;
     uint32_t func_params_count = func_node->_ast_val._function._params_count;
@@ -25,7 +26,13 @@ generate_symbol_from_param(ast_node_t *node, FILE *f, char *tmp)
     for (uint32_t i = 0; i < func_params_count; i++) {
         if (strcmp(func_params[i]->_ast_val._var_decl._var_name,
                 node->_ast_val._symbol._sym_name) == 0) {
-            fprintf(f, "%%%s = add %s 0, %%%s\n", tmp,
+            if (func_params[i]->_ast_val._var_decl._var_type._id == T_CHAR_P ||
+                func_params[i]->_ast_val._var_decl._var_type._id == T_I32_P ||
+                func_params[i]->_ast_val._var_decl._var_type._id == T_BOOL_P) {
+                *tmp = node->_ast_val._call_sym._sym_name;
+                return OK_OUTPUT;
+            }
+            fprintf(f, "%%%s = add %s 0, %%%s\n", *tmp,
                 func_params[i]->_ast_val._var_decl._var_type._llvm_ir,
                 func_params[i]->_ast_val._var_decl._var_name);
             return OK_OUTPUT;
@@ -57,7 +64,7 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
             llvm_call_sym(node, f, tmp);
             break;
         case AST_SYMBOL:
-            if (generate_symbol_from_param(node, f, tmp) == OK_OUTPUT)
+            if (generate_symbol_from_param(node, f, &tmp) == OK_OUTPUT)
                 break;
             fprintf(f, "%%%s = load %s, %s* %%%s\n", tmp,
                 type._llvm_ir, type._llvm_ir, node->_ast_val._symbol._sym_name);
@@ -67,6 +74,7 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
             break;
         case AST_STRING:
             llvm_string(node, f, tmp);
+            break;
         default:
             break;
     }

@@ -21,6 +21,8 @@ extern uint32_t register_id;
     #define T_VOID 4
     #define T_VARG 5
     #define T_CHAR_P 6
+    #define T_BOOL_P 7
+    #define T_I32_P 8
 
 typedef struct data_types_s {
     uint32_t _id;

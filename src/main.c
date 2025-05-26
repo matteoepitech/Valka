@@ -22,6 +22,8 @@ const data_types_t data_types[] = {
     {T_VOID, "void", "void"},
     {T_VARG, "...", "..."},
     {T_CHAR_P, "char*", "i8*"},
+    {T_BOOL_P, "bool*", "i1*"},
+    {T_I32_P, "i32*", "i32*"},
     {0, "", ""},
 };
 
@@ -31,6 +33,7 @@ const bin_ope_t bin_operations[] = {
     {'-', "sub"},
     {'/', "sdiv"},
     {'*', "mul"},
+    {'%', "srem"},
     {0, ""}
 };
 
