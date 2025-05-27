@@ -61,10 +61,7 @@ is_start_of_expression(token_t *token)
 
     if (token == NULL)
         return FALSE;
-    if (token->_type == TOKEN_INT_LITERAL)
-        return TRUE;
-    if (token->_type == TOKEN_SYMBOL && token->_next &&
-        token->_next->_type == TOKEN_MATH_OPERATOR)
+    if (token->_type == TOKEN_INT_LITERAL || token->_type == TOKEN_SYMBOL)
         return TRUE;
     if (is_call_sym(token)) {
         after_call = token;
@@ -76,6 +73,32 @@ is_start_of_expression(token_t *token)
         }
     }
     return FALSE;
+}
+
+/**
+ * @brief Get the next real token after a call symbol.
+ *
+ * @param node          The token
+ *
+ * @return The next token.
+ */
+token_t *
+get_next_token_after_call(token_t *node)
+{
+    token_t *curr = node;
+    int paren_count = 1;
+
+    if (!is_call_sym(node))
+        return node->_next;
+    curr = node->_next->_next;
+    while (curr && paren_count > 0) {
+        if (curr->_type == TOKEN_PARENT_OPEN)
+            paren_count++;
+        else if (curr->_type == TOKEN_PARENT_CLOSE)
+            paren_count--;
+        curr = curr->_next;
+    }
+    return curr;
 }
 
 /**

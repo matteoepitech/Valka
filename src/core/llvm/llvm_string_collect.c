@@ -36,7 +36,6 @@ collect_strings(ast_node_t *node, FILE *f)
         return;
     switch (node->_type) {
         case AST_STRING: {
-            node->_ast_val._string._name_sym = get_random_var_name();
             fprintf(f, "@%s = private constant [%lu x i8] c\"%s\\00\"\n",
                 node->_ast_val._string._name_sym,
                 strlen(node->_ast_val._string._value) + 1,
@@ -66,6 +65,18 @@ collect_strings(ast_node_t *node, FILE *f)
         case AST_RETURN:
             collect_strings(node->_ast_val._return._value, f);
             break;
+        case AST_IF:
+            collect_strings(node->_ast_val._if_statement._condition, f);
+            for (ast_statement_t *tmp = node->_ast_val._if_statement._if_body->_statement_head; tmp != NULL; tmp = tmp->_next) {
+                collect_strings(tmp->_ast_node, f);
+            }
+            break;
+
+        case AST_CONDITION:
+            collect_strings(node->_ast_val._condition._node_a, f);
+            collect_strings(node->_ast_val._condition._node_b, f);
+            break;
+
         default:
             break;
     }

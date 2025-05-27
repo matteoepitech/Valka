@@ -26,6 +26,7 @@ make_ast_string(token_t **current_token, ast_program_t *parent)
     node->_loc = curr->_loc;
     node->_parent = parent;
     node->_ast_val._string._value = strndup(curr->_start, curr->_length);
+    node->_ast_val._string._name_sym = get_random_var_name();
     move_token(current_token, 1);
     return node;
 }

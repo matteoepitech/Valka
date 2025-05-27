@@ -45,6 +45,7 @@ const condition_operator_t condition_operators[] =  {
     {"<=", OP_LOWER_EQ},
     {">", OP_GREATER},
     {"<", OP_LOWER},
+    {"!=", OP_NOT_EQUAL},
     {"", 0}
 };
 

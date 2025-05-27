@@ -290,6 +290,7 @@ token_t *push_token(token_t **tail, token_t *token);
 bool_t is_start_of_expression(token_t *token);
 bool_t is_call_sym(token_t *token);
 bool_t is_valid_condition(const char *start);
+token_t *get_next_token_after_call(token_t *node);
 
 /*
  * Folder : src/parser/tokens/dispatch/
