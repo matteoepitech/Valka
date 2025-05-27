@@ -19,7 +19,8 @@ print_type_token(token_type_t type)
         "START", "SYMBOL", "IDENTIFIER", "VAR_TYPE", "FUNCTION", "ASSIGN",
         "INT_LITERAL", "STRING", "COMMENT_BIG", "COMMENT_SMALL", "PARENT_OPEN",
         "PARENT_CLOSE", "BRACKET_OPEN", "BRACKET_CLOSE", "SQUARE_BRACKET_OPEN",
-        "SQUARE_BRACKET_CLOSE", "MATH_OPERATOR", "SEMICOLON", "COMMA", "END"
+        "SQUARE_BRACKET_CLOSE", "MATH_OPERATOR", "SEMICOLON", "COMMA",
+        "CONDITION", "END"
     };
     if (type < 0 || type >= (sizeof(type_names) / sizeof(type_names[0]))) {
         printf("UNKNOWN_TOKEN_TYPE");
@@ -46,7 +47,7 @@ print_tokens(parsing_src_file_t *p)
     while (tmp != NULL) {
         printf("%s", types_color[i % 4]);
         print_type_token(tmp->_type);
-        if (tmp->_type == TOKEN_IDENTIFIER)
+        if (tmp->_type == TOKEN_IDENTIFIER || tmp->_type == TOKEN_CONDITION)
             printf(" id (%d)", tmp->_type_id);
         printf(": \033[0m");
         fflush(stdout);

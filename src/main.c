@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 // Used to generate random tmp variable
 uint32_t register_id = 0;
@@ -35,6 +36,16 @@ const bin_ope_t bin_operations[] = {
     {'*', "mul"},
     {'%', "srem"},
     {0, ""}
+};
+
+// All Valka conditions operation (extern in valka_parser.h)
+const condition_operator_t condition_operators[] =  {
+    {"==", OP_EQUAL},
+    {">=", OP_GREATER_EQ},
+    {"<=", OP_LOWER_EQ},
+    {">", OP_GREATER},
+    {"<", OP_LOWER},
+    {"", 0}
 };
 
 /**

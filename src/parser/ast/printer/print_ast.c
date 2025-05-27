@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 // @TODO remove this.
 static void print_ast(ast_node_t *node, int indent);
@@ -28,26 +29,27 @@ print_indent(int indent)
  * @param prg           The function content called prg.
  */
 static void
-print_function_body(ast_program_t *prg)
+print_function_body(ast_program_t *prg, int indent)
 {
     ast_statement_t *current = NULL;
 
     if (prg->_statements_amount == -1) {
-        print_indent(2);
+        print_indent(indent);
         fflush(stdout);
         printf(COLOR_YELLOW "This is an declaration of function.\n" COLOR_RESET);
         return;
     }
     if (prg == NULL || prg->_statement_head == NULL) {
-        print_indent(2);
+        print_indent(indent);
         fflush(stdout);
         fprintf(stderr, COLOR_RED "(empty function body)\n" COLOR_RESET);
         return;
     }
     current = prg->_statement_head;
     while (current != NULL) {
+        print_indent(indent - 1);
         printf(COLOR_CYAN "  [Statement %u]\n" COLOR_RESET, current->_ast_id);
-        print_ast(current->_ast_node, 2);
+        print_ast(current->_ast_node, indent);
         current = current->_next;
     }
 }
@@ -108,21 +110,33 @@ print_ast(ast_node_t *node, int indent)
         case AST_FUNCTION:
             printf("Function: %s type (%s)\n", node->_ast_val._function._func_name, node->_ast_val._function._return_data._valka_ir);
             if (node->_ast_val._function._params_count == 0) {
-                print_function_body(node->_ast_val._function._func_content);
+                print_function_body(node->_ast_val._function._func_content, indent + 1);
                 break;
             }
             print_indent(indent + 1);
             printf("Parameters: \n");
             for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
-                print_indent(indent + 2);
+                print_indent(indent + 1);
                 printf("- %s\n", node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir);
             }
-            print_function_body(node->_ast_val._function._func_content);
+            print_function_body(node->_ast_val._function._func_content, indent + 1);
             break;
 
         case AST_RETURN:
             printf("Return value:\n");
             print_ast(node->_ast_val._return._value, indent + 1);
+            break;
+
+        case AST_IF:
+            printf("If statement:\n");
+            print_ast(node->_ast_val._if_statement._condition, indent);
+            print_function_body(node->_ast_val._if_statement._if_body, indent + 1);
+            break;
+
+        case AST_CONDITION:
+            printf("Condition : %s\n", condition_operators[node->_ast_val._condition._op_id]._operator);
+            print_ast(node->_ast_val._condition._node_a, indent + 1);
+            print_ast(node->_ast_val._condition._node_b, indent + 1);
             break;
         
         case AST_CALL_SYM:

@@ -37,8 +37,7 @@ fill_function_content(token_t **current_token, ast_node_t *node)
 
     while (curr && curr->_type != TOKEN_BRACKET_CLOSE &&
         curr->_type != TOKEN_END) {
-        tmp_node = dispatch_ast(current_token,
-            node->_ast_val._function._func_content);
+        tmp_node = dispatch_ast(current_token, node->_ast_val._function._func_content);
         if (tmp_node == NULL) {
             move_token(current_token, 1);
             curr = *current_token;
@@ -138,5 +137,7 @@ make_ast_func(token_t **current_token, UNUSED ast_program_t *parent)
         return NULL;
     move_token(current_token, 1);
     fill_function_content(current_token, node);
+    if ((*current_token)->_type == TOKEN_BRACKET_CLOSE)
+        move_token(current_token, 1);
     return is_main_function(node);
 }

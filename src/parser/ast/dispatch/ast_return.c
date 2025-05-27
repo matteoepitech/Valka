@@ -26,7 +26,9 @@ make_ast_return(token_t **current_token, ast_program_t *parent)
     node->_loc = curr->_loc;
     node->_ast_val._return._sym_name = NULL;
     node->_parent = parent;
-    node->_ast_val._return._return_data = parent->_parent->_ast_val._function._return_data;
+    if (parent == NULL)
+        printf("Parent is NULL from return.\n");
+    node->_ast_val._return._return_data = get_func_parent(parent)->_ast_val._function._return_data;
     node->_ast_val._return._return_id = 0;
     move_token(current_token, 1);
     node->_ast_val._return._value = dispatch_ast(current_token, parent);

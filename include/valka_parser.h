@@ -9,7 +9,6 @@
     #define _VALKA_PARSER_H_
 
     #include "misc/types.h"
-#include <stdint.h>
 
 extern uint32_t register_id;
 
@@ -24,6 +23,18 @@ extern uint32_t register_id;
     #define T_BOOL_P 7
     #define T_I32_P 8
 
+/* All condition operators in Valka */
+
+    #define OP_EQUAL 1
+    #define OP_GREATER_EQ 2
+    #define OP_LOWER_EQ 3
+    #define OP_GREATER 4
+    #define OP_LOWER 5
+    #define OP_NOT_EQUAL 6
+
+/**
+ * @brief The data type.
+ */
 typedef struct data_types_s {
     uint32_t _id;
     char _valka_ir[32];
@@ -32,12 +43,23 @@ typedef struct data_types_s {
 
 extern const data_types_t data_types[];
 
+/**
+ * @brief The condition operator.
+ */
+typedef struct condition_operator_s {
+    char _operator[32];
+    uint32_t _id;
+} condition_operator_t;
+
+extern const condition_operator_t condition_operators[];
+
     #define IS_VALID_DATA_TYPE(x) (x._id != 0)
 
     /* Types for somes AST */
     #define IDENTIFIER_ID_VAR 1
     #define IDENTIFIER_ID_FUNC 2
     #define IDENTIFIER_ID_RETURN 3
+    #define IDENTIFIER_ID_IF 4
 
     #ifndef START_ENTRY_POINT
         #define START_ENTRY_POINT "main"
@@ -71,6 +93,7 @@ typedef enum {
     TOKEN_MATH_OPERATOR,
     TOKEN_SEMICOLON,
     TOKEN_COMMA,
+    TOKEN_CONDITION,
     TOKEN_END
 } token_type_t;
 
@@ -88,6 +111,8 @@ typedef enum {
     AST_CALL_SYM,
     AST_SYMBOL,
     AST_STRING,
+    AST_IF,
+    AST_CONDITION,
 } ast_node_type_t;
 
 /**
@@ -166,6 +191,12 @@ struct ast_node_s {
             ast_node_t *_left;
             ast_node_t *_right;
         } _binary_op;
+        // If statement -> if (1 == 1) { }
+        struct {
+            ast_node_t *_condition;
+            ast_program_t *_if_body;
+            ast_program_t *_else_body;
+        } _if_statement;
         // Variable declaration -> var<i32> i = 5
         struct {
             char *_var_name;
@@ -202,6 +233,11 @@ struct ast_node_s {
             data_types_t _return_data;
             char *_sym_name;
         } _return;
+        struct {
+            ast_node_t *_node_a;
+            uint32_t _op_id;
+            ast_node_t *_node_b;
+        } _condition;
     } _ast_val;
 };
 
@@ -253,6 +289,7 @@ token_t *create_token(token_type_t type, const char *start, uint32_t length, loc
 token_t *push_token(token_t **tail, token_t *token);
 bool_t is_start_of_expression(token_t *token);
 bool_t is_call_sym(token_t *token);
+bool_t is_valid_condition(const char *start);
 
 /*
  * Folder : src/parser/tokens/dispatch/
@@ -267,6 +304,7 @@ parsing_src_file_t *parents_token(parsing_src_file_t *p);
 parsing_src_file_t *bin_operation_token(parsing_src_file_t *p);
 parsing_src_file_t *comma_token(parsing_src_file_t *p);
 parsing_src_file_t *string_token(parsing_src_file_t *p);
+parsing_src_file_t *condition_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/
@@ -279,8 +317,9 @@ void print_type_token(token_type_t type);
  */
 ast_program_t *make_ast(parsing_src_file_t *p);
 ast_node_t *dispatch_ast(token_t **current_token, ast_program_t *parent);
-ast_statement_t *create_statement(ast_program_t *prg, ast_node_t *ast);
 void move_token(token_t **current_token, int move_token);
+ast_statement_t *create_statement(ast_program_t *prg, ast_node_t *ast);
+ast_node_t *get_func_parent(ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/dispatch/
@@ -294,6 +333,8 @@ ast_node_t *make_ast_expression(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_call_sym(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_symbol(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_string(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_if(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_condition(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/

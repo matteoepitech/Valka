@@ -48,6 +48,8 @@ dispatch_tokenizer(parsing_src_file_t *p)
 {
     char c = p->_buffer[p->_current_index];
 
+    if (is_valid_condition(&p->_buffer[p->_current_index]))
+        return condition_token(p);
     if (strchr(OPERATORS_STR, c) != NULL)
         return bin_operation_token(p);
     if (c == ',')
