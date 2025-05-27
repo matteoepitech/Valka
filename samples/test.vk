@@ -2,10 +2,16 @@ function <i32> puts(<char*> string);
 
 function <i32> main()
 {
-    var <i32> is_logged = 0;
+    var <i32> is_logged = 1;
 
     if (is_logged == 1) {
-        puts("You are now logged!");
+        if (is_logged == 1) {
+            if (is_logged == 1) {
+                if (is_logged == 1) {
+                    puts("You are now logged!");
+                }
+            }
+        }
         return 0;
     }
     puts("You are not logged!");
