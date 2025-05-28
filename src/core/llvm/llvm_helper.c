@@ -19,17 +19,16 @@
 static uint8_t
 generate_symbol_from_param(ast_node_t *node, FILE *f, char **tmp)
 {
-    ast_node_t *func_node = node->_parent->_parent;
+    ast_node_t *func_node = get_func_parent(node->_parent);
     uint32_t func_params_count = func_node->_ast_val._function._params_count;
     ast_node_t **func_params = func_node->_ast_val._function._params;
 
     for (uint32_t i = 0; i < func_params_count; i++) {
-        if (strcmp(func_params[i]->_ast_val._var_decl._var_name,
-                node->_ast_val._symbol._sym_name) == 0) {
+        if (strcmp(func_params[i]->_ast_val._var_decl._var_name, node->_ast_val._symbol._sym_name) == 0) {
             if (func_params[i]->_ast_val._var_decl._var_type._id == T_CHAR_P ||
                 func_params[i]->_ast_val._var_decl._var_type._id == T_I32_P ||
                 func_params[i]->_ast_val._var_decl._var_type._id == T_BOOL_P) {
-                *tmp = node->_ast_val._call_sym._sym_name;
+                *tmp = strdup(node->_ast_val._symbol._sym_name);
                 return OK_OUTPUT;
             }
             fprintf(f, "%%%s = add %s 0, %%%s\n", *tmp,

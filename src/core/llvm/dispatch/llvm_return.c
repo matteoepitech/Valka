@@ -19,12 +19,12 @@ uint8_t
 llvm_return(ast_node_t *node, FILE *f)
 {
     data_types_t ret_type = node->_ast_val._return._return_data;
-    ast_node_t *tmp_val = node->_ast_val._return._value;
+    ast_node_t *val = node->_ast_val._return._value;
     char *tmp = NULL;
 
-    if (tmp_val == NULL)
+    if (val == NULL)
         return KO_OUTPUT;
-    tmp = llvm_gen_value(tmp_val, f, ret_type);
+    tmp = llvm_gen_value(val, f, ret_type);
     if (tmp == NULL)
         return KO_OUTPUT;
     fprintf(f, "ret %s %%%s\n", ret_type._llvm_ir, tmp);

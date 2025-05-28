@@ -1,0 +1,30 @@
+function <i32> putchar(<i32> char);
+
+function <void> put_nbr(<i32> n)
+{
+    var <i32> tmp = 0;
+
+    if (n >= 10) {
+        put_nbr(n / 10);
+    }
+    tmp = n % 10;
+    putchar(tmp + 48);
+}
+
+function <i32> fibo(<i32> n, <i32> a, <i32> b)
+{
+    if (n == 0) {
+        return a;
+    }
+    return fibo(n - 1, b, a + b);
+}
+
+function <i32> main(<i32> argc)
+{
+    var <i32> iteration_x = argc;
+    var <i32> result = fibo(iteration_x, 0, 1);
+
+    put_nbr(result);
+    putchar(10);
+    return 0;
+}
