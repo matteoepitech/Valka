@@ -15,24 +15,16 @@ jobs:
           - runner: macos-latest
             arch: arm64
 
-
           - runner: ubuntu-latest
             arch: x64
           - runner: ubuntu-latest
             arch: arm64
 
-
           - runner: debian-latest
             arch: x64
 
-
           - runner: windows-latest
             arch: x64
-
-
-          - runner: self-hosted
-            arch: x64
-            os: archlinux
 
     steps:
       - name: Checkout code
@@ -48,4 +40,3 @@ jobs:
         run: |
             echo "Build with make on ${{ matrix.runner }} (${{ matrix.arch }})"
             make
-
