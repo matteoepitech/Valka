@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 // Used to generate random tmp variable
 uint32_t register_id = 0;

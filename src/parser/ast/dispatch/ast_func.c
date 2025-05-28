@@ -24,6 +24,26 @@ is_main_function(ast_node_t *node)
 }
 
 /**
+ * @brief Add a symbol in the function to add all variables declarations.
+ *
+ * @param sym           The symbol   NODE
+ * @param func          The function NODE
+ *
+ * @return Everything worked ?
+ */
+static uint8_t
+add_content_symbol(ast_node_t *sym, ast_program_t *prg)
+{
+    if (sym == NULL || prg == NULL)
+        return KO_OUTPUT;
+    prg->_content_symbols_count++;
+    prg->_content_symbols = REALLOC(prg->_content_symbols, sizeof(ast_node_t *) * prg->_content_symbols_count);
+    prg->_content_symbols[prg->_content_symbols_count - 1] = MALLOC(sizeof(ast_node_t));
+    prg->_content_symbols[prg->_content_symbols_count - 1]->_ast_val = sym->_ast_val;
+    return OK_OUTPUT;
+}
+
+/**
  * @brief Fill the content of the function.
  *
  * @param current_token  The current token position
@@ -45,6 +65,8 @@ fill_function_content(token_t **current_token, ast_node_t *node)
         }
         create_statement(node->_ast_val._function._func_content, tmp_node);
         curr = *current_token;
+        if (tmp_node->_type == AST_VAR_DECL)
+            add_content_symbol(tmp_node, node->_ast_val._function._func_content);
     }
 }
 
@@ -122,6 +144,8 @@ make_ast_func(token_t **current_token, UNUSED ast_program_t *parent)
         curr->_next->_next->_length);
     node->_ast_val._function._return_data = get_data_type(curr->_next);
     node->_ast_val._function._func_content = MALLOC(sizeof(ast_program_t));
+    node->_ast_val._function._func_content->_content_symbols = NULL;
+    node->_ast_val._function._func_content->_content_symbols_count = 0;
     node->_ast_val._function._func_content->_statement_head = NULL;
     node->_ast_val._function._func_content->_statement_tail = NULL;
     node->_ast_val._function._func_content->_parent = node;

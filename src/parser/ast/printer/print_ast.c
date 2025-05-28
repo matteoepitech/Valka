@@ -54,6 +54,24 @@ print_function_body(ast_program_t *prg, int indent)
 }
 
 /**
+* @brief Print the content symbols of a function
+*
+* @param func
+* @param indent
+*/
+static void
+print_content_symbol(ast_program_t *prg, int indent)
+{
+    for (uint32_t i = 0; i < prg->_content_symbols_count; i++) {
+        print_indent(indent);
+        printf(COLOR_RED "Var : " COLOR_RESET "%s" COLOR_RED " with type %s\n",
+            prg->_content_symbols[i]->_ast_val._var_decl._var_name,
+            prg->_content_symbols[i]->_ast_val._var_decl._var_type._valka_ir
+        );
+    }
+}
+
+/**
  * @brief Recursively print a single AST node and its children with
  *        indentation.
  *
@@ -110,6 +128,7 @@ print_ast(ast_node_t *node, int indent)
             printf("Function: %s type (%s)\n", node->_ast_val._function._func_name, node->_ast_val._function._return_data._valka_ir);
             if (node->_ast_val._function._params_count == 0) {
                 print_function_body(node->_ast_val._function._func_content, indent + 1);
+                print_content_symbol(node->_ast_val._function._func_content, indent + 1);
                 break;
             }
             print_indent(indent + 1);
@@ -119,6 +138,7 @@ print_ast(ast_node_t *node, int indent)
                 printf("- %s\n", node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir);
             }
             print_function_body(node->_ast_val._function._func_content, indent + 1);
+            print_content_symbol(node->_ast_val._function._func_content, indent + 1);
             break;
 
         case AST_RETURN:

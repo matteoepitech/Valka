@@ -9,6 +9,7 @@
     #define _VALKA_PARSER_H_
 
     #include "misc/types.h"
+#include <stdint.h>
 
 extern uint32_t register_id;
 
@@ -279,6 +280,8 @@ struct ast_program_s {
     ast_statement_t *_statement_tail;
     int32_t _statements_amount;
     ast_node_t *_parent;
+    ast_node_t **_content_symbols;
+    uint32_t _content_symbols_count;
 };
 
 /*
