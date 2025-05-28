@@ -2,7 +2,7 @@
 mkdir -p build && cd build
 
 # CMake build
-cmake ..
+cmake -G "MinGW Makefiles" ..
 cmake --build .
 
 # Move binary in main folder (will be removed)
