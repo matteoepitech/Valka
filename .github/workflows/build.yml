@@ -48,6 +48,6 @@ jobs:
       - name: Run make
         shell: bash
         run: |
-            echo "Build with make on ${{ matrix.runner }} (${matrix.arch})"
+            echo "Build with make on ${{ matrix.runner }} (${{ matrix.arch }})"
             make
 
