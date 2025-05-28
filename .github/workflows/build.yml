@@ -4,6 +4,7 @@ on:
   push
 
 jobs:
+  # Build job
   build:
     continue-on-error: true
     runs-on: ${{ matrix.runner }}
@@ -31,28 +32,39 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+
       - name: Display runner info
         run: |
           echo "Running on ${{ matrix.runner }} - Arch: ${{ matrix.arch }}"
           uname -a || systeminfo
+
 
       - name: Run make
         shell: bash
         run: |
           echo "Build with make on ${{ matrix.runner }} (${{ matrix.arch }})"
           make
-      
+
+
       - name: Archive binary
         run: |
           mkdir -p dist
-          cp ./valkac dist/valka-compiler-${{ matrix.runner }}-${{ matrix.arch }}
-      
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            cp valkac.exe dist/valka-${{ matrix.runner }}-${{ matrix.arch }}.exe
+          else
+            cp valkac dist/valka-${{ matrix.runner }}-${{ matrix.arch }}
+          fi
+        shell: bash
+
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: valka-compiler-${{ matrix.runner }}-${{ matrix.arch }}
           path: dist/*
 
+
+  # Release job
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -61,6 +73,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
