@@ -53,7 +53,7 @@ make_ast_call_sym(token_t **current_token, ast_program_t *parent)
     node->_parent = parent;
     node->_ast_val._call_sym._args_count = 0;
     node->_ast_val._call_sym._args = NULL;
-    node->_ast_val._call_sym._sym_name = strndup(curr->_start, curr->_length);
+    node->_ast_val._call_sym._sym_name = strndup_valka(curr->_start, curr->_length);
     move_token(current_token, 1);
     curr = *current_token;
     if (curr == NULL || curr->_type != TOKEN_PARENT_OPEN)

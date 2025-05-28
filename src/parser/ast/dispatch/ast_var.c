@@ -28,7 +28,7 @@ make_ast_var(token_t **current_token, ast_program_t *parent)
     node->_type = AST_VAR_DECL;
     node->_loc = curr->_loc;
     node->_parent = parent;
-    node->_ast_val._var_decl._var_name = strndup(curr->_next->_next->_start,
+    node->_ast_val._var_decl._var_name = strndup_valka(curr->_next->_next->_start,
         curr->_next->_next->_length);
     node->_ast_val._var_decl._var_type = get_data_type(curr->_next);
     move_token(current_token, 4);

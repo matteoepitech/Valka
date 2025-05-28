@@ -59,9 +59,15 @@ uint8_t llvm_math(ast_node_t *node, FILE *f, char *dest);
 uint8_t llvm_string(ast_node_t *node, FILE *f, char *dest);
 uint8_t llvm_if(ast_node_t *node, FILE *f);
 uint8_t llvm_condition(ast_node_t *node, FILE *f, char *dest);
+
 /*
  * Folder : utils/
  */
 char *get_random_var_name(void);
+
+/*
+ * Folder : utils/strings/
+ */
+char *strndup_valka(const char *string, unsigned long size);
 
 #endif /* ifndef _VALKA_H_ */

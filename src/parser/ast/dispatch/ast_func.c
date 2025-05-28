@@ -18,7 +18,7 @@ static ast_node_t *
 is_main_function(ast_node_t *node)
 {
     if (strcmp(node->_ast_val._function._func_name, "main") == 0) {
-        node->_ast_val._function._func_name = strdup(START_ENTRY_POINT);
+        node->_ast_val._function._func_name = strndup_valka(START_ENTRY_POINT, strlen(START_ENTRY_POINT));
     }
     return node;
 }
@@ -70,7 +70,7 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
     node->_ast_val._function._params = MALLOC(sizeof(ast_node_t *));
     node->_ast_val._function._params[0] = MALLOC(sizeof(ast_node_t));
     node->_ast_val._function._params[0]->_ast_val._var_decl._var_type = get_data_type(curr);
-    node->_ast_val._function._params[0]->_ast_val._var_decl._var_name = strndup(curr->_next->_start, curr->_next->_length);
+    node->_ast_val._function._params[0]->_ast_val._var_decl._var_name = strndup_valka(curr->_next->_start, curr->_next->_length);
     move_token(current_token, 2);
     curr = *current_token;
     while (curr && curr->_type != TOKEN_PARENT_CLOSE && curr->_type != TOKEN_END) {
@@ -88,7 +88,7 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
             curr = *current_token;
             continue;
         }
-        node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_name = strndup(curr->_next->_start,
+        node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_name = strndup_valka(curr->_next->_start,
             curr->_next->_length);
         move_token(current_token, 2);
         curr = *current_token;
@@ -118,7 +118,7 @@ make_ast_func(token_t **current_token, UNUSED ast_program_t *parent)
     node->_parent = parent;
     node->_ast_val._function._params = NULL;
     node->_ast_val._function._params_count = 0;
-    node->_ast_val._function._func_name = strndup(curr->_next->_next->_start,
+    node->_ast_val._function._func_name = strndup_valka(curr->_next->_next->_start,
         curr->_next->_next->_length);
     node->_ast_val._function._return_data = get_data_type(curr->_next);
     node->_ast_val._function._func_content = MALLOC(sizeof(ast_program_t));

@@ -105,7 +105,7 @@ make_ast_int_literal(token_t **current_token, ast_program_t *parent)
 
     if (curr == NULL || curr->_type != TOKEN_INT_LITERAL)
         return NULL;
-    tmp_val_string = strndup(curr->_start, curr->_length);
+    tmp_val_string = strndup_valka(curr->_start, curr->_length);
     val_l = strtoll(tmp_val_string, &endptr, 10);
     if (endptr == tmp_val_string || *endptr != '\0')
         return NULL;
