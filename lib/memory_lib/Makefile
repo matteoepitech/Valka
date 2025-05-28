@@ -14,7 +14,7 @@ SRC		:=	$(shell find src -name "*.c")
 OBJ_SRC		:=	$(SRC:.c=.o)
 NAME		:=	libmemory.a
 
-CC		:=	cc
+CC		:=	gcc
 CFLAGS		:=	-Wall -Wextra -g -I./include/
 
 all: $(NAME)
