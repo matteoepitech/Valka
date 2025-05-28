@@ -40,7 +40,7 @@ get_func_parent(ast_program_t *prog)
  * @return The AST node.
  */
 ast_node_t *
-get_sym_from_name(ast_program_t *body, char *sym_name)
+get_sym_decl_from_name(ast_program_t *body, char *sym_name)
 {
    ast_node_t *func_body = get_func_parent(body);
 
@@ -74,7 +74,7 @@ get_data_from_node(ast_node_t *node)
     if (node->_type == AST_LITERAL_INT)
         return get_data_with_id(T_I32);
     if (node->_type == AST_SYMBOL)
-        return get_sym_from_name(node->_parent, node->_ast_val._call_sym._sym_name)->_ast_val._var_decl._var_type;
+        return get_sym_decl_from_name(node->_parent, node->_ast_val._call_sym._sym_name)->_ast_val._var_decl._var_type;
     if (node->_type == AST_STRING)
         return get_data_with_id(T_CHAR_P);
     if (node->_type == AST_BINARY_OP)

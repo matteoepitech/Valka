@@ -19,6 +19,8 @@ static uint8_t dispatch_llvm(FILE *f, ast_statement_t *cur)
 {
     ast_node_t *node = cur->_ast_node;
 
+    if (node->_type == AST_ASSIGNMENT)
+        return llvm_assign(node, f);
     if (node->_type == AST_IF)
         return llvm_if(node, f);
     if (node->_type == AST_CALL_SYM)
