@@ -340,6 +340,7 @@ ast_node_t *make_ast_symbol(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_string(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_if(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_condition(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_assign(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/
