@@ -17,7 +17,7 @@
     #include <errno.h>
     #include <sys/syscall.h>
 
-    #include "lib/memory_lib/include/mymem.h"
+    #include "../lib/memory_lib/include/mymem.h"
 
     #include "valka_parser.h"
     #include "misc/defines.h"
