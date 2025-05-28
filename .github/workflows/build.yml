@@ -1,9 +1,7 @@
 name: Build on Tag (multi-OS + Arch)
 
 on:
-  push:
-    tags:
-      - 'v*'
+  push
 
 jobs:
   build:
