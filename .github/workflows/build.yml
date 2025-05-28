@@ -44,8 +44,12 @@ jobs:
       - name: Run CMake
         shell: bash
         run: |
-          echo "Build with make on ${{ matrix.runner }} (${{ matrix.arch }})"
-          ./build.sh
+          echo "Build on ${{ matrix.runner }} (${{ matrix.arch }})"
+          if [[ "${{ matrix.runner }}" == "windows-latest" ]]; then
+            ./build_windows.sh
+          else
+            ./build_linux_mac.sh
+          fi
 
       - name: Archive binary
         run: |
