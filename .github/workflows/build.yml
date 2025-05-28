@@ -41,12 +41,11 @@ jobs:
           uname -a || systeminfo
 
 
-      - name: Run make
+      - name: Run CMake
         shell: bash
         run: |
           echo "Build with make on ${{ matrix.runner }} (${{ matrix.arch }})"
-          make
-
+          ./build.sh
 
       - name: Archive binary
         run: |
