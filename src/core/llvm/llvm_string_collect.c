@@ -38,7 +38,7 @@ collect_strings(ast_node_t *node, FILE *f)
         case AST_STRING: {
             fprintf(f, "@%s = private constant [%lu x i8] c\"%s\\00\"\n",
                 node->_ast_val._string._name_sym,
-                strlen(node->_ast_val._string._value) + 1,
+                (unsigned long) strlen(node->_ast_val._string._value) + 1,
                 node->_ast_val._string._value);
         } break;
         case AST_VAR_DECL:
