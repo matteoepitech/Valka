@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 // @TODO remove this.
 static void print_ast(ast_node_t *node, int indent);

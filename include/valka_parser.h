@@ -9,7 +9,6 @@
     #define _VALKA_PARSER_H_
 
     #include "misc/types.h"
-#include <stdint.h>
 
 extern uint32_t register_id;
 
@@ -294,6 +293,7 @@ bool_t is_start_of_expression(token_t *token);
 bool_t is_call_sym(token_t *token);
 bool_t is_valid_condition(const char *start);
 token_t *get_next_token_after_call(token_t *node);
+data_types_t get_data_from_node(ast_node_t *node);
 
 /*
  * Folder : src/parser/tokens/dispatch/
@@ -324,6 +324,7 @@ ast_node_t *dispatch_ast(token_t **current_token, ast_program_t *parent);
 void move_token(token_t **current_token, int move_token);
 ast_statement_t *create_statement(ast_program_t *prg, ast_node_t *ast);
 ast_node_t *get_func_parent(ast_program_t *parent);
+ast_node_t *get_sym_from_name(ast_program_t *body, char *sym_name);
 
 /*
  * Folder : src/parser/ast/dispatch/
