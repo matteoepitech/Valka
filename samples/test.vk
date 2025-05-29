@@ -1,13 +1,13 @@
-function <i32> get_result(<i32> a, <i32> b, <i32> res)
-{
-    a = 2;
-    if (a == 1) {
-        return a;
-    }
-    return b;
-}
+function <i32> puts(<char*> string);
 
 function <i32> main()
 {
-    get_result(1, 1, 1);
+    var <i32> my_val = 10;
+    var <char> my_char = 10;
+
+    if (my_char == my_val) {
+        puts("It's equal daddy.");
+    }
+
+    return 0;
 }

@@ -16,15 +16,15 @@ uint32_t prototypes_count = 0;
 
 // All Valka data types (extern in valka_parser.h)
 const data_types_t data_types[] = {
-    {T_I32, "i32", "i32"},
-    {T_BOOL, "bool", "i1"},
-    {T_CHAR, "char", "i8"},
-    {T_VOID, "void", "void"},
-    {T_VARG, "...", "..."},
-    {T_CHAR_P, "char*", "i8*"},
-    {T_BOOL_P, "bool*", "i1*"},
-    {T_I32_P, "i32*", "i32*"},
-    {0, "", ""},
+    {T_I32, "i32", "i32", sizeof(int) * 8},
+    {T_BOOL, "bool", "i1", 1},
+    {T_CHAR, "char", "i8", sizeof(char) * 8},
+    {T_VOID, "void", "void", 0},
+    {T_VARG, "...", "...", 0},
+    {T_CHAR_P, "char*", "i8*", sizeof(void *) * 8},
+    {T_BOOL_P, "bool*", "i1*", sizeof(void *) * 8},
+    {T_I32_P, "i32*", "i32*", sizeof(void *) * 8},
+    {0, "", "", 0},
 };
 
 // All Valka binary operation (extern in valka_parser.h)

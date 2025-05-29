@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Get the data with ID.
@@ -42,4 +43,20 @@ get_data_type(token_t *token)
         }
     }
     return (data_types_t) {0};
+}
+
+/**
+ * @brief Get the highest data type between 2.
+ *
+ * @param d1            data type 1
+ * @param d2            data type 2
+ *
+ * @return The highest data type.
+ */
+data_types_t
+get_highest_data_type(data_types_t d1, data_types_t d2)
+{
+    if (d1._bits_sz >= d2._bits_sz)
+        return d1;
+    return d2;
 }
