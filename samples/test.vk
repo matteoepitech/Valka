@@ -1,8 +1,10 @@
 function <i32> get_result(<i32> a, <i32> b, <i32> res)
 {
-    if (1 == 1) {
+    a = 2;
+    if (a == 1) {
         return a;
     }
+    return b;
 }
 
 function <i32> main()

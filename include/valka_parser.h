@@ -324,6 +324,8 @@ ast_node_t *dispatch_ast(token_t **current_token, ast_program_t *parent);
 void move_token(token_t **current_token, int move_token);
 ast_statement_t *create_statement(ast_program_t *prg, ast_node_t *ast);
 ast_node_t *get_func_parent(ast_program_t *parent);
+
+ast_node_t *get_param_decl_from_name(ast_program_t *body, char *sym_name);
 ast_node_t *get_sym_decl_from_name(ast_program_t *body, char *sym_name);
 
 /*
