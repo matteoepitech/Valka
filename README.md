@@ -11,12 +11,17 @@ This programming language is a personal project I’m working on in my spare tim
 
 ## Build
 
-To build the compiler `valkc` run this:
+To build the compiler `valkc` for `Linux` or `MacOS` run this:
 
 ```bash
-make
+./build_linux_mac.sh
 ```
-Soon, there will be build scripts available for: `Linux`, `MacOS`, `Windows`
+
+To build the compiler `valkc` for `Windows` run this:
+
+```bash
+./build_windows.sh
+```
 
 ## Usage/Examples
 
