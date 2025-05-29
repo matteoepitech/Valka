@@ -179,6 +179,11 @@ print_ast(ast_node_t *node, int indent)
             printf("Symbol %s\n", node->_ast_val._symbol._sym_name);
             break;
 
+        case AST_CAST:
+            printf("Cast to : %s\n", node->_ast_val._cast._cast_type._llvm_ir);
+            print_ast(node->_ast_val._cast._val, indent + 1);
+            break;
+
         default:
             printf("Unknown AST node type: %d\n", node->_type);
             break;

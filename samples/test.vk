@@ -2,12 +2,12 @@ function <i32> puts(<char*> string);
 
 function <i32> main()
 {
-    var <i32> my_val = 10;
-    var <char> my_char = 10;
+    var <i32> my_val = #<i32> 10;
+    var <char> my_char = #<char> my_val;
 
-    if (#<i32> my_char == my_val) {
+    if (#<i32> my_char == #<i32> my_val) {
         puts("It's equal daddy.");
     }
 
-    return 0;
+    return #<i32> my_char;
 }

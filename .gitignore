@@ -2,7 +2,7 @@
 *.log
 
 a.out
-out.ll
+out.*
 valkac
 compile_commands.json
 build/

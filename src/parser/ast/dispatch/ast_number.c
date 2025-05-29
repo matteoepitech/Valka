@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Get the priority of an operator.
@@ -60,6 +61,8 @@ parse_expression(token_t **current_token, ast_program_t *parent, int min_prio)
         left = make_ast_call_sym(current_token, parent);
     else if (curr->_type == TOKEN_SYMBOL)
         left = make_ast_symbol(current_token, parent);
+    else if (curr->_type == TOKEN_CAST)
+        left = make_ast_cast(current_token, parent);
     else
         return NULL;
     while (1) {

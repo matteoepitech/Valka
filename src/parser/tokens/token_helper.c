@@ -61,7 +61,9 @@ is_start_of_expression(token_t *token)
 
     if (token == NULL)
         return FALSE;
-    if (token->_type == TOKEN_INT_LITERAL || token->_type == TOKEN_SYMBOL)
+    if (token->_type == TOKEN_INT_LITERAL ||
+        token->_type == TOKEN_SYMBOL ||
+        token->_type == TOKEN_CAST)
         return TRUE;
     if (is_call_sym(token)) {
         after_call = token;
@@ -88,6 +90,8 @@ get_next_token_after_call(token_t *node)
     token_t *curr = node;
     int paren_count = 1;
 
+    if (node->_type == TOKEN_CAST)
+        return get_next_token_after_call(node->_next->_next);
     if (!is_call_sym(node))
         return node->_next;
     curr = node->_next->_next;

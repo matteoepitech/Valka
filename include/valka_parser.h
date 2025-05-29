@@ -194,7 +194,7 @@ struct ast_node_s {
             ast_node_t *_left;
             ast_node_t *_right;
         } _binary_op;
-        // If statement -> if (1 == 1) { }
+        // If statement -> if (condition) { }
         struct {
             ast_node_t *_condition;
             ast_program_t *_if_body;
@@ -236,11 +236,17 @@ struct ast_node_s {
             data_types_t _return_data;
             char *_sym_name;
         } _return;
+        // Condition -> 1 == 1
         struct {
             ast_node_t *_node_a;
             uint32_t _op_id;
             ast_node_t *_node_b;
         } _condition;
+        // Cast -> #<i32> my_var
+        struct {
+            data_types_t _cast_type;
+            ast_node_t *_val;
+        } _cast;
     } _ast_val;
 };
 
@@ -347,6 +353,7 @@ ast_node_t *make_ast_string(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_if(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_condition(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_assign(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_cast(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/
