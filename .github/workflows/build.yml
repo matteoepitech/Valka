@@ -55,9 +55,9 @@ jobs:
         run: |
           mkdir -p dist
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-            cp valkac.exe dist/valka-${{ matrix.runner }}-${{ matrix.arch }}.exe
+            cp valkac.exe dist/valkac-${{ matrix.runner }}-${{ matrix.arch }}.exe
           else
-            cp valkac dist/valka-${{ matrix.runner }}-${{ matrix.arch }}
+            cp valkac dist/valkac-${{ matrix.runner }}-${{ matrix.arch }}
           fi
         shell: bash
 
