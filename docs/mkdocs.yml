@@ -1,0 +1,34 @@
+site_name: Valka Lang Documentation
+docs_dir: docs
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  font:
+    text: "Open Sans"
+    code: "Fira Code"
+  features:
+    - navigation.instant
+    - navigation.top
+    - toc.integrate
+    - search.highlight
+    - search.share
+    - palette.toggle
+    - palette.auto
+nav:
+  - Home: index.md
+  - Getting started: getting_started.md
+  - Syntax: syntax.md
+  - Examples: examples.md
+  - FAQ: faq.md
