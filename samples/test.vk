@@ -5,7 +5,7 @@ function <i32> main()
     var <i32> my_val = 10;
     var <char> my_char = 10;
 
-    if (my_char == my_val) {
+    if (#<i32> my_char == my_val) {
         puts("It's equal daddy.");
     }
 

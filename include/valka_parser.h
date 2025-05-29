@@ -95,6 +95,7 @@ typedef enum {
     TOKEN_SEMICOLON,
     TOKEN_COMMA,
     TOKEN_CONDITION,
+    TOKEN_CAST,
     TOKEN_END
 } token_type_t;
 
@@ -114,6 +115,7 @@ typedef enum {
     AST_STRING,
     AST_IF,
     AST_CONDITION,
+    AST_CAST,
 } ast_node_type_t;
 
 /**
@@ -310,6 +312,7 @@ parsing_src_file_t *bin_operation_token(parsing_src_file_t *p);
 parsing_src_file_t *comma_token(parsing_src_file_t *p);
 parsing_src_file_t *string_token(parsing_src_file_t *p);
 parsing_src_file_t *condition_token(parsing_src_file_t *p);
+parsing_src_file_t *cast_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/

@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Open the file path and return a structure containing the buffer.
@@ -53,6 +54,8 @@ dispatch_tokenizer(parsing_src_file_t *p)
         return bin_operation_token(p);
     if (c == ',')
         return comma_token(p);
+    if (c == '#')
+        return cast_token(p);
     if (c == '\"')
         return string_token(p);
     if (c == '<')
