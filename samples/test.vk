@@ -1,13 +1,25 @@
 function <i32> puts(<char*> string);
+function <i32> putchar(<i32> char);
+
+function <void> put_nbr(<i32> n)
+{
+    var <i32> tmp = 0;
+
+    if (n >= 10) {
+        put_nbr(n / 10);
+    }
+    tmp = n % 10;
+    putchar(tmp + 48);
+}
 
 function <i32> main()
 {
-    var <i32> my_val = #<i32> 10;
-    var <char> my_char = #<char> my_val;
+    var <i32> my_val = 10;
+    var <char> my_char = 50;
+    var <i32> aa = 50;
 
-    if (#<i32> my_char == #<i32> my_val) {
+    if (my_char == #<char> aa) {
         puts("It's equal daddy.");
     }
-
-    return #<i32> my_char;
+    return 0;
 }

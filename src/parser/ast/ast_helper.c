@@ -93,6 +93,8 @@ get_data_from_node(ast_node_t *node)
         return get_data_with_id(T_CHAR_P);
     if (node->_type == AST_BINARY_OP)
         return get_data_from_node(node->_ast_val._binary_op._left);
+    if (node->_type == AST_CAST)
+        return node->_ast_val._cast._cast_type;
     PERROR("This type is not handled yet!");
     return (data_types_t) {0};
 }
