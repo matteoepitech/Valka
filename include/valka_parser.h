@@ -302,7 +302,6 @@ bool_t is_start_of_expression(token_t *token);
 bool_t is_call_sym(token_t *token);
 bool_t is_valid_condition(const char *start);
 token_t *get_next_token_after_call(token_t *node);
-data_types_t get_data_from_node(ast_node_t *node);
 
 /*
  * Folder : src/parser/tokens/dispatch/
@@ -369,9 +368,10 @@ functions_prototype_t get_prototype_from_name(const char *func_name);
 /*
  * Folder : src/utils/data/
  */
-data_types_t get_data_type(token_t *token);
+data_types_t get_data_type_from_token(token_t *token);
 data_types_t get_data_with_id(uint32_t id);
 data_types_t get_highest_data_type(data_types_t d1, data_types_t d2);
+data_types_t get_data_from_node(ast_node_t *node);
 bin_ope_t get_operator_with_char(char op);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

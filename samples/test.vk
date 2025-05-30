@@ -14,7 +14,7 @@ function <void> put_nbr(<i32> n)
 
 function <i32> main()
 {
-    var <i32> my_val = 10;
+    var <i32> my_val = #<i32> 10 + #<i32> 10;
     var <char> my_char = 50;
     var <i32> aa = 50;
 

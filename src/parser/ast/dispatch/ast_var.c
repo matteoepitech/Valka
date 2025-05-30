@@ -30,7 +30,7 @@ make_ast_var(token_t **current_token, ast_program_t *parent)
     node->_parent = parent;
     node->_ast_val._var_decl._var_name = strndup_valka(curr->_next->_next->_start,
         curr->_next->_next->_length);
-    node->_ast_val._var_decl._var_type = get_data_type(curr->_next);
+    node->_ast_val._var_decl._var_type = get_data_type_from_token(curr->_next);
     move_token(current_token, 4);
     node->_ast_val._var_decl._value = dispatch_ast(current_token, parent);
     return node;

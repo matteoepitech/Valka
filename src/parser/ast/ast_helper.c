@@ -72,29 +72,3 @@ get_sym_decl_from_name(ast_program_t *body, char *sym_name)
     }
     return get_param_decl_from_name(body, sym_name);
 }
-
-/**
- * @brief Get the right type using only the AST node.
- *
- * @param node          The AST node
- *
- * @return The data type.
- */
-data_types_t
-get_data_from_node(ast_node_t *node)
-{
-    if (node->_type == AST_CALL_SYM)
-        return get_prototype_from_name(node->_ast_val._call_sym._sym_name)._return;
-    if (node->_type == AST_LITERAL_INT)
-        return get_data_with_id(T_I32);
-    if (node->_type == AST_SYMBOL)
-        return get_sym_decl_from_name(node->_parent, node->_ast_val._call_sym._sym_name)->_ast_val._var_decl._var_type;
-    if (node->_type == AST_STRING)
-        return get_data_with_id(T_CHAR_P);
-    if (node->_type == AST_BINARY_OP)
-        return get_data_from_node(node->_ast_val._binary_op._left);
-    if (node->_type == AST_CAST)
-        return node->_ast_val._cast._cast_type;
-    PERROR("This type is not handled yet!");
-    return (data_types_t) {0};
-}

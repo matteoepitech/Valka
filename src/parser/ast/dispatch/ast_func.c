@@ -91,7 +91,7 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
     node->_ast_val._function._params_count = 1;
     node->_ast_val._function._params = MALLOC(sizeof(ast_node_t *));
     node->_ast_val._function._params[0] = MALLOC(sizeof(ast_node_t));
-    node->_ast_val._function._params[0]->_ast_val._var_decl._var_type = get_data_type(curr);
+    node->_ast_val._function._params[0]->_ast_val._var_decl._var_type = get_data_type_from_token(curr);
     node->_ast_val._function._params[0]->_ast_val._var_decl._var_name = strndup_valka(curr->_next->_start, curr->_next->_length);
     move_token(current_token, 2);
     curr = *current_token;
@@ -104,7 +104,7 @@ fill_parameters(token_t **current_token, UNUSED ast_node_t *node)
         node->_ast_val._function._params_count++;
         node->_ast_val._function._params = REALLOC(node->_ast_val._function._params, sizeof(ast_node_t *) * node->_ast_val._function._params_count);
         node->_ast_val._function._params[node->_ast_val._function._params_count - 1] = MALLOC(sizeof(ast_node_t));
-        node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_type = get_data_type(curr);
+        node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_type = get_data_type_from_token(curr);
         if (node->_ast_val._function._params[node->_ast_val._function._params_count - 1]->_ast_val._var_decl._var_type._id == T_VARG) {
             move_token(current_token, 1);
             curr = *current_token;
@@ -142,7 +142,7 @@ make_ast_func(token_t **current_token, UNUSED ast_program_t *parent)
     node->_ast_val._function._params_count = 0;
     node->_ast_val._function._func_name = strndup_valka(curr->_next->_next->_start,
         curr->_next->_next->_length);
-    node->_ast_val._function._return_data = get_data_type(curr->_next);
+    node->_ast_val._function._return_data = get_data_type_from_token(curr->_next);
     node->_ast_val._function._func_content = MALLOC(sizeof(ast_program_t));
     node->_ast_val._function._func_content->_content_symbols = NULL;
     node->_ast_val._function._func_content->_content_symbols_count = 0;

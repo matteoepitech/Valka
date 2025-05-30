@@ -26,7 +26,7 @@ make_ast_cast(token_t **current_token, ast_program_t *parent)
     node->_type = AST_CAST;
     node->_loc = curr->_loc;
     node->_parent = parent;
-    node->_ast_val._cast._cast_type = get_data_type(curr->_next);
+    node->_ast_val._cast._cast_type = get_data_type_from_token(curr->_next);
     move_token(current_token, 2);
     curr = *current_token;
     if (is_call_sym(curr)) {
