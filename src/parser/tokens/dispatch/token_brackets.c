@@ -8,7 +8,7 @@
 #include "valka.h"
 
 /**
- * @brief Brackers token dispatch.
+ * @brief Brackets token dispatch.
  *
  * @param p             The parsing src file structure
  *

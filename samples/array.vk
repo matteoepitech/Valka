@@ -1,0 +1,9 @@
+function <i32> putchar(<i32> char);
+
+function <i32> main()
+{
+    var <char*> string = "My_String";
+
+    putchar(string[0]);
+    return 0;
+}
