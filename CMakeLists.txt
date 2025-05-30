@@ -14,6 +14,8 @@ add_subdirectory(lib/memory_lib)
 
 file(GLOB_RECURSE VALKA_SRC src/*.c)
 
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g")
+
 add_executable(valkac ${VALKA_SRC})
 
 target_link_libraries(valkac PRIVATE mymemlib)

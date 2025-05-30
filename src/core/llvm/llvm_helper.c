@@ -77,6 +77,9 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
         case AST_CAST:
             llvm_cast(node, f, tmp);
             break;
+        case AST_INDEX:
+            llvm_index(node, f, tmp);
+            break;
         default:
             break;
     }

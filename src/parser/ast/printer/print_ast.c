@@ -101,6 +101,14 @@ print_ast(ast_node_t *node, int indent)
             printf("String: \"%s\"\n", node->_ast_val._string._value);
             break;
 
+        case AST_INDEX:
+            printf("Index for:\n");
+            print_ast(node->_ast_val._index._sym, indent + 1);
+            print_indent(indent);
+            printf("Value:\n");
+            print_ast(node->_ast_val._index._index_val, indent + 1);
+            break;
+
         case AST_BINARY_OP:
             printf("Binary operation: %c\n", node->_ast_val._binary_op._op);
             print_indent(indent);

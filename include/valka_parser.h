@@ -121,7 +121,7 @@ typedef enum {
     AST_CAST = 12,
     AST_FOR = 13,
     AST_WHILE = 14,
-    AST_SYM_INDEX = 15,
+    AST_INDEX = 15,
 } ast_node_type_t;
 
 /**
@@ -260,6 +260,11 @@ struct ast_node_s {
             data_types_t _cast_type;
             ast_node_t *_val;
         } _cast;
+        // Index -> string[i]
+        struct {
+            ast_node_t *_sym;
+            ast_node_t *_index_val;
+        } _index;
     } _ast_val;
 };
 
@@ -331,7 +336,7 @@ parsing_src_file_t *comma_token(parsing_src_file_t *p);
 parsing_src_file_t *string_token(parsing_src_file_t *p);
 parsing_src_file_t *condition_token(parsing_src_file_t *p);
 parsing_src_file_t *cast_token(parsing_src_file_t *p);
-parsing_src_file_t *index_token(parsing_src_file_t *p);
+parsing_src_file_t *square_brackets_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/
@@ -370,6 +375,7 @@ ast_node_t *make_ast_assign(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_cast(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_for(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_while(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_index(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/

@@ -66,8 +66,8 @@ dispatch_tokenizer(parsing_src_file_t *p)
         return semicolon_token(p);
     if (c == '{' || c == '}')
         return brackets_token(p);
-    if (c == '[')
-        return index_token(p);
+    if (c == '[' || c == ']')
+        return square_brackets_token(p);
     if (c == '(' || c == ')')
         return parents_token(p);
     if (isalpha(c) || c == '_')

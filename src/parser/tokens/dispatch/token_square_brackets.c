@@ -15,18 +15,21 @@
  * @return The parsing src file structure.
  */
 parsing_src_file_t *
-index_token(parsing_src_file_t *p)
+square_brackets_token(parsing_src_file_t *p)
 {
     const char *start = &p->_buffer[p->_current_index];
-    size_t i = p->_current_index;
+    size_t i = p->_current_index + 1;
     size_t length = 0;
     token_t *token = NULL;
 
-    while (start[length] != ']')
-        length++;
-    length++;
-    token = create_token(TOKEN_INDEX, start, length, p->_current_loc);
+    length = i - p->_current_index;
+    if (start[0] == '[')
+        token = create_token(TOKEN_SQUARE_BRACKET_OPEN, start, length,
+            p->_current_loc);
+    if (start[0] == ']')
+        token = create_token(TOKEN_SQUARE_BRACKET_CLOSE, start, length,
+            p->_current_loc);
     push_token(&p->_tail_list, token);
-    p->_current_index = i + length;
+    p->_current_index = i;
     return p;
 }
