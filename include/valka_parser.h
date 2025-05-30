@@ -394,6 +394,7 @@ data_types_t get_data_type_from_token(token_t *token);
 data_types_t get_data_with_id(uint32_t id);
 data_types_t get_highest_data_type(data_types_t d1, data_types_t d2);
 data_types_t get_data_from_node(ast_node_t *node);
+data_types_t get_deref_data_type(data_types_t data);
 bin_ope_t get_operator_with_char(char op);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

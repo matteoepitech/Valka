@@ -188,7 +188,12 @@ print_ast(ast_node_t *node, int indent)
             break;
 
         case AST_CONDITION:
-            printf("Condition : %s\n", condition_operators[node->_ast_val._condition._op_id]._operator);
+            for (int i = 0; condition_operators[i]._id != 0; i++) {
+                if (condition_operators[i]._id == node->_ast_val._condition._op_id) {
+                    printf("Condition : %s\n", condition_operators[i]._operator);
+                    break;
+                }
+            }
             print_ast(node->_ast_val._condition._node_a, indent + 1);
             print_ast(node->_ast_val._condition._node_b, indent + 1);
             break;

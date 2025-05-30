@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Get the data with ID.
@@ -66,6 +67,8 @@ get_data_from_node(ast_node_t *node)
         return get_data_from_node(node->_ast_val._binary_op._left);
     if (node->_type == AST_CAST)
         return node->_ast_val._cast._cast_type;
+    if (node->_type == AST_INDEX)
+        return get_deref_data_type(get_data_from_node(node->_ast_val._index._sym));
     PERROR("This type is not handled yet!");
     return (data_types_t) {0};
 }
@@ -84,4 +87,23 @@ get_highest_data_type(data_types_t d1, data_types_t d2)
     if (d1._bits_sz >= d2._bits_sz)
         return d1;
     return d2;
+}
+
+/**
+ * @brief Get the data type with dereferencing.
+ *
+ * @param data          The data type
+ *
+ * @return The deref data type.
+ */
+data_types_t
+get_deref_data_type(data_types_t data)
+{
+    if (data._id == T_I32_P)
+        return get_data_with_id(T_I32);
+    if (data._id == T_CHAR_P)
+        return get_data_with_id(T_CHAR);
+    if (data._id == T_BOOL_P)
+        return get_data_with_id(T_BOOL);
+    return (data_types_t) {0};
 }

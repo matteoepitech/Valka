@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Open the file path and return a structure containing the buffer.

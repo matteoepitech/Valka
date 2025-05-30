@@ -24,6 +24,8 @@ make_ast_symbol(token_t **current_token, ast_program_t *parent)
         return NULL;
     if (curr->_next && curr->_next->_type == TOKEN_PARENT_OPEN)
         return make_ast_call_sym(current_token, parent);
+    if (curr->_next && curr->_next->_type == TOKEN_SQUARE_BRACKET_OPEN)
+        return make_ast_index(current_token, parent);
     node->_type = AST_SYMBOL;
     node->_loc = curr->_loc;
     node->_parent = parent;

@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief LLVM index declaration.
@@ -19,6 +20,16 @@
 uint8_t
 llvm_index(UNUSED ast_node_t *node, FILE *f, char *dest)
 {
-    fprintf(f, "NO INDEX!\n");
+    data_types_t val_type = get_data_from_node(node->_ast_val._index._sym);
+    data_types_t idx_type = get_data_from_node(node->_ast_val._index._index_val);
+    data_types_t deref_type = get_deref_data_type(val_type);
+    char *tmp = llvm_gen_value(node->_ast_val._index._sym, f, val_type);
+    char *index_tmp = llvm_gen_value(node->_ast_val._index._index_val, f, idx_type);
+    char *ptr_tmp = get_random_var_name();
+
+    fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 %%%s\n",
+        ptr_tmp, deref_type._llvm_ir, deref_type._llvm_ir, tmp, index_tmp);
+    fprintf(f, "%%%s = load %s, %s* %%%s\n",
+        dest, deref_type._llvm_ir, deref_type._llvm_ir, ptr_tmp);
     return OK_OUTPUT;
 }

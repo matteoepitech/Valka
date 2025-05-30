@@ -64,6 +64,10 @@ make_ast_for(token_t **current_token, ast_program_t *parent)
     if ((*current_token)->_type == TOKEN_SEMICOLON)
         move_token(current_token, 1);
     node->_ast_val._for_statement._condition_statement = dispatch_ast(current_token, node->_ast_val._for_statement._for_body);
+    print_type_token((*current_token)->_type);
+    if (node->_ast_val._for_statement._condition_statement->_type != AST_CONDITION) {
+        PERROR("Condition of a for is not a AST_CONDITION!");
+    }
     if ((*current_token)->_type == TOKEN_SEMICOLON)
         move_token(current_token, 1);
     node->_ast_val._for_statement._update_statement = dispatch_ast(current_token, node->_ast_val._for_statement._for_body);

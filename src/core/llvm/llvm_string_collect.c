@@ -93,6 +93,11 @@ collect_strings(ast_node_t *node, FILE *f)
             collect_strings(node->_ast_val._condition._node_b, f);
             break;
 
+        case AST_INDEX:
+            collect_strings(node->_ast_val._index._index_val, f);
+            collect_strings(node->_ast_val._index._sym, f);
+            break;
+
         default:
             break;
     }
