@@ -98,7 +98,6 @@ typedef enum {
     TOKEN_COMMA,
     TOKEN_CONDITION,
     TOKEN_CAST,
-    TOKEN_INDEX,
     TOKEN_END
 } token_type_t;
 
