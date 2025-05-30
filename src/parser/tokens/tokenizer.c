@@ -49,6 +49,8 @@ dispatch_tokenizer(parsing_src_file_t *p)
 
     if (is_valid_condition(&p->_buffer[p->_current_index]))
         return condition_token(p);
+    if (isdigit(c) || (c == '-' && isdigit(p->_buffer[p->_current_index + 1])))
+        return digit_token(p);
     if (strchr(OPERATORS_STR, c) != NULL)
         return bin_operation_token(p);
     if (c == ',')
@@ -71,8 +73,6 @@ dispatch_tokenizer(parsing_src_file_t *p)
         return parents_token(p);
     if (isalpha(c) || c == '_')
         return alpha_token(p);
-    if (isdigit(c))
-        return digit_token(p);
     p->_current_index++;
     return p;
 }

@@ -22,6 +22,8 @@ digit_token(parsing_src_file_t *p)
     size_t length = 0;
     token_t *token = NULL;
 
+    if (start[0] == '-')
+        i++;
     while (i < p->_buffer_size && (isdigit(p->_buffer[i]))) {
         i++;
     }

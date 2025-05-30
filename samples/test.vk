@@ -1,5 +1,6 @@
 function <i32> puts(<char*> string);
 function <i32> putchar(<i32> char);
+function <i32> printf(<char*> string, <...>);
 
 function <void> put_nbr(<i32> n)
 {
@@ -14,5 +15,9 @@ function <void> put_nbr(<i32> n)
 
 function <i32> main()
 {
+    var <i32> my_number = 1 - -1;
+
+    printf("%d", my_number);
+    putchar(1 * 2 * 3 * 2 - 2);
     return 0;
 }
