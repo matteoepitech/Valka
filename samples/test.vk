@@ -12,6 +12,21 @@ function <void> put_nbr(<i32> n)
     putchar(tmp + 48);
 }
 
+function <void> long_func()
+{
+    for (var <i32> y = 0; y < 1000; y = y + 1) {
+        for (var <i32> x = 0; x < 1000; x = x + 1) {
+            if (x % 2 == 0) {
+                putchar(88);
+            }
+            if (x % 2 != 0) {
+                putchar(111);
+            }
+        }
+        putchar(10);
+    }
+}
+
 function <i32> main(<i32> argc)
 {
     var <i32> old_result = 0;
@@ -26,16 +41,11 @@ function <i32> main(<i32> argc)
         put_nbr(result);
         putchar(10);
     }
-    for (var <i32> y = 0; y < 10000; y = y + 1) {
-        for (var <i32> x = 0; x < 10000; x = x + 1) {
-            if (x % 2 == 0) {
-                putchar(88);
-            }
-            if (x % 2 != 0) {
-                putchar(111);
-            }
-        }
-        putchar(10);
+    var <i32> my_var = 50;
+    for (var <i32> j = 0; j < argc; j = j + 1) { }
+    while (my_var > 0) {
+        my_var = my_var - 1;
+        putchar(48);
     }
     return 0;
 }

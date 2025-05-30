@@ -80,6 +80,13 @@ collect_strings(ast_node_t *node, FILE *f)
                 collect_strings(tmp->_ast_node, f);
             }
             break;
+        
+        case AST_WHILE:
+            collect_strings(node->_ast_val._for_statement._condition_statement, f);
+            for (ast_statement_t *tmp = node->_ast_val._for_statement._for_body->_statement_head; tmp != NULL; tmp = tmp->_next) {
+                collect_strings(tmp->_ast_node, f);
+            }
+            break;
 
         case AST_CONDITION:
             collect_strings(node->_ast_val._condition._node_a, f);

@@ -168,6 +168,16 @@ print_ast(ast_node_t *node, int indent)
             printf("For body:\n");
             print_function_body(node->_ast_val._for_statement._for_body, indent + 2);
             break;
+        
+        case AST_WHILE:
+            printf("While statement:\n");
+            print_indent(indent + 1);
+            printf("Condition statement:\n");
+            print_ast(node->_ast_val._for_statement._condition_statement, indent + 2);
+            print_indent(indent + 1);
+            printf("While body:\n");
+            print_function_body(node->_ast_val._for_statement._for_body, indent + 2);
+            break;
 
         case AST_CONDITION:
             printf("Condition : %s\n", condition_operators[node->_ast_val._condition._op_id]._operator);

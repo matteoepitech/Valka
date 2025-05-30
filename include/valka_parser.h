@@ -62,6 +62,7 @@ extern const condition_operator_t condition_operators[];
     #define IDENTIFIER_ID_RETURN 3
     #define IDENTIFIER_ID_IF 4
     #define IDENTIFIER_ID_FOR 5
+    #define IDENTIFIER_ID_WHILE 6
 
     #ifndef START_ENTRY_POINT
         #define START_ENTRY_POINT "main"
@@ -118,6 +119,7 @@ typedef enum {
     AST_CONDITION = 11,
     AST_CAST = 12,
     AST_FOR = 13,
+    AST_WHILE = 14,
 } ast_node_type_t;
 
 /**
@@ -364,6 +366,7 @@ ast_node_t *make_ast_condition(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_assign(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_cast(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_for(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_while(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/

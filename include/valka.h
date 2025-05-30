@@ -64,6 +64,7 @@ uint8_t llvm_condition(ast_node_t *node, FILE *f, char *dest);
 uint8_t llvm_assign(ast_node_t *node, FILE *f);
 uint8_t llvm_cast(ast_node_t *node, FILE *f, char *dest);
 uint8_t llvm_for(ast_node_t *node, FILE *f);
+uint8_t llvm_while(ast_node_t *node, FILE *f);
 
 /*
  * Folder : utils/

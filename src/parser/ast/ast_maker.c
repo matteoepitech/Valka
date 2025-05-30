@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Move the token.
@@ -61,6 +62,8 @@ dispatch_ast(token_t **current_token, ast_program_t *parent)
                 return make_ast_if(current_token, parent);
             case IDENTIFIER_ID_FOR:
                 return make_ast_for(current_token, parent);
+            case IDENTIFIER_ID_WHILE:
+                return make_ast_while(current_token, parent);
         }
     }
     return NULL;

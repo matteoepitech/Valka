@@ -27,6 +27,8 @@ dispatch_llvm(FILE *f, ast_statement_t *cur)
             return llvm_if(node, f);
         case AST_FOR:
             return llvm_for(node, f);
+        case AST_WHILE:
+            return llvm_while(node, f);
         case AST_CALL_SYM:
             return llvm_call_sym(node, f, NULL);
         case AST_VAR_DECL:
