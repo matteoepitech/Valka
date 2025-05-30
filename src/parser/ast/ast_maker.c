@@ -50,14 +50,20 @@ dispatch_ast(token_t **current_token, ast_program_t *parent)
         return make_ast_string(current_token, parent);
     if (type == TOKEN_SYMBOL)
         return make_ast_symbol(current_token, parent);
-    if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_VAR)
-        return make_ast_var(current_token, parent);
-    if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_FUNC)
-        return make_ast_func(current_token, parent);
-    if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_RETURN)
-        return make_ast_return(current_token, parent);
-    if (type == TOKEN_IDENTIFIER && type_id == IDENTIFIER_ID_IF)
-        return make_ast_if(current_token, parent);
+    if (type == TOKEN_IDENTIFIER) {
+        switch (type_id) {
+            case IDENTIFIER_ID_VAR:
+                return make_ast_var(current_token, parent);
+            case IDENTIFIER_ID_FUNC:
+                return make_ast_func(current_token, parent);
+            case IDENTIFIER_ID_RETURN:
+                return make_ast_return(current_token, parent);
+            case IDENTIFIER_ID_IF:
+                return make_ast_if(current_token, parent);
+            case IDENTIFIER_ID_FOR:
+                return make_ast_for(current_token, parent);
+        }
+    }
     return NULL;
 }
 

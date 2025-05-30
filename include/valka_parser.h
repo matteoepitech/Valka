@@ -61,6 +61,7 @@ extern const condition_operator_t condition_operators[];
     #define IDENTIFIER_ID_FUNC 2
     #define IDENTIFIER_ID_RETURN 3
     #define IDENTIFIER_ID_IF 4
+    #define IDENTIFIER_ID_FOR 5
 
     #ifndef START_ENTRY_POINT
         #define START_ENTRY_POINT "main"
@@ -103,19 +104,20 @@ typedef enum {
  * @brief All AST types.
  */
 typedef enum {
-    AST_IDENTIFIER,
-    AST_VAR_DECL,
-    AST_ASSIGNMENT,
-    AST_LITERAL_INT,
-    AST_BINARY_OP,
-    AST_FUNCTION,
-    AST_RETURN,
-    AST_CALL_SYM,
-    AST_SYMBOL,
-    AST_STRING,
-    AST_IF,
-    AST_CONDITION,
-    AST_CAST,
+    AST_IDENTIFIER = 0,
+    AST_VAR_DECL = 1,
+    AST_ASSIGNMENT = 2,
+    AST_LITERAL_INT = 3,
+    AST_BINARY_OP = 4,
+    AST_FUNCTION = 5,
+    AST_RETURN = 6,
+    AST_CALL_SYM = 7,
+    AST_SYMBOL = 8,
+    AST_STRING = 9,
+    AST_IF = 10,
+    AST_CONDITION = 11,
+    AST_CAST = 12,
+    AST_FOR = 13,
 } ast_node_type_t;
 
 /**
@@ -200,6 +202,13 @@ struct ast_node_s {
             ast_program_t *_if_body;
             ast_program_t *_else_body;
         } _if_statement;
+        // For statement -> for (var; condition; statement) { }
+        struct {
+            ast_node_t *_init_statement;
+            ast_node_t *_condition_statement;
+            ast_node_t *_update_statement;
+            ast_program_t *_for_body;
+        } _for_statement;
         // Variable declaration -> var<i32> i = 5
         struct {
             char *_var_name;
@@ -333,6 +342,7 @@ ast_node_t *dispatch_ast(token_t **current_token, ast_program_t *parent);
 void move_token(token_t **current_token, int move_token);
 ast_statement_t *create_statement(ast_program_t *prg, ast_node_t *ast);
 ast_node_t *get_func_parent(ast_program_t *parent);
+uint8_t add_content_symbol(ast_node_t *sym, ast_program_t *prg);
 
 ast_node_t *get_param_decl_from_name(ast_program_t *body, char *sym_name);
 ast_node_t *get_sym_decl_from_name(ast_program_t *body, char *sym_name);
@@ -353,6 +363,7 @@ ast_node_t *make_ast_if(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_condition(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_assign(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_cast(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_for(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/

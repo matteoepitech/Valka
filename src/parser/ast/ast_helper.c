@@ -70,5 +70,27 @@ get_sym_decl_from_name(ast_program_t *body, char *sym_name)
         if (strcmp(sym_name, body->_content_symbols[i]->_ast_val._var_decl._var_name) == 0)
             return body->_content_symbols[i];
     }
-    return get_param_decl_from_name(body, sym_name);
+    if (body->_parent == NULL || body->_parent->_parent == NULL)
+        return get_param_decl_from_name(body, sym_name);
+    return get_sym_decl_from_name(body->_parent->_parent, sym_name);
+}
+
+/**
+ * @brief Add a symbol in the a ast_program_t to add all variables declarations.
+ *
+ * @param sym           The symbol   NODE
+ * @param func          The function NODE
+ *
+ * @return Everything worked ?
+ */
+uint8_t
+add_content_symbol(ast_node_t *sym, ast_program_t *prg)
+{
+    if (sym == NULL || prg == NULL)
+        return KO_OUTPUT;
+    prg->_content_symbols_count++;
+    prg->_content_symbols = REALLOC(prg->_content_symbols, sizeof(ast_node_t *) * prg->_content_symbols_count);
+    prg->_content_symbols[prg->_content_symbols_count - 1] = MALLOC(sizeof(ast_node_t));
+    prg->_content_symbols[prg->_content_symbols_count - 1]->_ast_val = sym->_ast_val;
+    return OK_OUTPUT;
 }

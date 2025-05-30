@@ -1,25 +1,25 @@
 function <i32> puts(<char*> string);
 function <i32> putchar(<i32> char);
 
-function <void> put_nbr(<i32> n)
-{
-    var <i32> tmp = 0;
-
-    if (n >= 10) {
-        put_nbr(n / 10);
-    }
-    tmp = n % 10;
-    putchar(tmp + 48);
-}
-
 function <i32> main()
 {
     var <i32> my_val = #<i32> 10 + #<i32> 10;
     var <char> my_char = 50;
     var <i32> aa = 50;
 
-    if (my_char == #<char> aa) {
-        puts("It's equal daddy.");
+    for (var <char> i = 0; i < #<char> 10; i = i + #<char> 1) {
+        for (var <i32> j = 0; j < 10; j = j + 1) {
+            puts("Hey daddy!");
+            if (j == 5) {
+                puts("I == 5");
+            }
+            if (j == 9) {
+                puts("Warning you are near the end of the for!");
+                if (i == #<char> 9) {
+                    puts("Oh not its the end of the program!");
+                }
+            }
+        }
     }
     return 0;
 }

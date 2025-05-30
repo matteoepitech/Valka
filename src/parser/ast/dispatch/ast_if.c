@@ -8,7 +8,7 @@
 #include "valka.h"
 
 /**
- * @brief Fill the content of the function.
+ * @brief Fill the content of the if.
  *
  * @param current_token  The current token position
  * @param node           The node of the function
@@ -29,6 +29,8 @@ fill_if_content(token_t **current_token, ast_node_t *node)
         }
         create_statement(node->_ast_val._if_statement._if_body, tmp_node);
         curr = *current_token;
+        if (tmp_node->_type == AST_VAR_DECL)
+            add_content_symbol(tmp_node, node->_ast_val._if_statement._if_body);
     }
 }
 

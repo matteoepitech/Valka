@@ -19,10 +19,11 @@ static parsing_src_file_t *
 check_identifier(token_t *token, parsing_src_file_t *p)
 {
     static const char *identifiers[] = {"var", "function", "return", "if",
-        NULL
+        "for", NULL
     };
     static const int identifiers_id[] = {IDENTIFIER_ID_VAR,
-        IDENTIFIER_ID_FUNC, IDENTIFIER_ID_RETURN, IDENTIFIER_ID_IF, -1
+        IDENTIFIER_ID_FUNC, IDENTIFIER_ID_RETURN, IDENTIFIER_ID_IF,
+        IDENTIFIER_ID_FOR, -1
     };
 
     if (token == NULL)

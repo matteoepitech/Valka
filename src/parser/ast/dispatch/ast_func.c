@@ -24,26 +24,6 @@ is_main_function(ast_node_t *node)
 }
 
 /**
- * @brief Add a symbol in the function to add all variables declarations.
- *
- * @param sym           The symbol   NODE
- * @param func          The function NODE
- *
- * @return Everything worked ?
- */
-static uint8_t
-add_content_symbol(ast_node_t *sym, ast_program_t *prg)
-{
-    if (sym == NULL || prg == NULL)
-        return KO_OUTPUT;
-    prg->_content_symbols_count++;
-    prg->_content_symbols = REALLOC(prg->_content_symbols, sizeof(ast_node_t *) * prg->_content_symbols_count);
-    prg->_content_symbols[prg->_content_symbols_count - 1] = MALLOC(sizeof(ast_node_t));
-    prg->_content_symbols[prg->_content_symbols_count - 1]->_ast_val = sym->_ast_val;
-    return OK_OUTPUT;
-}
-
-/**
  * @brief Fill the content of the function.
  *
  * @param current_token  The current token position

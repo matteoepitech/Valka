@@ -48,6 +48,8 @@ char *llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type);
 void collect_all_strings(ast_program_t *prg, FILE *f);
 void collect_strings(ast_node_t *node, FILE *f);
 
+uint8_t dispatch_llvm(FILE *f, ast_statement_t *cur);
+
 /*
  * Folder : core/llvm/dispatch
  */
@@ -61,6 +63,7 @@ uint8_t llvm_if(ast_node_t *node, FILE *f);
 uint8_t llvm_condition(ast_node_t *node, FILE *f, char *dest);
 uint8_t llvm_assign(ast_node_t *node, FILE *f);
 uint8_t llvm_cast(ast_node_t *node, FILE *f, char *dest);
+uint8_t llvm_for(ast_node_t *node, FILE *f);
 
 /*
  * Folder : utils/

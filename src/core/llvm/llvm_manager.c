@@ -15,23 +15,29 @@
  *
  * @return Everything worked?
  */
-static uint8_t dispatch_llvm(FILE *f, ast_statement_t *cur)
+uint8_t
+dispatch_llvm(FILE *f, ast_statement_t *cur)
 {
     ast_node_t *node = cur->_ast_node;
 
-    if (node->_type == AST_ASSIGNMENT)
-        return llvm_assign(node, f);
-    if (node->_type == AST_IF)
-        return llvm_if(node, f);
-    if (node->_type == AST_CALL_SYM)
-        return llvm_call_sym(node, f, NULL);
-    if (node->_type == AST_VAR_DECL)
-        return llvm_var(node, f);
-    if (node->_type == AST_FUNCTION)
-        return llvm_func(node, f);
-    if (node->_type == AST_RETURN)
-        return llvm_return(node, f);
-    return KO_OUTPUT;
+    switch (node->_type) {
+        case AST_ASSIGNMENT:
+            return llvm_assign(node, f);
+        case AST_IF:
+            return llvm_if(node, f);
+        case AST_FOR:
+            return llvm_for(node, f);
+        case AST_CALL_SYM:
+            return llvm_call_sym(node, f, NULL);
+        case AST_VAR_DECL:
+            return llvm_var(node, f);
+        case AST_FUNCTION:
+            return llvm_func(node, f);
+        case AST_RETURN:
+            return llvm_return(node, f);
+        default:
+            return KO_OUTPUT;
+    }
 }
 
 /**

@@ -153,6 +153,22 @@ print_ast(ast_node_t *node, int indent)
             print_function_body(node->_ast_val._if_statement._if_body, indent + 1);
             break;
 
+        case AST_FOR:
+            printf("For statement:\n");
+            print_indent(indent + 1);
+            printf("Init statement:\n");
+            print_ast(node->_ast_val._for_statement._init_statement, indent + 2);
+            print_indent(indent + 1);
+            printf("Condition statement:\n");
+            print_ast(node->_ast_val._for_statement._condition_statement, indent + 2);
+            print_indent(indent + 1);
+            printf("Update statement:\n");
+            print_ast(node->_ast_val._for_statement._update_statement, indent + 2);
+            print_indent(indent + 1);
+            printf("For body:\n");
+            print_function_body(node->_ast_val._for_statement._for_body, indent + 2);
+            break;
+
         case AST_CONDITION:
             printf("Condition : %s\n", condition_operators[node->_ast_val._condition._op_id]._operator);
             print_ast(node->_ast_val._condition._node_a, indent + 1);
