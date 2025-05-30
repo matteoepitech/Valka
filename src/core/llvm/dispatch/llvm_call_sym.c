@@ -8,6 +8,32 @@
 #include "valka.h"
 
 /**
+ * @brief Write the prototype to make a cast.
+ *
+ * @param prototype     The prototype
+ * @param f             The FILE to write in
+ */
+static void
+write_cast_prototype(functions_prototype_t prototype, FILE *f)
+{
+    bool_t need_to_cast = FALSE;
+
+    for (uint32_t i = 0; i < prototype._params_count; i++) {
+        if (prototype._params[i]->_ast_val._var_decl._var_type._id == T_VARG)
+            need_to_cast = TRUE;
+    }
+    if (need_to_cast == FALSE)
+        return;
+    fprintf(f, "(");
+    for (uint32_t i = 0; i < prototype._params_count; i++) {
+        if (i != 0)
+            fprintf(f, ", ");
+        fprintf(f, "%s", prototype._params[i]->_ast_val._var_decl._var_type._llvm_ir);
+    }
+    fprintf(f, ") ");
+}
+
+/**
  * @brief LLVM call symbol declaration.
  *
  * @param node           The AST node
@@ -24,14 +50,15 @@ llvm_call_sym(ast_node_t *node, FILE *f, char *dest)
     char **arg_vars = MALLOC(sizeof(char *) * argc);
 
     for (uint32_t i = 0; i < argc; i++) {
-        arg_vars[i] = llvm_gen_value(node->_ast_val._call_sym._args[i], f, prototype._params[i]->_ast_val._var_decl._var_type);
+        arg_vars[i] = llvm_gen_value(node->_ast_val._call_sym._args[i], f, get_data_from_node(node->_ast_val._call_sym._args[i]));
     }
-    if (dest == NULL)
-        fprintf(f, "call %s @%s(", prototype._return._llvm_ir, func_name);
-    else
-        fprintf(f, "%%%s = call %s @%s(", dest, prototype._return._llvm_ir, func_name);
+    if (dest != NULL)
+        fprintf(f, "%%%s = ", dest);
+    fprintf(f, "call %s ", prototype._return._llvm_ir);
+    write_cast_prototype(prototype, f);
+    fprintf(f, "@%s(", func_name);
     for (uint32_t i = 0; i < argc; i++) {
-        fprintf(f, "%s %%%s", prototype._params[i]->_ast_val._var_decl._var_type._llvm_ir, arg_vars[i]);
+        fprintf(f, "%s %%%s", get_data_from_node(node->_ast_val._call_sym._args[i])._llvm_ir, arg_vars[i]);
         if (i < argc - 1)
             fprintf(f, ", ");
     }

@@ -289,6 +289,7 @@ typedef struct functions_prototype_s {
     char *_func_name;
     data_types_t _return;
     ast_node_t **_params;
+    uint32_t _params_count;
 } functions_prototype_t;
 
 extern functions_prototype_t *prototypes;

@@ -1,7 +1,9 @@
 function <i32> printf(<char*> string, <...>);
+function <i32> dprintf(<i32> fd, <char*> string, <...>);
 
 function <i32> main()
 {
-    printf("coucou %s", "matthias");
+    dprintf(2, "Hello my boy!%c", 10);
+    printf("Hello my name is %s and I'm %d, I live in %s and I'm good at programming ?%c", "Del", 18, "L.A.", 10);
     return 0;
 }

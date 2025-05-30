@@ -27,6 +27,7 @@ add_function_prototype(ast_node_t *func_node)
     new_proto->_func_name = strdup(func_node->_ast_val._function._func_name);
     new_proto->_return = func_node->_ast_val._function._return_data;
     new_proto->_params = func_node->_ast_val._function._params;
+    new_proto->_params_count = func_node->_ast_val._function._params_count;
     prototypes_count = new_count;
 }
 
