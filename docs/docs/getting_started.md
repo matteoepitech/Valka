@@ -31,6 +31,7 @@ function <i32> puts(<char*> string);
 function <i32> main()
 {
     puts("Hello World!");
+    return 0;
 }
 ```
 
