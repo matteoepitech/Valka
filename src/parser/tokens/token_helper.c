@@ -92,6 +92,8 @@ get_next_token_after_call(token_t *node)
 
     if (node->_type == TOKEN_CAST)
         return get_next_token_after_call(node->_next->_next);
+    if (node->_next->_type == TOKEN_MATH_OPERATOR)
+        return get_next_token_after_call(node->_next->_next);
     if (!is_call_sym(node))
         return node->_next;
     curr = node->_next->_next;

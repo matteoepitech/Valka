@@ -1,25 +1,41 @@
 function <i32> puts(<char*> string);
 function <i32> putchar(<i32> char);
 
-function <i32> main()
+function <void> put_nbr(<i32> n)
 {
-    var <i32> my_val = #<i32> 10 + #<i32> 10;
-    var <char> my_char = 50;
-    var <i32> aa = 50;
+    var <i32> tmp = 0;
 
-    for (var <char> i = 0; i < #<char> 10; i = i + #<char> 1) {
-        for (var <i32> j = 0; j < 10; j = j + 1) {
-            puts("Hey daddy!");
-            if (j == 5) {
-                puts("I == 5");
+    if (n >= 10) {
+        put_nbr(n / 10);
+    }
+    tmp = n % 10;
+    putchar(tmp + 48);
+}
+
+function <i32> main(<i32> argc)
+{
+    var <i32> old_result = 0;
+    var <i32> tmp = 0;
+    var <i32> result = 1;
+
+    puts("Result of the fibonacci algorithm:");
+    for (var <i32> i = 0; i < argc; i = i + 1) {
+        tmp = result;
+        result = result + old_result;
+        old_result = tmp;
+        put_nbr(result);
+        putchar(10);
+    }
+    for (var <i32> y = 0; y < 10000; y = y + 1) {
+        for (var <i32> x = 0; x < 10000; x = x + 1) {
+            if (x % 2 == 0) {
+                putchar(88);
             }
-            if (j == 9) {
-                puts("Warning you are near the end of the for!");
-                if (i == #<char> 9) {
-                    puts("Oh not its the end of the program!");
-                }
+            if (x % 2 != 0) {
+                putchar(111);
             }
         }
+        putchar(10);
     }
     return 0;
 }
