@@ -46,12 +46,8 @@ dispatch_ast(token_t **current_token, ast_program_t *parent)
         return make_ast_condition(current_token, parent);
     if (is_start_of_expression(*current_token))
         return make_ast_expression(current_token, parent);
-    //if (type == TOKEN_CAST)
-        //return make_ast_cast(current_token, parent);
     if (type == TOKEN_STRING)
         return make_ast_string(current_token, parent);
-    //if (type == TOKEN_SYMBOL)
-        //return make_ast_symbol(current_token, parent);
     if (type == TOKEN_IDENTIFIER) {
         switch (type_id) {
             case IDENTIFIER_ID_VAR:
