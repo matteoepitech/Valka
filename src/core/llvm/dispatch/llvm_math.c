@@ -24,8 +24,9 @@ llvm_math(ast_node_t *node, FILE *f, char *dest)
     data_types_t data_type = get_highest_data_type(get_data_from_node(left), get_data_from_node(right));
     char *left_val = llvm_gen_value(left, f, data_type);
     char *right_val = llvm_gen_value(right, f, data_type);
+    char *llvm_type = get_write_data_type(data_type);
 
     fprintf(f, "%%%s = %s %s %%%s, %%%s\n", dest, op._llvm_ir,
-        data_type._llvm_ir, left_val, right_val);
+        llvm_type, left_val, right_val);
     return OK_OUTPUT;
 }

@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief LLVM declaration func declaration.
@@ -30,7 +31,7 @@ llvm_declare_func(ast_node_t *node, FILE *f)
             continue;
         }
         fprintf(f, "%s %%%s",
-            node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir,
+            get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type),
             node->_ast_val._function._params[i]->_ast_val._var_decl._var_name);
     }
     fprintf(f, ")\n\n");
@@ -59,7 +60,7 @@ llvm_func(ast_node_t *node, FILE *f)
         if (i != 0)
             fprintf(f, ", ");
         fprintf(f, "%s %%%s",
-            node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir,
+            get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type),
             node->_ast_val._function._params[i]->_ast_val._var_decl._var_name);
     }
     fprintf(f, ")\n");

@@ -20,6 +20,7 @@ llvm_return(ast_node_t *node, FILE *f)
 {
     data_types_t ret_type = node->_ast_val._return._return_data;
     ast_node_t *val = node->_ast_val._return._value;
+    char *llvm_type = get_write_data_type(ret_type);
     char *tmp = NULL;
 
     if (val == NULL)
@@ -27,6 +28,6 @@ llvm_return(ast_node_t *node, FILE *f)
     tmp = llvm_gen_value(val, f, ret_type);
     if (tmp == NULL)
         return KO_OUTPUT;
-    fprintf(f, "ret %s %%%s\n", ret_type._llvm_ir, tmp);
+    fprintf(f, "ret %s %%%s\n", llvm_type, tmp);
     return OK_OUTPUT;
 }

@@ -33,16 +33,25 @@ get_data_with_id(uint32_t id)
 data_types_t
 get_data_type_from_token(token_t *token)
 {
-    if (token == NULL)
-        return (data_types_t) {0};
+    int inside_len = token->_length - 2;
+    char *inside = NULL;
+    int ptr_level = 0;
+
+    if (token == NULL || token->_length < 3) 
+        return (data_types_t){0};
+    inside = strndup_valka(&token->_start[1], inside_len);
+    for (int i = inside_len - 1; i >= 0 && inside[i] == '*'; i--) {
+        ptr_level++;
+        inside[i] = '\0';
+    }
     for (int i = 0; data_types[i]._id != 0; i++) {
-        if (strncmp(&token->_start[1], data_types[i]._valka_ir,
-            token->_length - 2) == 0 && 
-            token->_length - 2 == strlen(data_types[i]._valka_ir)) {
-            return data_types[i];
+        if (strcmp(inside, data_types[i]._valka_ir) == 0) {
+            data_types_t result = data_types[i];
+            result._ptr_level = ptr_level;
+            return result;
         }
     }
-    return (data_types_t) {0};
+    return (data_types_t){0};
 }
 
 /**
@@ -61,8 +70,11 @@ get_data_from_node(ast_node_t *node)
         return get_data_with_id(T_I32);
     if (node->_type == AST_SYMBOL)
         return get_sym_decl_from_name(node->_parent, node->_ast_val._call_sym._sym_name)->_ast_val._var_decl._var_type;
-    if (node->_type == AST_STRING)
-        return get_data_with_id(T_CHAR_P);
+    if (node->_type == AST_STRING) {
+        data_types_t tmp = get_data_with_id(T_CHAR);
+        tmp._ptr_level++;
+        return tmp;
+    }
     if (node->_type == AST_BINARY_OP)
         return get_data_from_node(node->_ast_val._binary_op._left);
     if (node->_type == AST_CAST)
@@ -99,11 +111,32 @@ get_highest_data_type(data_types_t d1, data_types_t d2)
 data_types_t
 get_deref_data_type(data_types_t data)
 {
-    if (data._id == T_I32_P)
-        return get_data_with_id(T_I32);
-    if (data._id == T_CHAR_P)
-        return get_data_with_id(T_CHAR);
-    if (data._id == T_BOOL_P)
-        return get_data_with_id(T_BOOL);
-    return (data_types_t) {0};
+    data_types_t deref_data = data;
+
+    deref_data._ptr_level--;
+    if (deref_data._ptr_level < 0)
+        deref_data._ptr_level = 0;
+    return deref_data;
+}
+
+/**
+ * @brief Get the final type with pointer level.
+ *
+ * @param data          The data
+ *
+ * @return The type.
+ */
+char *
+get_write_data_type(data_types_t data)
+{
+    uint32_t base_len = strlen(data._llvm_ir);
+    uint32_t total_len = base_len + data._ptr_level + 1;
+
+    char *result = MALLOC(total_len);
+    strcpy(result, data._llvm_ir);
+    for (int32_t i = 0; i < data._ptr_level; i++) {
+        result[base_len + i] = '*';
+    }
+    result[total_len - 1] = '\0';
+    return result;
 }

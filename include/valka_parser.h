@@ -19,9 +19,6 @@ extern uint32_t register_id;
     #define T_CHAR 3
     #define T_VOID 4
     #define T_VARG 5
-    #define T_CHAR_P 6
-    #define T_BOOL_P 7
-    #define T_I32_P 8
 
 /* All condition operators in Valka */
 
@@ -40,6 +37,7 @@ typedef struct data_types_s {
     char _valka_ir[32];
     char _llvm_ir[32];
     uint32_t _bits_sz;
+    int32_t _ptr_level;
 } data_types_t;
 
 extern const data_types_t data_types[];
@@ -396,6 +394,7 @@ data_types_t get_data_with_id(uint32_t id);
 data_types_t get_highest_data_type(data_types_t d1, data_types_t d2);
 data_types_t get_data_from_node(ast_node_t *node);
 data_types_t get_deref_data_type(data_types_t data);
+char *get_write_data_type(data_types_t data);
 bin_ope_t get_operator_with_char(char op);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

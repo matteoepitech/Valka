@@ -25,6 +25,7 @@ llvm_condition(ast_node_t *node, FILE *f, char *dest)
     uint32_t op = node->_ast_val._condition._op_id;
     char *left_reg = llvm_gen_value(left, f, data_type);
     char *right_reg = llvm_gen_value(right, f, data_type);
+    char *llvm_type = get_write_data_type(data_type);
     char *llvm_cmp = NULL;
 
     switch (op) {
@@ -50,6 +51,6 @@ llvm_condition(ast_node_t *node, FILE *f, char *dest)
             return 1;
     }
     fprintf(f, "%%%s = icmp %s %s %%%s, %%%s\n", dest, llvm_cmp,
-        data_type._llvm_ir, left_reg, right_reg);
+        llvm_type, left_reg, right_reg);
     return OK_OUTPUT;
 }

@@ -144,7 +144,7 @@ print_ast(ast_node_t *node, int indent)
             printf("Parameters: \n");
             for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
                 print_indent(indent + 1);
-                printf("- %s\n", node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir);
+                printf("- %s -> Ptr Level : %d\n", node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir, node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._ptr_level);
             }
             print_function_body(node->_ast_val._function._func_content, indent + 1);
             print_content_symbol(node->_ast_val._function._func_content, indent + 1);

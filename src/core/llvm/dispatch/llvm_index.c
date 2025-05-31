@@ -26,9 +26,10 @@ llvm_index(UNUSED ast_node_t *node, FILE *f, char *dest)
     char *tmp = llvm_gen_value(node->_ast_val._index._sym, f, val_type);
     char *index_tmp = llvm_gen_value(node->_ast_val._index._index_val, f, idx_type);
     char *ptr_tmp = get_random_var_name();
+    char *llvm_type = get_write_data_type(deref_type);
 
     fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 %%%s\n",
-        ptr_tmp, deref_type._llvm_ir, deref_type._llvm_ir, tmp, index_tmp);
+        ptr_tmp, llvm_type, llvm_type, tmp, index_tmp);
     fprintf(f, "%%%s = load %s, %s* %%%s\n",
         dest, deref_type._llvm_ir, deref_type._llvm_ir, ptr_tmp);
     return OK_OUTPUT;

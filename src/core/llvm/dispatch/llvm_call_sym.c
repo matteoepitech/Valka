@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Write the prototype to make a cast.
@@ -28,7 +29,7 @@ write_cast_prototype(functions_prototype_t prototype, FILE *f)
     for (uint32_t i = 0; i < prototype._params_count; i++) {
         if (i != 0)
             fprintf(f, ", ");
-        fprintf(f, "%s", prototype._params[i]->_ast_val._var_decl._var_type._llvm_ir);
+        fprintf(f, "%s", get_write_data_type(prototype._params[i]->_ast_val._var_decl._var_type));
     }
     fprintf(f, ") ");
 }
@@ -48,6 +49,7 @@ llvm_call_sym(ast_node_t *node, FILE *f, char *dest)
     functions_prototype_t prototype = get_prototype_from_name(func_name);
     uint32_t argc = node->_ast_val._call_sym._args_count;
     char **arg_vars = MALLOC(sizeof(char *) * argc);
+    char *llvm_type = NULL;
 
     for (uint32_t i = 0; i < argc; i++) {
         arg_vars[i] = llvm_gen_value(node->_ast_val._call_sym._args[i], f, get_data_from_node(node->_ast_val._call_sym._args[i]));
@@ -58,7 +60,8 @@ llvm_call_sym(ast_node_t *node, FILE *f, char *dest)
     write_cast_prototype(prototype, f);
     fprintf(f, "@%s(", func_name);
     for (uint32_t i = 0; i < argc; i++) {
-        fprintf(f, "%s %%%s", get_data_from_node(node->_ast_val._call_sym._args[i])._llvm_ir, arg_vars[i]);
+        llvm_type = get_write_data_type(get_data_from_node(node->_ast_val._call_sym._args[i]));
+        fprintf(f, "%s %%%s", llvm_type, arg_vars[i]);
         if (i < argc - 1)
             fprintf(f, ", ");
     }

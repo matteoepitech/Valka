@@ -1,9 +1,15 @@
 function <i32> printf(<char*> string, <...>);
 function <i32> dprintf(<i32> fd, <char*> string, <...>);
 
+function <i32> my_function(<char**> array_of_string)
+{
+    for (var <i32> i = 0; #<i32> array_of_string[i] != 0; i = i + 1) { }
+    return 0;
+}
+
 function <i32> main()
 {
     dprintf(2, "Hello my boy!%c", 10);
-    printf("Hello my name is %s and I'm %d, I live in %s and I'm good at programming ?%c", "Del", 18, "L.A.", 10);
+    printf("Hello my name is %s and I'm %d, I live in %s and I'm good at programming ? %c", "Del", 18, "L.A.", 10);
     return 0;
 }

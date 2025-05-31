@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Generate the parameter loading from a function.
@@ -25,14 +26,12 @@ generate_symbol_from_param(ast_node_t *node, FILE *f, char **tmp)
 
     for (uint32_t i = 0; i < func_params_count; i++) {
         if (strcmp(func_params[i]->_ast_val._var_decl._var_name, node->_ast_val._symbol._sym_name) == 0) {
-            if (func_params[i]->_ast_val._var_decl._var_type._id == T_CHAR_P ||
-                func_params[i]->_ast_val._var_decl._var_type._id == T_I32_P ||
-                func_params[i]->_ast_val._var_decl._var_type._id == T_BOOL_P) {
+            if (func_params[i]->_ast_val._var_decl._var_type._ptr_level > 0) {
                 *tmp = strdup(node->_ast_val._symbol._sym_name);
                 return OK_OUTPUT;
             }
             fprintf(f, "%%%s = add %s 0, %%%s\n", *tmp,
-                func_params[i]->_ast_val._var_decl._var_type._llvm_ir,
+                get_write_data_type(func_params[i]->_ast_val._var_decl._var_type),
                 func_params[i]->_ast_val._var_decl._var_name);
             return OK_OUTPUT;
         }
@@ -53,10 +52,11 @@ char *
 llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
 {
     char *tmp = get_random_var_name();
+    char *llvm_type = get_write_data_type(type);
 
     switch (node->_type) {
         case AST_LITERAL_INT:
-            fprintf(f, "%%%s = add %s 0, %d\n", tmp, type._llvm_ir,
+            fprintf(f, "%%%s = add %s 0, %d\n", tmp, llvm_type,
                 node->_ast_val._int_literal._value);
             break;
         case AST_CALL_SYM:
@@ -66,7 +66,7 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
             if (generate_symbol_from_param(node, f, &tmp) == OK_OUTPUT)
                 break;
             fprintf(f, "%%%s = load %s, %s* %%%s\n", tmp,
-                type._llvm_ir, type._llvm_ir, node->_ast_val._symbol._sym_name);
+                llvm_type, llvm_type, node->_ast_val._symbol._sym_name);
             break;
         case AST_BINARY_OP:
             llvm_math(node, f, tmp);

@@ -21,9 +21,9 @@ llvm_assign(ast_node_t *node, FILE *f)
     char *var_name = node->_ast_val._assignment._var_name;
     ast_node_t *value_node = node->_ast_val._assignment._value;
     data_types_t data = get_sym_decl_from_name(node->_parent, var_name)->_ast_val._var_decl._var_type;
-    char *tmp_val = NULL;
+    char *tmp_val = llvm_gen_value(value_node, f, data);
+    char *llvm_type = get_write_data_type(data);
 
-    tmp_val = llvm_gen_value(value_node, f, data);
-    fprintf(f, "store %s %%%s, %s* %%%s\n\n", data._llvm_ir, tmp_val, data._llvm_ir, var_name);
+    fprintf(f, "store %s %%%s, %s* %%%s\n\n", llvm_type, tmp_val, llvm_type, var_name);
     return OK_OUTPUT;
 }
