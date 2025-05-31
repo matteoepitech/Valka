@@ -94,7 +94,8 @@ collect_strings(ast_node_t *node, FILE *f)
             break;
 
         case AST_INDEX:
-            collect_strings(node->_ast_val._index._index_val, f);
+            for (uint32_t i = 0; i < node->_ast_val._index._index_count; i++)
+                collect_strings(node->_ast_val._index._indices[i], f);
             collect_strings(node->_ast_val._index._sym, f);
             break;
 

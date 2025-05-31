@@ -8,6 +8,10 @@
 #ifndef _VALKA_PARSER_H_
     #define _VALKA_PARSER_H_
 
+    #ifndef MAX_INDICES_DEPTH
+        #define MAX_INDICES_DEPTH 16
+    #endif /* ifndef MAX_INDICES_DEPTH */
+
     #include "misc/types.h"
 
 extern uint32_t register_id;
@@ -260,7 +264,8 @@ struct ast_node_s {
         // Index -> string[i]
         struct {
             ast_node_t *_sym;
-            ast_node_t *_index_val;
+            ast_node_t **_indices;
+            size_t _index_count;
         } _index;
     } _ast_val;
 };

@@ -64,6 +64,8 @@ get_data_type_from_token(token_t *token)
 data_types_t
 get_data_from_node(ast_node_t *node)
 {
+    data_types_t tmp = {0};
+
     if (node->_type == AST_CALL_SYM)
         return get_prototype_from_name(node->_ast_val._call_sym._sym_name)._return;
     if (node->_type == AST_LITERAL_INT)
@@ -71,7 +73,7 @@ get_data_from_node(ast_node_t *node)
     if (node->_type == AST_SYMBOL)
         return get_sym_decl_from_name(node->_parent, node->_ast_val._call_sym._sym_name)->_ast_val._var_decl._var_type;
     if (node->_type == AST_STRING) {
-        data_types_t tmp = get_data_with_id(T_CHAR);
+        tmp = get_data_with_id(T_CHAR);
         tmp._ptr_level++;
         return tmp;
     }
@@ -79,8 +81,11 @@ get_data_from_node(ast_node_t *node)
         return get_data_from_node(node->_ast_val._binary_op._left);
     if (node->_type == AST_CAST)
         return node->_ast_val._cast._cast_type;
-    if (node->_type == AST_INDEX)
-        return get_deref_data_type(get_data_from_node(node->_ast_val._index._sym));
+    if (node->_type == AST_INDEX) {
+        tmp = get_data_from_node(node->_ast_val._index._sym);
+        tmp._ptr_level -= node->_ast_val._index._index_count;
+        return tmp;
+    }
     PERROR("This type is not handled yet!");
     return (data_types_t) {0};
 }

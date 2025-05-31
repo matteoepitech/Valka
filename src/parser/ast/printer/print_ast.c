@@ -104,9 +104,13 @@ print_ast(ast_node_t *node, int indent)
         case AST_INDEX:
             printf("Index for:\n");
             print_ast(node->_ast_val._index._sym, indent + 1);
-            print_indent(indent);
-            printf("Value:\n");
-            print_ast(node->_ast_val._index._index_val, indent + 1);
+            print_indent(indent); 
+            printf("Indices (%zu):\n", node->_ast_val._index._index_count);
+            for (size_t i = 0; i < node->_ast_val._index._index_count; i++) {
+                print_indent(indent + 1);
+                printf("[%zu]:\n", i);
+                print_ast(node->_ast_val._index._indices[i], indent + 2);
+            }
             break;
 
         case AST_BINARY_OP:
@@ -144,7 +148,8 @@ print_ast(ast_node_t *node, int indent)
             printf("Parameters: \n");
             for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
                 print_indent(indent + 1);
-                printf("- %s -> Ptr Level : %d\n", node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._llvm_ir, node->_ast_val._function._params[i]->_ast_val._var_decl._var_type._ptr_level);
+                printf("- %s\n",
+                    get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type));
             }
             print_function_body(node->_ast_val._function._func_content, indent + 1);
             print_content_symbol(node->_ast_val._function._func_content, indent + 1);
