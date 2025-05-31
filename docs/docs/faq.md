@@ -4,7 +4,7 @@
 > Answer: Not for the moment
 
 2. **Can I malloc, free, realloc ?**
-> Answer: Not for the moment
+> Answer: Since it's using the libC then yes, you can!
 
 3. **Can I make static arrays ?**
 > Answer: Not for the moment

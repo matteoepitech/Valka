@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Generate the parameter loading from a function.
