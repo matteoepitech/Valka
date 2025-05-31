@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Write the prototype to make a cast.
@@ -55,7 +56,7 @@ llvm_call_sym(ast_node_t *node, FILE *f, char *dest)
     }
     if (dest != NULL)
         fprintf(f, "%%%s = ", dest);
-    fprintf(f, "call %s ", prototype._return._llvm_ir);
+    fprintf(f, "call %s ", get_write_data_type(prototype._return));
     write_cast_prototype(prototype, f);
     fprintf(f, "@%s(", func_name);
     for (uint32_t i = 0; i < argc; i++) {

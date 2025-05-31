@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Create a token by passing some parameters.
@@ -85,20 +84,23 @@ is_start_of_expression(token_t *token)
  *
  * @return The next token.
  */
-token_t *
-get_next_token_after_call(token_t *node)
+token_t * get_next_token_after_call(token_t *node)
 {
     token_t *curr = node;
     int paren_count = 1;
 
     if (node->_type == TOKEN_SYMBOL && node->_next->_type == TOKEN_SQUARE_BRACKET_OPEN) {
-        curr = node->_next->_next;
-        while (curr && paren_count > 0) {
-            if (curr->_type == TOKEN_SQUARE_BRACKET_OPEN)
-                paren_count++;
-            else if (curr->_type == TOKEN_SQUARE_BRACKET_CLOSE)
-                paren_count--;
+        curr = node->_next;
+        while (curr && curr->_type == TOKEN_SQUARE_BRACKET_OPEN) {
+            paren_count = 1;
             curr = curr->_next;
+            while (curr && paren_count > 0) {
+                if (curr->_type == TOKEN_SQUARE_BRACKET_OPEN)
+                    paren_count++;
+                else if (curr->_type == TOKEN_SQUARE_BRACKET_CLOSE)
+                    paren_count--;
+                curr = curr->_next;
+            }
         }
         return curr;
     }

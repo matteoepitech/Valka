@@ -1,14 +1,21 @@
 function <i32> printf(<char*> string, <...>);
+function <char*> calloc(<i32> size);
 function <i32> dprintf(<i32> fd, <char*> string, <...>);
 
-function <i32> my_function(<i32**> array_of_string)
+function <i32> my_function()
 {
-    for (var <i32> i = 0; array_of_string[i][0] != 0; i = i + 1) { }
+    var <i32*> array_of_int = calloc(4 * 10);
+
+    array_of_int[3] = 42;
+    for (var <i32> i = 0; array_of_int[i] == 0; i = i + 1) {
+        printf("%d%c", array_of_int[i], 10);
+    }
     return 0;
 }
 
 function <i32> main()
 {
+    my_function();
     dprintf(2, "Hello my boy!%c", 10);
     printf("Hello my name is %s and I'm %d, I live in %s and I'm good at programming ? %c", "Del", 18, "L.A.", 10);
     return 0;

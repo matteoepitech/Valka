@@ -131,7 +131,8 @@ print_ast(ast_node_t *node, int indent)
             break;
 
         case AST_ASSIGNMENT:
-            printf("Assignment: %s\n", node->_ast_val._assignment._var_name);
+            printf("Assignment:\n");
+            print_ast(node->_ast_val._assignment._assigned, indent + 1);
             print_indent(indent);
             printf("Value:\n");
             print_ast(node->_ast_val._assignment._value, indent + 1);

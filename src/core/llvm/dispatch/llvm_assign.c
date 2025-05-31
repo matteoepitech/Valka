@@ -4,7 +4,6 @@
 ** File description:
 ** LLVM for assignment declaration
 */
-
 #include "valka.h"
 
 /**
@@ -18,12 +17,22 @@
 uint8_t
 llvm_assign(ast_node_t *node, FILE *f)
 {
-    char *var_name = node->_ast_val._assignment._var_name;
+    ast_node_t *assigned_node = node->_ast_val._assignment._assigned;
     ast_node_t *value_node = node->_ast_val._assignment._value;
-    data_types_t data = get_sym_decl_from_name(node->_parent, var_name)->_ast_val._var_decl._var_type;
-    char *tmp_val = llvm_gen_value(value_node, f, data);
-    char *llvm_type = get_write_data_type(data);
-
-    fprintf(f, "store %s %%%s, %s* %%%s\n\n", llvm_type, tmp_val, llvm_type, var_name);
+    data_types_t data = get_data_from_node(assigned_node);
+    char *assigned_name = NULL;
+    char *tmp_val = NULL;
+    char *llvm_type = NULL;
+    
+    if (assigned_node->_type == AST_SYMBOL) {
+        assigned_name = assigned_node->_ast_val._symbol._sym_name;
+    } else if (assigned_node->_type == AST_INDEX) {
+        assigned_name = llvm_gen_address(assigned_node, f);
+    } else {
+        assigned_name = llvm_gen_value(assigned_node, f, data);
+    }
+    tmp_val = llvm_gen_value(value_node, f, data);
+    llvm_type = get_write_data_type(data);
+    fprintf(f, "store %s %%%s, %s* %%%s\n\n", llvm_type, tmp_val, llvm_type, assigned_name);
     return OK_OUTPUT;
 }

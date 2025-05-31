@@ -41,6 +41,7 @@ generate_symbol_from_param(ast_node_t *node, FILE *f, char **tmp)
 
 /**
  * @brief Generate the right line of LLVM IR with the AST type.
+ *        And give the value with a load.
  *
  * @param node          The AST node
  * @param f             The FILE to write in
@@ -84,5 +85,38 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
             break;
     }
     return tmp;
+}
+
+/**
+ * @brief Same as llvm_gen_value but give the address (ptr not the loaded val).
+ *
+ * @param node          The AST node
+ * @param f             The FILE to write in
+ *
+ * @return The var name which is the ptr to the val.
+ */
+char *
+llvm_gen_address(ast_node_t *node, FILE *f)
+{
+    data_types_t current_val_type = get_data_from_node(node->_ast_val._index._sym);
+    char *current_tmp = llvm_gen_value(node->_ast_val._index._sym, f, current_val_type);
+    data_types_t idx_type = {0};
+    data_types_t deref_type = {0};
+    char *index_tmp = NULL;
+    char *ptr_tmp = NULL;
+    char *llvm_type = NULL;
+    
+    for (size_t i = 0; i < node->_ast_val._index._index_count; i++) {
+        idx_type = get_data_from_node(node->_ast_val._index._indices[i]);
+        deref_type = get_deref_data_type(current_val_type);
+        index_tmp = llvm_gen_value(node->_ast_val._index._indices[i], f, idx_type);
+        ptr_tmp = get_random_var_name();
+        llvm_type = get_write_data_type(deref_type); 
+        fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 %%%s\n",
+            ptr_tmp, llvm_type, llvm_type, current_tmp, index_tmp);
+        current_tmp = ptr_tmp;
+        current_val_type = deref_type;
+    }
+    return current_tmp;
 }
 

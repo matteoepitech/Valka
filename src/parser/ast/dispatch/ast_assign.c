@@ -23,11 +23,9 @@ make_ast_assign(token_t **current_token, ast_program_t *parent)
     node->_type = AST_ASSIGNMENT;
     node->_loc = curr->_loc;
     node->_parent = parent;
-    node->_ast_val._assignment._var_name = strndup_valka(curr->_start, curr->_length);
-    if (curr->_next->_type != TOKEN_ASSIGN) {
-        PERROR("An assignment without assign operator ? For %s", node->_ast_val._assignment._var_name);
-    }
-    move_token(current_token, 2);
+    node->_ast_val._assignment._assigned = make_ast_symbol(current_token, parent);
+    if ((*current_token)->_type == TOKEN_ASSIGN)
+        move_token(current_token, 1);
     node->_ast_val._assignment._value = dispatch_ast(current_token, parent);
     return node;
 }

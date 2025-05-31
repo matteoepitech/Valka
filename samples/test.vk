@@ -1,23 +1,8 @@
-function <i32> puts(<char*> string);
-function <i32> putchar(<i32> char);
-function <i32> printf(<char*> string, <...>);
-
-function <void> put_nbr(<i32> n)
-{
-    var <i32> tmp = 0;
-
-    if (n >= 10) {
-        put_nbr(n / 10);
-    }
-    tmp = n % 10;
-    putchar(tmp + 48);
-}
-
 function <i32> main()
 {
-    var <i32> my_number = 1 - -1;
+    var <i32> my_var = 0;
+    var <i32> iteration_x = my_var;
 
-    printf("%d", my_number);
-    putchar(1 * 2 * 3 * 2 - 2);
+    my_var = 0;
     return 0;
 }

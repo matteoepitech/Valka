@@ -222,7 +222,7 @@ struct ast_node_s {
         } _var_decl;
         // Assignment -> i = 10
         struct {
-            char *_var_name;
+            ast_node_t *_assigned;
             ast_node_t *_value;
         } _assignment;
         // Function -> function main() { }
