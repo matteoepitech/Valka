@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief LLVM condition declaration.
@@ -30,27 +29,27 @@ llvm_condition(ast_node_t *node, FILE *f, char *dest)
 
     switch (op) {
         case OP_EQUAL:
-            llvm_cmp = "eq";
+            llvm_cmp = data_type._id == T_FLOAT ? "oeq" : "eq";
             break;
         case OP_NOT_EQUAL:
-            llvm_cmp = "ne";
+            llvm_cmp = data_type._id == T_FLOAT ? "one" : "ne";
             break;
         case OP_GREATER:
-            llvm_cmp = "sgt";
+            llvm_cmp = data_type._id == T_FLOAT ? "ogt" : "sgt";
             break;
         case OP_LOWER:
-            llvm_cmp = "slt";
+            llvm_cmp = data_type._id == T_FLOAT ? "olt" : "slt";
             break;
         case OP_GREATER_EQ:
-            llvm_cmp = "sge";
+            llvm_cmp = data_type._id == T_FLOAT ? "oge" : "sge";
             break;
         case OP_LOWER_EQ:
-            llvm_cmp = "sle";
+            llvm_cmp = data_type._id == T_FLOAT ? "ole" : "sle";
             break;
         default:
             return 1;
     }
-    fprintf(f, "%%%s = icmp %s %s %%%s, %%%s\n", dest, llvm_cmp,
-        llvm_type, left_reg, right_reg);
+    fprintf(f, "%%%s = %ccmp %s %s %%%s, %%%s\n", dest,
+        data_type._id == T_FLOAT ? 'f' : 'i', llvm_cmp, llvm_type, left_reg, right_reg);
     return OK_OUTPUT;
 }

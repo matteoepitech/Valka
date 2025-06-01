@@ -47,6 +47,7 @@ void generate_llvm_global(FILE *f, ast_program_t *prg);
 char *llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type);
 char *llvm_gen_address(ast_node_t *node, FILE *f, bool_t need_load);
 void collect_all_strings(ast_program_t *prg, FILE *f);
+uint8_t generate_load_literal(char *dest, data_types_t var_type, char *var_name, FILE *f);
 void collect_strings(ast_node_t *node, FILE *f);
 
 uint8_t dispatch_llvm(FILE *f, ast_statement_t *cur);

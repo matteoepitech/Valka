@@ -23,6 +23,7 @@ extern uint32_t register_id;
     #define T_CHAR 3
     #define T_VOID 4
     #define T_VARG 5
+    #define T_FLOAT 6
 
 /* All condition operators in Valka */
 
@@ -79,28 +80,29 @@ extern const condition_operator_t condition_operators[];
  * @brief All token types.
  */
 typedef enum {
-    TOKEN_START,
-    TOKEN_SYMBOL,
-    TOKEN_IDENTIFIER,
-    TOKEN_VAR_TYPE,
-    TOKEN_FUNC,
-    TOKEN_ASSIGN,
-    TOKEN_INT_LITERAL,
-    TOKEN_STRING,
-    TOKEN_COMMENT_BIG,
-    TOKEN_COMMENT_SMALL,
-    TOKEN_PARENT_OPEN,
-    TOKEN_PARENT_CLOSE,
-    TOKEN_BRACKET_OPEN,
-    TOKEN_BRACKET_CLOSE,
-    TOKEN_SQUARE_BRACKET_OPEN,
-    TOKEN_SQUARE_BRACKET_CLOSE,
-    TOKEN_MATH_OPERATOR,
-    TOKEN_SEMICOLON,
-    TOKEN_COMMA,
-    TOKEN_CONDITION,
-    TOKEN_CAST,
-    TOKEN_END
+    TOKEN_START = 0,
+    TOKEN_SYMBOL = 1,
+    TOKEN_IDENTIFIER = 2,
+    TOKEN_VAR_TYPE = 3,
+    TOKEN_FUNC = 4,
+    TOKEN_ASSIGN = 5,
+    TOKEN_INT_LITERAL = 6,
+    TOKEN_STRING = 7,
+    TOKEN_COMMENT_BIG = 8,
+    TOKEN_COMMENT_SMALL = 9,
+    TOKEN_PARENT_OPEN = 10,
+    TOKEN_PARENT_CLOSE = 11,
+    TOKEN_BRACKET_OPEN = 12,
+    TOKEN_BRACKET_CLOSE = 13,
+    TOKEN_SQUARE_BRACKET_OPEN = 14,
+    TOKEN_SQUARE_BRACKET_CLOSE = 15,
+    TOKEN_MATH_OPERATOR = 16,
+    TOKEN_SEMICOLON = 17,
+    TOKEN_COMMA = 18,
+    TOKEN_CONDITION = 19,
+    TOKEN_CAST = 20,
+    TOKEN_FLOAT_LITERAL = 21,
+    TOKEN_END = 22,
 } token_type_t;
 
 /**
@@ -123,6 +125,7 @@ typedef enum {
     AST_FOR = 13,
     AST_WHILE = 14,
     AST_INDEX = 15,
+    AST_LITERAL_FLOAT = 16,
 } ast_node_type_t;
 
 /**
@@ -190,6 +193,10 @@ struct ast_node_s {
         struct {
             int _value;
         } _int_literal;
+        // Float literal -> 10.5, 1111.1111
+        struct {
+            double _value;
+        } _float_literal;
         // String -> "hello", "world", ...
         struct {
             char *_value;
@@ -379,6 +386,7 @@ ast_node_t *make_ast_cast(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_for(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_while(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_index(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_float_literal(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/

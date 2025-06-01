@@ -29,13 +29,39 @@ generate_symbol_from_param(ast_node_t *node, FILE *f, char **tmp)
                 *tmp = strdup(node->_ast_val._symbol._sym_name);
                 return OK_OUTPUT;
             }
-            fprintf(f, "%%%s = add %s 0, %%%s\n", *tmp,
-                get_write_data_type(func_params[i]->_ast_val._var_decl._var_type),
-                func_params[i]->_ast_val._var_decl._var_name);
+            generate_load_literal(*tmp,
+                func_params[i]->_ast_val._var_decl._var_type,
+                func_params[i]->_ast_val._var_decl._var_name, f);
             return OK_OUTPUT;
         }
     }
     return KO_OUTPUT;
+}
+
+/**
+ * @brief Generate a load of a literal (float / int).
+ *
+ * @param dest          The destination
+ * @param var_type      The var type
+ * @param var_name      The var name
+ * @param f             The FILE to write in
+ *
+ * @return The OK_OUTPUT or KO_OUTPUT.
+ */
+uint8_t
+generate_load_literal(char *dest, data_types_t var_type, char *var_name, FILE *f)
+{
+    if (var_type._id == 0 || dest == NULL || var_name == NULL || f == NULL)
+        return KO_OUTPUT;
+    if (var_type._id == T_FLOAT) {
+        fprintf(f, "%%%s = fadd %s %.6e, %%%s\n",
+            dest, get_write_data_type(var_type), 0.0f, var_name);
+    }
+    else {
+        fprintf(f, "%%%s = add %s 0, %%%s\n",
+            dest, get_write_data_type(var_type), var_name);
+    }
+    return OK_OUTPUT;
 }
 
 /**
@@ -58,6 +84,10 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
         case AST_LITERAL_INT:
             fprintf(f, "%%%s = add %s 0, %d\n", tmp, llvm_type,
                 node->_ast_val._int_literal._value);
+            break;
+        case AST_LITERAL_FLOAT:
+            fprintf(f, "%%%s = fadd %s %e, %e\n", tmp, llvm_type,
+                    0.0f, node->_ast_val._float_literal._value);
             break;
         case AST_CALL_SYM:
             llvm_call_sym(node, f, tmp);

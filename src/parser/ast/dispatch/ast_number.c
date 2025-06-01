@@ -56,6 +56,8 @@ parse_expression(token_t **current_token, ast_program_t *parent, int min_prio)
 
     if (curr->_type == TOKEN_INT_LITERAL)
         left = make_ast_int_literal(current_token, parent);
+    else if (curr->_type == TOKEN_FLOAT_LITERAL)
+        left = make_ast_float_literal(current_token, parent);
     else if (is_call_sym(curr))
         left = make_ast_call_sym(current_token, parent);
     else if (curr->_type == TOKEN_SYMBOL)
@@ -116,6 +118,38 @@ make_ast_int_literal(token_t **current_token, ast_program_t *parent)
     node->_loc = curr->_loc;
     node->_parent = parent;
     node->_ast_val._int_literal._value = val_l;
+    move_token(current_token, 1);
+    return node;
+}
+
+/**
+ * @brief Make the AST for the number declarations.
+ *        This can handle float.
+ *
+ * @param current_token The current token
+ *
+ * @return The AST node.
+ */
+ast_node_t *
+make_ast_float_literal(token_t **current_token, ast_program_t *parent)
+{
+    ast_node_t *node = NULL;
+    token_t *curr = *current_token;
+    char *tmp_val_string = NULL;
+    char *endptr = NULL;
+    double val_d = 0;
+
+    if (curr == NULL || curr->_type != TOKEN_FLOAT_LITERAL)
+        return NULL;
+    tmp_val_string = strndup_valka(curr->_start, curr->_length);
+    val_d = strtod(tmp_val_string, &endptr);
+    if (endptr == tmp_val_string || *endptr != '\0')
+        return NULL;
+    node = MALLOC(sizeof(ast_node_t));
+    node->_type = AST_LITERAL_FLOAT;
+    node->_loc = curr->_loc;
+    node->_parent = parent;
+    node->_ast_val._float_literal._value = val_d;
     move_token(current_token, 1);
     return node;
 }

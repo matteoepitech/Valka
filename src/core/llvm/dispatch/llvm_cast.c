@@ -34,6 +34,11 @@ llvm_cast(ast_node_t *node, FILE *f, char *dest)
         fprintf(f, "%%%s = trunc i32 %%%s to i8\n", dest, src);
         return OK_OUTPUT;
     }
+    if (from._id == T_I32 && to._id == T_FLOAT) {
+        fprintf(f, "%%%s = sitofp i32 %%%s to double\n", dest, src);
+        return OK_OUTPUT;
+    }
+
     if (from._id == T_BOOL && to._id == T_I32) {
         fprintf(f, "%%%s = zext i1 %%%s to i32\n", dest, src);
         return OK_OUTPUT;
@@ -42,12 +47,34 @@ llvm_cast(ast_node_t *node, FILE *f, char *dest)
         fprintf(f, "%%%s = zext i1 %%%s to i8\n", dest, src);
         return OK_OUTPUT;
     }
+    if (from._id == T_BOOL && to._id == T_FLOAT) {
+        fprintf(f, "%%%s = uitofp i1 %%%s to double\n", dest, src);
+        return OK_OUTPUT;
+    }
+
     if (from._id == T_CHAR && to._id == T_I32) {
         fprintf(f, "%%%s = zext i8 %%%s to i32\n", dest, src);
         return OK_OUTPUT;
     }
     if (from._id == T_CHAR && to._id == T_BOOL) {
         fprintf(f, "%%%s = icmp ne i8 %%%s, 0\n", dest, src);
+        return OK_OUTPUT;
+    }
+    if (from._id == T_CHAR && to._id == T_FLOAT) {
+        fprintf(f, "%%%s = sitofp i8 %%%s to double\n", dest, src);
+        return OK_OUTPUT;
+    }
+
+    if (from._id == T_FLOAT && to._id == T_I32) {
+        fprintf(f, "%%%s = fptosi double %%%s to i32\n", dest, src);
+        return OK_OUTPUT;
+    }
+    if (from._id == T_FLOAT && to._id == T_CHAR) {
+        fprintf(f, "%%%s = fptosi double %%%s to i8\n", dest, src);
+        return OK_OUTPUT;
+    }
+    if (from._id == T_FLOAT && to._id == T_BOOL) {
+        fprintf(f, "%%%s = fcmp une double %%%s, 0.0\n", dest, src);
         return OK_OUTPUT;
     }
     PERROR("Cast not available");

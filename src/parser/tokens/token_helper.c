@@ -62,6 +62,7 @@ is_start_of_expression(token_t *token)
     if (token == NULL)
         return FALSE;
     if (token->_type == TOKEN_INT_LITERAL ||
+        token->_type == TOKEN_FLOAT_LITERAL ||
         token->_type == TOKEN_SYMBOL ||
         token->_type == TOKEN_CAST)
         return TRUE;

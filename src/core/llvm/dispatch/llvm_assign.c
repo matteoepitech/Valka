@@ -27,7 +27,7 @@ llvm_assign(ast_node_t *node, FILE *f)
     if (assigned_node->_type == AST_SYMBOL) {
         assigned_name = assigned_node->_ast_val._symbol._sym_name;
     } else if (assigned_node->_type == AST_INDEX) {
-        assigned_name = llvm_gen_address(assigned_node, f);
+        assigned_name = llvm_gen_address(assigned_node, f, TRUE);
     } else {
         assigned_name = llvm_gen_value(assigned_node, f, data);
     }

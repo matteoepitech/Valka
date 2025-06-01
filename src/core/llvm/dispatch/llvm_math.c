@@ -25,8 +25,13 @@ llvm_math(ast_node_t *node, FILE *f, char *dest)
     char *left_val = llvm_gen_value(left, f, data_type);
     char *right_val = llvm_gen_value(right, f, data_type);
     char *llvm_type = get_write_data_type(data_type);
+    const char *op_ir = op._llvm_ir;
 
-    fprintf(f, "%%%s = %s %s %%%s, %%%s\n", dest, op._llvm_ir,
-        llvm_type, left_val, right_val);
+    if (data_type._id == T_FLOAT) {
+        if (op._operator == '/' || op._operator == '%')
+            op_ir++;
+        fprintf(f, "%%%s = f%s %s %%%s, %%%s\n", dest, op_ir, llvm_type, left_val, right_val);
+    } else
+        fprintf(f, "%%%s = %s %s %%%s, %%%s\n", dest, op._llvm_ir, llvm_type, left_val, right_val);
     return OK_OUTPUT;
 }

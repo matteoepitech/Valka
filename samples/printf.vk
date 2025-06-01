@@ -12,5 +12,12 @@ function <i32> main(<i32> argc, <char**> argv)
     mvvv[0][4] = 48;
     printf("%s%c", mvvv[0], 10);
     printf("%c%c", mvvv[0][4], 10);
+
+    var <float> my_float = 10.5 / #<float> 5;
+
+    my_float = my_float * 5.0;
+    if (my_float == 10.5) {
+        printf("yay!%c", 10);
+    }
     return 0;
 }

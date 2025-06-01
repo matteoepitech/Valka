@@ -96,6 +96,10 @@ print_ast(ast_node_t *node, int indent)
         case AST_LITERAL_INT:
             printf("Int literal: %d\n", node->_ast_val._int_literal._value);
             break;
+        
+        case AST_LITERAL_FLOAT:
+            printf("Float literal: %f\n", node->_ast_val._float_literal._value);
+            break;
 
         case AST_STRING:
             printf("String: \"%s\"\n", node->_ast_val._string._value);
