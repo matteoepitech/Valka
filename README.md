@@ -9,6 +9,12 @@
 
 This programming language is a personal project I’m working on in my spare time to get familiar with LLVM technology. It’s heavily inspired by C and borrows some syntax from Rust. Enjoy!
 
+## Dependencies  
+If you want to use **ValkaC** (Valka Compiler), be sure to have these dependencies installed on your computer:
+
+- [clang](https://clang.llvm.org/) – for linking with the C runtime  
+- [llc](https://llvm.org/) – for generating native assembly from LLVM IR
+
 ## Build
 
 To build the compiler `valkc` for `Linux` or `MacOS` run this:
