@@ -20,7 +20,7 @@ uint8_t
 llvm_index(UNUSED ast_node_t *node, FILE *f, char *dest)
 {
     data_types_t current_val_type = get_data_from_node(node->_ast_val._index._sym);
-    char *address_tmp = llvm_gen_address(node, f);
+    char *address_tmp = llvm_gen_address(node, f, TRUE);
 
     current_val_type._ptr_level -= node->_ast_val._index._index_count;
     fprintf(f, "%%%s = load %s, %s* %%%s\n", dest,

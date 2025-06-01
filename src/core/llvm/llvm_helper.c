@@ -95,7 +95,7 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
  * @return The var name which is the ptr to the val.
  */
 char *
-llvm_gen_address(ast_node_t *node, FILE *f)
+llvm_gen_address(ast_node_t *node, FILE *f, bool_t need_load)
 {
     data_types_t current_val_type = get_data_from_node(node->_ast_val._index._sym);
     char *current_tmp = llvm_gen_value(node->_ast_val._index._sym, f, current_val_type);
@@ -103,6 +103,7 @@ llvm_gen_address(ast_node_t *node, FILE *f)
     data_types_t deref_type = {0};
     char *index_tmp = NULL;
     char *ptr_tmp = NULL;
+    char *load_tmp = NULL;
     char *llvm_type = NULL;
     
     for (size_t i = 0; i < node->_ast_val._index._index_count; i++) {
@@ -113,9 +114,14 @@ llvm_gen_address(ast_node_t *node, FILE *f)
         llvm_type = get_write_data_type(deref_type); 
         fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 %%%s\n",
             ptr_tmp, llvm_type, llvm_type, current_tmp, index_tmp);
-        current_tmp = ptr_tmp;
+        if (need_load && i < node->_ast_val._index._index_count - 1) {
+            load_tmp = get_random_var_name();
+            fprintf(f, "%%%s = load %s*, %s** %%%s\n",
+                load_tmp, llvm_type, llvm_type, ptr_tmp);
+            current_tmp = load_tmp;
+        } else
+            current_tmp = ptr_tmp;
         current_val_type = deref_type;
     }
     return current_tmp;
 }
-
