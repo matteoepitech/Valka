@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 // @TODO remove this.
 static void print_ast(ast_node_t *node, int indent);
@@ -55,11 +54,11 @@ print_function_body(ast_program_t *prg, int indent)
 }
 
 /**
-* @brief Print the content symbols of a function
-*
-* @param func
-* @param indent
-*/
+ * @brief Print the content symbols of a function
+ *
+ * @param func
+ * @param indent
+ */
 static void
 print_content_symbol(ast_program_t *prg, int indent)
 {

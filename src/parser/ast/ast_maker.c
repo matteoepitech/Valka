@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Move the token.

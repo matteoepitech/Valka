@@ -8,73 +8,7 @@
 #ifndef _VALKA_PARSER_H_
     #define _VALKA_PARSER_H_
 
-    #ifndef MAX_INDICES_DEPTH
-        #define MAX_INDICES_DEPTH 16
-    #endif /* ifndef MAX_INDICES_DEPTH */
-
     #include "misc/types.h"
-
-extern uint32_t register_id;
-
-/* All data types in Valka */
-
-    #define T_I32 1
-    #define T_BOOL 2
-    #define T_CHAR 3
-    #define T_VOID 4
-    #define T_VARG 5
-    #define T_FLOAT 6
-
-/* All condition operators in Valka */
-
-    #define OP_EQUAL 1
-    #define OP_GREATER_EQ 2
-    #define OP_LOWER_EQ 3
-    #define OP_GREATER 4
-    #define OP_LOWER 5
-    #define OP_NOT_EQUAL 6
-
-/**
- * @brief The data type.
- */
-typedef struct data_types_s {
-    uint32_t _id;
-    char _valka_ir[32];
-    char _llvm_ir[32];
-    uint32_t _bits_sz;
-    int32_t _ptr_level;
-} data_types_t;
-
-extern const data_types_t data_types[];
-
-/**
- * @brief The condition operator.
- */
-typedef struct condition_operator_s {
-    char _operator[32];
-    uint32_t _id;
-} condition_operator_t;
-
-extern const condition_operator_t condition_operators[];
-
-    #define IS_VALID_DATA_TYPE(x) (x._id != 0)
-
-    /* Types for somes AST */
-    #define IDENTIFIER_ID_VAR 1
-    #define IDENTIFIER_ID_FUNC 2
-    #define IDENTIFIER_ID_RETURN 3
-    #define IDENTIFIER_ID_IF 4
-    #define IDENTIFIER_ID_FOR 5
-    #define IDENTIFIER_ID_WHILE 6
-
-    #ifndef START_ENTRY_POINT
-        #define START_ENTRY_POINT "main"
-    #endif
-
-    /* Some builtins */
-    #ifndef SYSCALL_BUILTIN_NAME
-        #define SYSCALL_BUILTIN_NAME "syscall"
-    #endif
 
 /**
  * @brief All token types.
@@ -129,6 +63,25 @@ typedef enum {
 } ast_node_type_t;
 
 /**
+ * @brief The data type.
+ */
+typedef struct data_types_s {
+    uint32_t _id;
+    char _valka_ir[32];
+    char _llvm_ir[32];
+    uint32_t _bits_sz;
+    int32_t _ptr_level;
+} data_types_t;
+
+/**
+ * @brief The condition operator.
+ */
+typedef struct condition_operator_s {
+    char _operator[32];
+    uint32_t _id;
+} condition_operator_t;
+
+/**
  * @brief Location mean the line and column of a syntax error for example.
  */
 typedef struct location_s {
@@ -164,7 +117,6 @@ typedef struct {
  * @brief The ast_node_t structure which contains all sub AST and informations.
  */
 typedef struct ast_node_s ast_node_t;
-
 typedef struct ast_program_s ast_program_t;
 
 /**
@@ -175,7 +127,6 @@ typedef struct ast_statement_s {
     uint32_t _ast_id;
     struct ast_statement_s *_next;
 } ast_statement_t;
-
 
 /**
  * @brief ast_node_t, using union to make all NODE.
@@ -280,17 +231,10 @@ struct ast_node_s {
 /**
  * @brief Binary operation types.
  */
-
-    #ifndef OPERATORS_STR
-        #define OPERATORS_STR "/+-*%"
-    #endif
-
 typedef struct bin_ope_s {
     char _operator;
     char _llvm_ir[32];
 } bin_ope_t;
-
-extern const bin_ope_t bin_operations[];
 
 /**
  * @brief Functions prototypes declarations.
@@ -302,13 +246,10 @@ typedef struct functions_prototype_s {
     uint32_t _params_count;
 } functions_prototype_t;
 
-extern functions_prototype_t *prototypes;
-extern uint32_t prototypes_count;
-
 /**
-* @brief All statement is basically the whole source code.
-*        The ast_program_t contains everything.
-*/
+ * @brief All statement is basically the whole source code.
+ *        The ast_program_t contains everything.
+ */
 struct ast_program_s {
     functions_prototype_t *_prototypes;
     uint32_t _prototypes_count;
@@ -319,6 +260,15 @@ struct ast_program_s {
     ast_node_t **_content_symbols;
     uint32_t _content_symbols_count;
 };
+
+/* All externes values */
+extern uint32_t register_id;
+extern const data_types_t data_types[];
+extern const condition_operator_t condition_operators[];
+extern const bin_ope_t bin_operations[];
+
+extern functions_prototype_t *prototypes;
+extern uint32_t prototypes_count;
 
 /*
  * Folder : src/parser/tokens/
