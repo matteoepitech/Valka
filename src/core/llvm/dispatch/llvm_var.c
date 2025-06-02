@@ -27,7 +27,7 @@ llvm_var(ast_node_t *node, FILE *f)
     fprintf(f, "%%%s = alloca %s\n", var_name, llvm_type);
     if (value_node == NULL)
         return OK_OUTPUT;
-    tmp_val = llvm_gen_value(value_node, f, data);
+    tmp_val = llvm_gen_value(value_node, f, data, TRUE);
     fprintf(f, "store %s %%%s, %s* %%%s\n\n", llvm_type, tmp_val, llvm_type, var_name);
     return OK_OUTPUT;
 }

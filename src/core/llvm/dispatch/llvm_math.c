@@ -22,8 +22,8 @@ llvm_math(ast_node_t *node, FILE *f, char *dest)
     ast_node_t *left = node->_ast_val._binary_op._left;
     ast_node_t *right = node->_ast_val._binary_op._right;
     data_types_t data_type = get_highest_data_type(get_data_from_node(left), get_data_from_node(right));
-    char *left_val = llvm_gen_value(left, f, data_type);
-    char *right_val = llvm_gen_value(right, f, data_type);
+    char *left_val = llvm_gen_value(left, f, data_type, TRUE);
+    char *right_val = llvm_gen_value(right, f, data_type, TRUE);
     char *llvm_type = get_write_data_type(data_type);
     const char *op_ir = op._llvm_ir;
 

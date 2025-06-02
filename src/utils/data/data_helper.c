@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Get the data with ID.
@@ -78,6 +79,11 @@ get_data_from_node(ast_node_t *node)
 {
     data_types_t tmp = {0};
 
+    if (node->_type == AST_FIELD) {
+        tmp = get_data_from_node(node->_ast_val._field._symbol);
+        structs_prototype_t structure = get_struct_prototype_from_name(tmp._llvm_ir);
+        return structure._fields[get_struct_field_index(structure, node->_ast_val._field._field_name)]->_ast_val._var_decl._var_type;
+    }
     if (node->_type == AST_CALL_SYM)
         return get_prototype_from_name(node->_ast_val._call_sym._sym_name)._return;
     if (node->_type == AST_LITERAL_INT)

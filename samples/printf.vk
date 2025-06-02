@@ -28,8 +28,11 @@ function <i32> main(<i32> argc, <char**> argv)
     var <struct person> my_person;
 
     my_person.age = 10;
-    my_person.name = "SALUT";
+    my_person.name = "MATTEO";
 
-    printf("%d", my_person.age);
+    printf("My name is %s and I'm %d years old.%c", my_person.name, my_person.age, 10);
+    my_person.name = "DEL";
+    my_person.age = 18;
+    printf("My name is %s and I'm %d years old.%c", my_person.name, my_person.age, 10);
     return 0;
 }

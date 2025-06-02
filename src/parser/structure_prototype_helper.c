@@ -41,8 +41,26 @@ structs_prototype_t
 get_struct_prototype_from_name(const char *struct_name)
 {
     for (uint32_t i = 0; i < structures_count; i++) {
-        if (strcmp(structures_prototype[i]._struct_name, struct_name) == 0)
+        if (strcmp(structures_prototype[i]._struct_name, &struct_name[1]) == 0)
             return structures_prototype[i];
     }
     return (structs_prototype_t){0};
+}
+
+/**
+ * @brief Get a index of a fielf from name.
+ *
+ * @param struct_name     The structure name
+ * @param field_name      The field name
+ *
+ * @return The index.
+ */
+uint32_t
+get_struct_field_index(structs_prototype_t structure, const char *field_name)
+{
+    for (uint32_t i = 0; i < structure._fields_count; i++) {
+        if (strcmp(structure._fields[i]->_ast_val._var_decl._var_name, field_name) == 0)
+            return i;
+    }
+    return 0;
 }

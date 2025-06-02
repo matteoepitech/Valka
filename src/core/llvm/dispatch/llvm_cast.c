@@ -20,7 +20,7 @@ llvm_cast(ast_node_t *node, FILE *f, char *dest)
 {
     data_types_t from = get_data_from_node(node->_ast_val._cast._val);
     data_types_t to = node->_ast_val._cast._cast_type;
-    const char *src = llvm_gen_value(node->_ast_val._cast._val, f, from);
+    const char *src = llvm_gen_value(node->_ast_val._cast._val, f, from, TRUE);
 
     if (from._id == to._id) {
         fprintf(f, "%%%s = add %s 0, %%%s\n", dest, to._llvm_ir, src);

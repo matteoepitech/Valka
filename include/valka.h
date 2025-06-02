@@ -44,7 +44,7 @@ uint8_t close_llvm(FILE *f);
 void compile_llvm_to_executable(void);
 void generate_llvm_global(FILE *f, ast_program_t *prg);
 
-char *llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type);
+char *llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type, bool_t load_val);
 char *llvm_gen_address(ast_node_t *node, FILE *f, bool_t need_load);
 void collect_all_strings(ast_program_t *prg, FILE *f);
 uint8_t generate_load_literal(char *dest, data_types_t var_type, char *var_name, FILE *f);
@@ -67,8 +67,9 @@ uint8_t llvm_assign(ast_node_t *node, FILE *f);
 uint8_t llvm_cast(ast_node_t *node, FILE *f, char *dest);
 uint8_t llvm_for(ast_node_t *node, FILE *f);
 uint8_t llvm_while(ast_node_t *node, FILE *f);
-uint8_t llvm_index(UNUSED ast_node_t *node, FILE *f, char *dest);
+uint8_t llvm_index(ast_node_t *node, FILE *f, char *dest);
 uint8_t llvm_struct(ast_node_t *node, FILE *f);
+uint8_t llvm_field(ast_node_t *node, FILE *f, char *dest, bool_t load_val);
 
 /*
  * Folder : utils/

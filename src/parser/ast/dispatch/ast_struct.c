@@ -35,6 +35,7 @@ fill_fields(token_t **current_token, ast_node_t *node)
         move_token(current_token, 2);
         curr = *current_token;
     }
+    add_structure_prototype(node);
 }
 
 /**
@@ -64,7 +65,6 @@ make_ast_struct(token_t **current_token, UNUSED ast_program_t *parent)
     if (curr->_type != TOKEN_BRACKET_OPEN)
         return NULL;
     fill_fields(current_token, node);
-    print_type_token((*current_token)->_type);
     if ((*current_token)->_type == TOKEN_BRACKET_CLOSE)
         move_token(current_token, 1);
     return node;

@@ -22,8 +22,8 @@ llvm_condition(ast_node_t *node, FILE *f, char *dest)
     ast_node_t *right = node->_ast_val._condition._node_b;
     data_types_t data_type = get_highest_data_type(get_data_from_node(left), get_data_from_node(right));
     uint32_t op = node->_ast_val._condition._op_id;
-    char *left_reg = llvm_gen_value(left, f, data_type);
-    char *right_reg = llvm_gen_value(right, f, data_type);
+    char *left_reg = llvm_gen_value(left, f, data_type, TRUE);
+    char *right_reg = llvm_gen_value(right, f, data_type, TRUE);
     char *llvm_type = get_write_data_type(data_type);
     char *llvm_cmp = NULL;
 

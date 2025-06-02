@@ -75,7 +75,7 @@ generate_load_literal(char *dest, data_types_t var_type, char *var_name, FILE *f
  * @return The final variable.
  */
 char *
-llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
+llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type, bool_t load_val)
 {
     char *tmp = get_random_var_name();
     char *llvm_type = get_write_data_type(type);
@@ -110,6 +110,9 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type)
         case AST_INDEX:
             llvm_index(node, f, tmp);
             break;
+        case AST_FIELD:
+            llvm_field(node, f, tmp, load_val);
+            break;
         default:
             break;
     }
@@ -128,7 +131,7 @@ char *
 llvm_gen_address(ast_node_t *node, FILE *f, bool_t need_load)
 {
     data_types_t current_val_type = get_data_from_node(node->_ast_val._index._sym);
-    char *current_tmp = llvm_gen_value(node->_ast_val._index._sym, f, current_val_type);
+    char *current_tmp = llvm_gen_value(node->_ast_val._index._sym, f, current_val_type, FALSE);
     data_types_t idx_type = {0};
     data_types_t deref_type = {0};
     char *index_tmp = NULL;
@@ -139,7 +142,7 @@ llvm_gen_address(ast_node_t *node, FILE *f, bool_t need_load)
     for (size_t i = 0; i < node->_ast_val._index._index_count; i++) {
         idx_type = get_data_from_node(node->_ast_val._index._indices[i]);
         deref_type = get_deref_data_type(current_val_type);
-        index_tmp = llvm_gen_value(node->_ast_val._index._indices[i], f, idx_type);
+        index_tmp = llvm_gen_value(node->_ast_val._index._indices[i], f, idx_type, FALSE);
         ptr_tmp = get_random_var_name();
         llvm_type = get_write_data_type(deref_type); 
         fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 %%%s\n",

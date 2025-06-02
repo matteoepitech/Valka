@@ -25,7 +25,7 @@ llvm_return(ast_node_t *node, FILE *f)
 
     if (val == NULL)
         return KO_OUTPUT;
-    tmp = llvm_gen_value(val, f, ret_type);
+    tmp = llvm_gen_value(val, f, ret_type, TRUE);
     if (tmp == NULL)
         return KO_OUTPUT;
     fprintf(f, "ret %s %%%s\n", llvm_type, tmp);

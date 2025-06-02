@@ -380,6 +380,7 @@ functions_prototype_t get_prototype_from_name(const char *func_name);
 
 void add_structure_prototype(ast_node_t *struct_node);
 structs_prototype_t get_struct_prototype_from_name(const char *struct_name);
+uint32_t get_struct_field_index(structs_prototype_t structure, const char *field_name);
 
 /*
  * Folder : src/utils/data/

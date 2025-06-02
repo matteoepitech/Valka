@@ -51,7 +51,8 @@ llvm_call_sym(ast_node_t *node, FILE *f, char *dest)
     char *llvm_type = NULL;
 
     for (uint32_t i = 0; i < argc; i++) {
-        arg_vars[i] = llvm_gen_value(node->_ast_val._call_sym._args[i], f, get_data_from_node(node->_ast_val._call_sym._args[i]));
+        arg_vars[i] = llvm_gen_value(node->_ast_val._call_sym._args[i],
+            f, get_data_from_node(node->_ast_val._call_sym._args[i]), TRUE);
     }
     if (dest != NULL)
         fprintf(f, "%%%s = ", dest);
