@@ -36,6 +36,7 @@ typedef enum {
     TOKEN_CONDITION = 19,
     TOKEN_CAST = 20,
     TOKEN_FLOAT_LITERAL = 21,
+    TOKEN_DOT = 22,
     TOKEN_END = 22,
 } token_type_t;
 
@@ -304,6 +305,7 @@ parsing_src_file_t *string_token(parsing_src_file_t *p);
 parsing_src_file_t *condition_token(parsing_src_file_t *p);
 parsing_src_file_t *cast_token(parsing_src_file_t *p);
 parsing_src_file_t *square_brackets_token(parsing_src_file_t *p);
+parsing_src_file_t *dot_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/

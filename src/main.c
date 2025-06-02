@@ -22,6 +22,7 @@ const data_types_t data_types[] = {
     {T_VOID, "void", "void", 0, 0},
     {T_VARG, "...", "...", 0, 0},
     {T_FLOAT, "float", "double", sizeof(float) * 8, 0},
+    {T_STRUCT, "", "", 0, 0},
     {0, "", "", 0, 0},
 };
 

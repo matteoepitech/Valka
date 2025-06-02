@@ -55,6 +55,8 @@ dispatch_tokenizer(parsing_src_file_t *p)
         return bin_operation_token(p);
     if (c == ',')
         return comma_token(p);
+    if (c == '.')
+        return dot_token(p);
     if (c == '#')
         return cast_token(p);
     if (c == '\"')
