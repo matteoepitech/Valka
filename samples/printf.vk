@@ -3,21 +3,10 @@ function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> calloc(<i32> size);
 function <char*> strdup(<char*> string);
 
-structure city {
-    var <char*> name_city;
-    var <i32> population;
-    var <float> size;
-    var <struct nigga> aaa;
-}
-
-structure person {
-    var <i32> age
-}
-
 function <i32> main(<i32> argc, <char**> argv)
 {
-    var <struct person*> person_ptr = calloc(8);
-
-    person_ptr[0].age = 10;
+    printf("================");
+    printf("%s %d %c", "Del", 18, 10);
+    printf("================");
     return 0;
 }
