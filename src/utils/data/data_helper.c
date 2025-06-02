@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Get the data with ID.
@@ -22,91 +21,6 @@ get_data_with_id(uint32_t id)
         if (data_types[i]._id == id)
             return data_types[i];
     }
-    return (data_types_t) {0};
-}
-
-/**
- * @brief Get the token type of the data if the data is existing.
- *
- * @param token         The token
- */
-data_types_t
-get_data_type_from_token(token_t *token)
-{
-    int inside_len = token->_length - 2;
-    char *inside = NULL;
-    int ptr_level = 0;
-    
-    if (token == NULL || token->_length < 3) 
-        return (data_types_t){0};
-    inside = strndup_valka(&token->_start[1], inside_len);
-    for (int i = inside_len - 1; i >= 0 && inside[i] == '*'; i--) {
-        ptr_level++;
-        inside[i] = '\0';
-        inside_len--;
-    }
-    for (int i = 0; data_types[i]._id != 0; i++) {
-        if (strcmp(inside, data_types[i]._valka_ir) == 0) {
-            data_types_t result = data_types[i];
-            result._ptr_level = ptr_level;
-            return result;
-        }
-    }
-
-    if (strncmp("struct ", inside, 7) == 0) {
-        data_types_t result = {0};
-        result._bits_sz = 0;
-        result._id = T_STRUCT;
-        char *struct_name = inside + 7;
-        strncpy(result._valka_ir, inside, sizeof(result._valka_ir) - 1);
-        result._valka_ir[sizeof(result._valka_ir) - 1] = '\0';
-        snprintf(result._llvm_ir, sizeof(result._llvm_ir), "%%%s", struct_name);
-        result._ptr_level = ptr_level;
-        return result;
-    }
-    return (data_types_t){0};
-}
-
-/**
- * @brief Get the right type using only the AST node.
- *
- * @param node          The AST node
- *
- * @return The data type.
- */
-data_types_t
-get_data_from_node(ast_node_t *node)
-{
-    data_types_t tmp = {0};
-
-    if (node->_type == AST_FIELD) {
-        tmp = get_data_from_node(node->_ast_val._field._symbol);
-        structs_prototype_t structure = get_struct_prototype_from_name(tmp._llvm_ir);
-        return structure._fields[get_struct_field_index(structure, node->_ast_val._field._field_name)]->_ast_val._var_decl._var_type;
-    }
-    if (node->_type == AST_CALL_SYM)
-        return get_prototype_from_name(node->_ast_val._call_sym._sym_name)._return;
-    if (node->_type == AST_LITERAL_INT)
-        return get_data_with_id(T_I32);
-    if (node->_type == AST_LITERAL_FLOAT)
-        return get_data_with_id(T_FLOAT);
-    if (node->_type == AST_SYMBOL)
-        return get_sym_decl_from_name(node->_parent, node->_ast_val._call_sym._sym_name)->_ast_val._var_decl._var_type;
-    if (node->_type == AST_STRING) {
-        tmp = get_data_with_id(T_CHAR);
-        tmp._ptr_level++;
-        return tmp;
-    }
-    if (node->_type == AST_BINARY_OP)
-        return get_data_from_node(node->_ast_val._binary_op._left);
-    if (node->_type == AST_CAST)
-        return node->_ast_val._cast._cast_type;
-    if (node->_type == AST_INDEX) {
-        tmp = get_data_from_node(node->_ast_val._index._sym);
-        tmp._ptr_level -= node->_ast_val._index._index_count;
-        return tmp;
-    }
-    PERROR("This type is not handled yet!");
     return (data_types_t) {0};
 }
 

@@ -3,36 +3,25 @@ function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> calloc(<i32> size);
 function <char*> strdup(<char*> string);
 
+structure city {
+    var <char*> name_city;
+    var <i32> population;
+    var <float> size;
+}
+
 structure person {
     var <i32> age,
     var <char*> name
+    var <struct city> home;
 }
 
 function <i32> main(<i32> argc, <char**> argv)
 {
-    var <char**> mvvv = calloc(8);
-    mvvv[0] = strdup("SALLUT");
-    printf("%s%c", mvvv[0], 10);
-    printf("%c%c", mvvv[0][4], 10);
-    mvvv[0][4] = 48;
-    printf("%s%c", mvvv[0], 10);
-    printf("%c%c", mvvv[0][4], 10);
+    var <struct person> user;
 
-    var <float> my_float = 10.5 / #<float> 5;
+    user.age = 18;
+    user.home.population = 1234567;
+    printf("%d", user.home.population);
 
-    my_float = my_float * 5.0;
-    if (my_float == 10.5) {
-        printf("yay!%c", 10);
-    }
-
-    var <struct person> my_person;
-
-    my_person.age = 10;
-    my_person.name = "MATTEO";
-
-    printf("My name is %s and I'm %d years old.%c", my_person.name, my_person.age, 10);
-    my_person.name = "DEL";
-    my_person.age = 18;
-    printf("My name is %s and I'm %d years old.%c", my_person.name, my_person.age, 10);
     return 0;
 }
