@@ -8,29 +8,6 @@
 #include "valka.h"
 
 /**
- * @brief Get the symbol. It's the same function as the make_ast_symbol but
- *        for index. So there will be some changes in the future here.
- *
- * @param current_token         The current token
- * @param parent                The parent
- *
- * @return The node.
- */
-static ast_node_t *
-get_symbol_index(token_t **current_token, ast_program_t *parent)
-{
-    ast_node_t *node = MALLOC(sizeof(ast_node_t));
-
-    node->_type = AST_SYMBOL;
-    node->_loc = (*current_token)->_loc;
-    node->_parent = parent;
-    node->_ast_val._symbol._sym_name = strndup_valka(
-        (*current_token)->_start, (*current_token)->_length);
-    move_token(current_token, 1);
-    return node;
-}
-
-/**
  * @brief Store all index in the indices array and return the count total.
  *
  * @param current_token                 The current token
@@ -49,40 +26,39 @@ store_indices(token_t **current_token, ast_program_t *parent, ast_node_t *indice
         if ((*current_token) && (*current_token)->_type == TOKEN_SQUARE_BRACKET_CLOSE) {
             move_token(current_token, 1);
             count++;
+        } else {
+            PERROR("Expected ']' after index expression");
+            break;
         }
     }
     return count;
 }
 
 /**
- * @brief Make the AST for a index declaration.
+ * @brief Make an AST node for index.
  *
- * @param current_token The current token
+ * @param current_token          The current token
+ * @param parent                 The parent
+ * @param base_expr              The base expression (before this)
  *
- * @return The AST node.
+ * @return The index AST node.
  */
 ast_node_t *
-make_ast_index(token_t **current_token, ast_program_t *parent)
+make_ast_index(token_t **current_token, ast_program_t *parent, ast_node_t *base_expr)
 {
-    ast_node_t *node = MALLOC(sizeof(ast_node_t));
-    token_t *curr = *current_token;
+    ast_node_t *index_node = MALLOC(sizeof(ast_node_t));
     ast_node_t *indices[MAX_INDICES_DEPTH];
     uint32_t count = 0;
-    
-    if (curr == NULL || curr->_next == NULL)
-        return NULL;
-    node->_type = AST_INDEX;
-    node->_loc = curr->_loc;
-    node->_parent = parent;
-    if ((*current_token)->_type == TOKEN_PARENT_OPEN) {
-        PERROR("Not handling index on result of function!");
-    } 
-    node->_ast_val._index._sym = get_symbol_index(current_token, parent);    
+
+    index_node->_type = AST_INDEX;
+    index_node->_loc = (*current_token)->_loc;
+    index_node->_parent = parent;
+    index_node->_ast_val._index._sym = base_expr;
     count = store_indices(current_token, parent, indices);
-    node->_ast_val._index._indices = MALLOC(sizeof(ast_node_t*) * count);
+    index_node->_ast_val._index._indices = MALLOC(sizeof(ast_node_t*) * count);
     for (uint32_t i = 0; i < count; i++) {
-        node->_ast_val._index._indices[i] = indices[i];
+        index_node->_ast_val._index._indices[i] = indices[i];
     }
-    node->_ast_val._index._index_count = count;
-    return node;
+    index_node->_ast_val._index._index_count = count;
+    return index_node;
 }

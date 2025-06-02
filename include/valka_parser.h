@@ -355,7 +355,7 @@ ast_node_t *make_ast_bin_ope(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_expression(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_call_sym(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_symbol(token_t **current_token, ast_program_t *parent);
-ast_node_t *make_ast_field(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_field(token_t **current_token, ast_program_t *parent, ast_node_t *base_expr);
 ast_node_t *make_ast_string(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_if(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_condition(token_t **current_token, ast_program_t *parent);
@@ -363,7 +363,7 @@ ast_node_t *make_ast_assign(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_cast(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_for(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_while(token_t **current_token, ast_program_t *parent);
-ast_node_t *make_ast_index(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_index(token_t **current_token, ast_program_t *parent, ast_node_t *base_expr);
 ast_node_t *make_ast_float_literal(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_struct(token_t **current_token, ast_program_t *parent);
 
