@@ -24,5 +24,9 @@ function <i32> main(<i32> argc, <char**> argv)
     if (my_float == 10.5) {
         printf("yay!%c", 10);
     }
+
+    var <struct person> my_person;
+
+    my_person.age = 10;
     return 0;
 }

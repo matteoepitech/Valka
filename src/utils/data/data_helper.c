@@ -35,13 +35,14 @@ get_data_type_from_token(token_t *token)
     int inside_len = token->_length - 2;
     char *inside = NULL;
     int ptr_level = 0;
-
+    
     if (token == NULL || token->_length < 3) 
         return (data_types_t){0};
     inside = strndup_valka(&token->_start[1], inside_len);
     for (int i = inside_len - 1; i >= 0 && inside[i] == '*'; i--) {
         ptr_level++;
         inside[i] = '\0';
+        inside_len--;
     }
     for (int i = 0; data_types[i]._id != 0; i++) {
         if (strcmp(inside, data_types[i]._valka_ir) == 0) {
@@ -49,6 +50,18 @@ get_data_type_from_token(token_t *token)
             result._ptr_level = ptr_level;
             return result;
         }
+    }
+
+    if (strncmp("struct ", inside, 7) == 0) {
+        data_types_t result = {0};
+        result._bits_sz = 0;
+        result._id = T_STRUCT;
+        char *struct_name = inside + 7;
+        strncpy(result._valka_ir, inside, sizeof(result._valka_ir) - 1);
+        result._valka_ir[sizeof(result._valka_ir) - 1] = '\0';
+        snprintf(result._llvm_ir, sizeof(result._llvm_ir), "%%%s", struct_name);
+        result._ptr_level = ptr_level;
+        return result;
     }
     return (data_types_t){0};
 }

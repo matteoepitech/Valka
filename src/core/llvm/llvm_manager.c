@@ -35,6 +35,8 @@ dispatch_llvm(FILE *f, ast_statement_t *cur)
             return llvm_var(node, f);
         case AST_FUNCTION:
             return llvm_func(node, f);
+        case AST_STRUCT:
+            return llvm_struct(node, f);
         case AST_RETURN:
             return llvm_return(node, f);
         default:

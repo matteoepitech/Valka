@@ -54,6 +54,7 @@
     #define T_VOID 4
     #define T_VARG 5
     #define T_FLOAT 6
+    #define T_STRUCT 7
 
     /* All condition operators in Valka */
     #define OP_EQUAL 1
