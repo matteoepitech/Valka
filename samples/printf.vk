@@ -28,5 +28,8 @@ function <i32> main(<i32> argc, <char**> argv)
     var <struct person> my_person;
 
     my_person.age = 10;
+    my_person.name = "SALUT";
+
+    printf("%d", my_person.age);
     return 0;
 }

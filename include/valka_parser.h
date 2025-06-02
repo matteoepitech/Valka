@@ -62,6 +62,7 @@ typedef enum {
     AST_INDEX = 15,
     AST_LITERAL_FLOAT = 16,
     AST_STRUCT = 17,
+    AST_FIELD = 18,
 } ast_node_type_t;
 
 /**
@@ -233,6 +234,11 @@ struct ast_node_s {
             uint32_t _fields_count;
             ast_node_t **_fields;
         } _struct;
+        // Field -> var.field
+        struct {
+            ast_node_t *_symbol;
+            char *_field_name;
+        } _field;
     } _ast_val;
 };
 
@@ -255,6 +261,15 @@ typedef struct functions_prototype_s {
 } functions_prototype_t;
 
 /**
+ * @brief Structures prototypes declarations.
+ */
+typedef struct structs_prototype_s {
+    char *_struct_name;
+    ast_node_t **_fields;
+    uint32_t _fields_count;
+} structs_prototype_t;
+
+/**
  * @brief All statement is basically the whole source code.
  *        The ast_program_t contains everything.
  */
@@ -275,8 +290,11 @@ extern const data_types_t data_types[];
 extern const condition_operator_t condition_operators[];
 extern const bin_ope_t bin_operations[];
 
-extern functions_prototype_t *prototypes;
-extern uint32_t prototypes_count;
+extern functions_prototype_t *functions_prototype;
+extern uint32_t functions_count;
+
+extern structs_prototype_t *structures_prototype;
+extern uint32_t structures_count;
 
 /*
  * Folder : src/parser/tokens/
@@ -337,6 +355,7 @@ ast_node_t *make_ast_bin_ope(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_expression(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_call_sym(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_symbol(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_field(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_string(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_if(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_condition(token_t **current_token, ast_program_t *parent);
@@ -358,6 +377,9 @@ void print_program(ast_program_t *prg);
  */
 void add_function_prototype(ast_node_t *func_node);
 functions_prototype_t get_prototype_from_name(const char *func_name);
+
+void add_structure_prototype(ast_node_t *struct_node);
+structs_prototype_t get_struct_prototype_from_name(const char *struct_name);
 
 /*
  * Folder : src/utils/data/

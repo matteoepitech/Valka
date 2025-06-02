@@ -10,9 +10,11 @@
 // Used to generate random tmp variable
 uint32_t register_id = 0;
 
-// Used for prototypes functions
-functions_prototype_t *prototypes = NULL;
-uint32_t prototypes_count = 0;
+// Used for prototypes functions/structures
+functions_prototype_t *functions_prototype = NULL;
+uint32_t functions_count = 0;
+structs_prototype_t *structures_prototype = NULL;
+uint32_t structures_count = 0;
 
 // All Valka data types (extern in valka_parser.h)
 const data_types_t data_types[] = {

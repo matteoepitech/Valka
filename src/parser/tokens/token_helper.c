@@ -105,6 +105,8 @@ token_t * get_next_token_after_call(token_t *node)
         }
         return curr;
     }
+    if (node->_type == TOKEN_SYMBOL && node->_next->_type == TOKEN_DOT)
+        return get_next_token_after_call(node->_next->_next);
     if (node->_type == TOKEN_CAST)
         return get_next_token_after_call(node->_next->_next);
     if (node->_next->_type == TOKEN_MATH_OPERATOR)

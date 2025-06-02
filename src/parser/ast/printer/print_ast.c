@@ -117,6 +117,14 @@ print_ast(ast_node_t *node, int indent)
             }
             break;
 
+        case AST_FIELD:
+            printf("Field for:\n");
+            print_ast(node->_ast_val._field._symbol, indent + 1);
+            print_indent(indent + 2);
+            printf("field -> %s\n", node->_ast_val._field._field_name);
+            break;
+        
+
         case AST_BINARY_OP:
             printf("Binary operation: %c\n", node->_ast_val._binary_op._op);
             print_indent(indent);

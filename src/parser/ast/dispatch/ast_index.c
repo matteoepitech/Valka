@@ -20,6 +20,7 @@ static ast_node_t *
 get_symbol_index(token_t **current_token, ast_program_t *parent)
 {
     ast_node_t *node = MALLOC(sizeof(ast_node_t));
+
     node->_type = AST_SYMBOL;
     node->_loc = (*current_token)->_loc;
     node->_parent = parent;

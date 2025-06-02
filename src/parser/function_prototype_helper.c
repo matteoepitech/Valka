@@ -21,14 +21,14 @@ add_function_prototype(ast_node_t *func_node)
 
     if (func_node == NULL)
         return;
-    new_count = prototypes_count + 1;
-    prototypes = REALLOC(prototypes, sizeof(functions_prototype_t) * new_count);
-    new_proto = &prototypes[prototypes_count];
+    new_count = functions_count + 1;
+    functions_prototype = REALLOC(functions_prototype, sizeof(functions_prototype_t) * new_count);
+    new_proto = &functions_prototype[functions_count];
     new_proto->_func_name = strdup(func_node->_ast_val._function._func_name);
     new_proto->_return = func_node->_ast_val._function._return_data;
     new_proto->_params = func_node->_ast_val._function._params;
     new_proto->_params_count = func_node->_ast_val._function._params_count;
-    prototypes_count = new_count;
+    functions_count = new_count;
 }
 
 /**
@@ -41,9 +41,9 @@ add_function_prototype(ast_node_t *func_node)
 functions_prototype_t
 get_prototype_from_name(const char *func_name)
 {
-    for (uint32_t i = 0; i < prototypes_count; i++) {
-        if (strcmp(prototypes[i]._func_name, func_name) == 0)
-            return prototypes[i];
+    for (uint32_t i = 0; i < functions_count; i++) {
+        if (strcmp(functions_prototype[i]._func_name, func_name) == 0)
+            return functions_prototype[i];
     }
     return (functions_prototype_t) {0};
 }
