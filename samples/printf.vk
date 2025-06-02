@@ -3,10 +3,6 @@ function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> calloc(<i32> size);
 function <char*> strdup(<char*> string);
 
-structure nigga {
-    var <i32> yes_or_no;
-}
-
 structure city {
     var <char*> name_city;
     var <i32> population;
