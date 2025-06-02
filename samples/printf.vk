@@ -3,10 +3,15 @@ function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> calloc(<i32> size);
 function <char*> strdup(<char*> string);
 
+structure nigga {
+    var <i32> yes_or_no;
+}
+
 structure city {
     var <char*> name_city;
     var <i32> population;
     var <float> size;
+    var <struct nigga> aaa;
 }
 
 structure person {
@@ -18,10 +23,34 @@ structure person {
 function <i32> main(<i32> argc, <char**> argv)
 {
     var <struct person> user;
+    var <struct person> user_bis;
+    var <struct city> home;
 
     user.age = 18;
-    user.home.population = 1234567;
-    printf("%d", user.home.population);
+    user.name = "Dellixou";
+
+    home.size = 55555.10;
+    home.name_city = "Moscou";
+    home.population = 1234567;
+
+    user.home = home;
+
+    printf("My name is %s I'm %d years old and I live in %s which contains %d person and have a size of %f%c",
+        user.name, user.age, user.home.name_city, user.home.population, user.home.size, 10);
+
+    user_bis.age = 29;
+    user_bis.name = "Valentino";
+    user_bis.home = home;
+
+    user.home.population = 1;
+    user.home.aaa.yes_or_no = 2;
+    printf("We finally go to %d person...%d%c", user.home.population, user.home.aaa.yes_or_no, 10);
+
+    printf("My name is %s I'm %d years old and I live in %s which contains %d person and have a size of %f%c",
+        user_bis.name, user_bis.age, user_bis.home.name_city, user_bis.home.population, user_bis.home.size, 10);
+    printf("We finally go to %d person...%c", user_bis.home.population, 10);
+
+    
 
     return 0;
 }
