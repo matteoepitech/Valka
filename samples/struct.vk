@@ -3,10 +3,26 @@ function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> calloc(<i32> size);
 function <char*> strdup(<char*> string);
 
+structure city {
+    var <i32> size
+}
+
+structure person {
+    var <i32> age,
+    var <struct city*> city
+}
+
 function <i32> main(<i32> argc, <char**> argv)
 {
     printf("================%c", 10);
-    printf("%s %d %c", "Del", 18, 10);
+
+
+    var <struct person*> user = calloc(8);
+    user[0].city = calloc(8);
+    user[0].city[0].size = 5555;
+
+    printf("%d%c", user[0].city[0].size, 10);
+
     printf("================%c", 10);
     return 0;
 }

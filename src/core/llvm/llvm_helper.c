@@ -108,7 +108,7 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type, bool_t load_val)
             llvm_cast(node, f, tmp);
             break;
         case AST_INDEX:
-            llvm_index(node, f, tmp);
+            llvm_index(node, f, tmp, load_val);
             break;
         case AST_FIELD:
             llvm_field(node, f, tmp, load_val);
