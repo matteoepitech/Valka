@@ -5,6 +5,7 @@
 ** Make the AST of a source code
 */
 
+#include "misc/defines.h"
 #include "valka.h"
 
 /**
@@ -49,6 +50,8 @@ dispatch_ast(token_t **current_token, ast_program_t *parent)
         return make_ast_string(current_token, parent);
     if (type == TOKEN_IDENTIFIER) {
         switch (type_id) {
+            case IDENTIFIER_ID_STRUCT:
+                return make_ast_struct(current_token, parent);
             case IDENTIFIER_ID_VAR:
                 return make_ast_var(current_token, parent);
             case IDENTIFIER_ID_FUNC:

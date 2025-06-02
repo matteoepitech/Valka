@@ -60,6 +60,7 @@ typedef enum {
     AST_WHILE = 14,
     AST_INDEX = 15,
     AST_LITERAL_FLOAT = 16,
+    AST_STRUCT = 17,
 } ast_node_type_t;
 
 /**
@@ -225,6 +226,12 @@ struct ast_node_s {
             ast_node_t **_indices;
             size_t _index_count;
         } _index;
+        // Structure -> structure name { }
+        struct {
+            char *_struct_name;
+            uint32_t _fields_count;
+            ast_node_t **_fields;
+        } _struct;
     } _ast_val;
 };
 
@@ -337,6 +344,7 @@ ast_node_t *make_ast_for(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_while(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_index(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_float_literal(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_struct(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/
