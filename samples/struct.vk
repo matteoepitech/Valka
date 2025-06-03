@@ -10,19 +10,17 @@ structure city {
 structure person {
     var <i32> age,
     var <struct city*> city
+    var <i32[10][1]> array_of_int;
 }
 
 function <i32> main(<i32> argc, <char**> argv)
 {
-    printf("================%c", 10);
+    var <i32[5][5]> my_square;
+    var <struct person> my_person;
+    my_square[0][0] = 48;
 
+    my_person.array_of_int[0][0] = 10;
 
-    var <struct person*> user = calloc(8);
-    user[0].city = calloc(8);
-    user[0].city[0].size = 5555;
-
-    printf("%d%c", user[0].city[0].size, 10);
-
-    printf("================%c", 10);
+    printf("%d%c", my_person.array_of_int[0][0], 10);
     return 0;
 }

@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Generate the parameter loading from a function.
@@ -82,11 +83,11 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type, bool_t load_val)
 
     switch (node->_type) {
         case AST_LITERAL_INT:
-            fprintf(f, "%%%s = add %s 0, %d\n", tmp, llvm_type,
+            fprintf(f, "%%%s = add %s 0, %d\n", tmp, get_write_data_type(type, TRUE),
                 node->_ast_val._int_literal._value);
             break;
         case AST_LITERAL_FLOAT:
-            fprintf(f, "%%%s = fadd %s %e, %e\n", tmp, llvm_type,
+            fprintf(f, "%%%s = fadd %s %e, %e\n", tmp, get_write_data_type(type, TRUE),
                     0.0f, node->_ast_val._float_literal._value);
             break;
         case AST_CALL_SYM:
@@ -95,8 +96,13 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type, bool_t load_val)
         case AST_SYMBOL:
             if (generate_symbol_from_param(node, f, &tmp) == OK_OUTPUT)
                 break;
-            fprintf(f, "%%%s = load %s, %s* %%%s\n", tmp,
-                llvm_type, llvm_type, node->_ast_val._symbol._sym_name);
+            if (load_val == TRUE) {
+                fprintf(f, "%%%s = load %s, %s* %%%s\n", tmp,
+                    llvm_type, llvm_type, node->_ast_val._symbol._sym_name);
+            } else {
+                fprintf(f, "%%%s = bitcast %s* %%%s to %s*\n", tmp,
+                    llvm_type, node->_ast_val._symbol._sym_name, llvm_type);
+            }
             break;
         case AST_BINARY_OP:
             llvm_math(node, f, tmp);
@@ -128,7 +134,7 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type, bool_t load_val)
  * @return The var name which is the ptr to the val.
  */
 char *
-llvm_gen_address(ast_node_t *node, FILE *f, bool_t need_load)
+llvm_gen_address(ast_node_t *node, FILE *f, UNUSED bool_t need_load)
 {
     data_types_t current_val_type = get_data_from_node(node->_ast_val._index._sym);
     char *current_tmp = llvm_gen_value(node->_ast_val._index._sym, f, current_val_type, FALSE);
@@ -137,24 +143,43 @@ llvm_gen_address(ast_node_t *node, FILE *f, bool_t need_load)
     char *index_tmp = NULL;
     char *ptr_tmp = NULL;
     char *load_tmp = NULL;
-    char *llvm_type = NULL;
+    char *current_llvm_type = NULL;
+    char *deref_llvm_type = NULL;
     
     for (size_t i = 0; i < node->_ast_val._index._index_count; i++) {
         idx_type = get_data_from_node(node->_ast_val._index._indices[i]);
         deref_type = get_deref_data_type(current_val_type);
         index_tmp = llvm_gen_value(node->_ast_val._index._indices[i], f, idx_type, FALSE);
         ptr_tmp = get_random_var_name();
-        llvm_type = get_write_data_type(deref_type, FALSE); 
-        fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 %%%s\n",
-            ptr_tmp, llvm_type, llvm_type, current_tmp, index_tmp);
-        if (need_load && i < node->_ast_val._index._index_count - 1) {
+
+        current_llvm_type = get_write_data_type(current_val_type, FALSE);
+
+        deref_llvm_type = get_write_data_type(deref_type, FALSE);
+
+        if (current_val_type._array_count > 0) {
+            fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 0, i32 %%%s\n",
+                ptr_tmp, current_llvm_type, current_llvm_type, current_tmp, index_tmp);
+        } else {
+            fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 %%%s\n",
+                ptr_tmp, deref_llvm_type, deref_llvm_type, current_tmp, index_tmp);
+        }
+
+        if (i < node->_ast_val._index._index_count - 1 && 
+            current_val_type._array_count == 0 && 
+            current_val_type._ptr_level > 1) {
             load_tmp = get_random_var_name();
             fprintf(f, "%%%s = load %s*, %s** %%%s\n",
-                load_tmp, llvm_type, llvm_type, ptr_tmp);
+                load_tmp, deref_llvm_type, deref_llvm_type, ptr_tmp);
             current_tmp = load_tmp;
-        } else
+        } else {
             current_tmp = ptr_tmp;
+        }
+
         current_val_type = deref_type;
+
+        if (current_val_type._array_count >= 1) {
+            current_val_type = get_array_elem_data(current_val_type);
+        }
     }
     return current_tmp;
 }

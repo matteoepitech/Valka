@@ -10,7 +10,9 @@ function <i32> main(<i32> argc, <char**> argv)
 
     var <i32[10]> my_int_array;
 
-    my_int_array[0] = 10;
+    my_int_array[0] = 50;
+
+    printf("%d%c", my_int_array[0], 10);
 
     printf("================%c", 10);
     return 0;

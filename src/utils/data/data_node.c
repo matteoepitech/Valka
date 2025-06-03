@@ -110,6 +110,9 @@ get_data_from_index(ast_node_t *node)
 {
     data_types_t tmp = get_data_from_node(node->_ast_val._index._sym);
 
+    for (uint32_t i = 0; i < node->_ast_val._index._index_count; i++) {
+        tmp = get_array_elem_data(tmp);
+    }
     tmp._ptr_level -= node->_ast_val._index._index_count;
     return tmp;
 }

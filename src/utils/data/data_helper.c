@@ -97,3 +97,29 @@ get_write_data_type(data_types_t data, bool_t only_primitive)
     result[pos] = '\0';
     return result;
 }
+
+/**
+ * @brief Get the type of the first element in a array.
+ *
+ * @param array_type    The type of the array
+ *
+ * @return The data type of the first element.
+ */
+data_types_t
+get_array_elem_data(data_types_t array_type)
+{
+    data_types_t elem_type = array_type;
+    
+    if (array_type._array_count == 0) {
+        return array_type;
+    }
+    if (array_type._array_count == 1) {
+        elem_type._array_count = 0;
+    } else {
+        elem_type._array_count = array_type._array_count - 1;
+        for (uint32_t i = 0; i < elem_type._array_count; i++) {
+            elem_type._array_dims[i] = array_type._array_dims[i + 1];
+        }
+    }
+    return elem_type;
+}

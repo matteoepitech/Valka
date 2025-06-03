@@ -23,7 +23,9 @@ llvm_index(UNUSED ast_node_t *node, FILE *f, char *dest, bool_t load_val)
     char *address_tmp = llvm_gen_address(node, f, TRUE);
 
     current_val_type._ptr_level -= node->_ast_val._index._index_count;
-
+    for (uint32_t i = 0; i < node->_ast_val._index._index_count; i++) {
+        current_val_type = get_array_elem_data(current_val_type);
+    }
     if (load_val == TRUE) {
         fprintf(f, "%%%s = load %s, %s* %%%s\n", dest,
             get_write_data_type(current_val_type, FALSE),
