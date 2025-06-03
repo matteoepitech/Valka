@@ -7,7 +7,7 @@
 > Answer: Since it's using the libC then yes, you can!
 
 3. **Can I make static arrays ?**
-> Answer: Not for the moment
+> Answer: Yes!
 
 *I know there are not many features yet, but it takes time to implement all functionality...*  
 *Be patient..*
