@@ -3,16 +3,29 @@ function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> calloc(<i32> size);
 function <char*> strdup(<char*> string);
 
+structure my_struct {
+    var <i32> my_number;
+    var <i32[10]> numbers;
+}
+
 function <i32> main(<i32> argc, <char**> argv)
 {
     printf("================%c", 10);
 
+    var <struct my_struct[5]> s_array;
+    var <struct my_struct*> s_array_ptr = calloc(88);
 
-    var <i32[10]> my_int_array;
+    s_array_ptr[0].my_number = 555559;
+    printf("%d%c", s_array_ptr[0].my_number, 10);
 
-    my_int_array[0] = 50;
-
-    printf("%d%c", my_int_array[0], 10);
+    for (var <i32> i = 0; i < 5; i = i + 1) {
+        s_array[i].my_number = i;
+        for (var <i32> j = 0; j < 10; j = j + 1) {
+            s_array[i].numbers[j] = j;
+            printf("  %d%c", s_array[i].numbers[j], 10);
+        }
+        printf("%d%c", s_array[i].my_number, 10)
+    }
 
     printf("================%c", 10);
     return 0;

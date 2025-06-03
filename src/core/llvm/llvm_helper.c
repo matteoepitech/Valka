@@ -149,7 +149,7 @@ llvm_gen_address(ast_node_t *node, FILE *f, UNUSED bool_t need_load)
     for (size_t i = 0; i < node->_ast_val._index._index_count; i++) {
         idx_type = get_data_from_node(node->_ast_val._index._indices[i]);
         deref_type = get_deref_data_type(current_val_type);
-        index_tmp = llvm_gen_value(node->_ast_val._index._indices[i], f, idx_type, FALSE);
+        index_tmp = llvm_gen_value(node->_ast_val._index._indices[i], f, idx_type, TRUE);
         ptr_tmp = get_random_var_name();
 
         current_llvm_type = get_write_data_type(current_val_type, FALSE);
