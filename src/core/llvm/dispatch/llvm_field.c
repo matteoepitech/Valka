@@ -25,11 +25,11 @@ llvm_field(ast_node_t *node, FILE *f, char *dest, bool_t load_val)
     data_types_t parent_type = get_data_from_node(parent);
     char *parent_sym = NULL;
     char *ptr_tmp = get_random_var_name();
-    char *llvm_struct_type = get_write_data_type(parent_type);
+    char *llvm_struct_type = get_write_data_type(parent_type, FALSE);
     const char *field_name = node->_ast_val._field._field_name;
     structs_prototype_t structure = get_struct_prototype_from_name(llvm_struct_type);
     uint32_t field_index = get_struct_field_index(structure, field_name);
-    char *field_type = get_write_data_type(structure._fields[field_index]->_ast_val._var_decl._var_type);
+    char *field_type = get_write_data_type(structure._fields[field_index]->_ast_val._var_decl._var_type, FALSE);
     
     if (parent->_type == AST_FIELD) {
         parent_sym = get_random_var_name();

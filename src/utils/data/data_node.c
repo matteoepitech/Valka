@@ -18,7 +18,7 @@ static data_types_t
 get_data_from_field(ast_node_t *node)
 {
     data_types_t parent_type = get_data_from_node(node->_ast_val._field._symbol);
-    char *struct_name = get_write_data_type(parent_type);
+    char *struct_name = get_write_data_type(parent_type, FALSE);
     structs_prototype_t structure = get_struct_prototype_from_name(struct_name);
     uint32_t field_idx = get_struct_field_index(structure, node->_ast_val._field._field_name);
     

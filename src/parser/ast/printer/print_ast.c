@@ -136,7 +136,8 @@ print_ast(ast_node_t *node, int indent)
             break;
 
         case AST_VAR_DECL:
-            printf("Var decl: <%s> %s\n", get_write_data_type(node->_ast_val._var_decl._var_type), node->_ast_val._var_decl._var_name);
+            printf("Var decl: <%s> %s\n", get_write_data_type(node->_ast_val._var_decl._var_type, FALSE),
+                node->_ast_val._var_decl._var_name);
             print_indent(indent);
             printf("Value:\n");
             print_ast(node->_ast_val._var_decl._value, indent + 1);
@@ -162,7 +163,7 @@ print_ast(ast_node_t *node, int indent)
             for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
                 print_indent(indent + 1);
                 printf("- %s\n",
-                    get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type));
+                    get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type, FALSE));
             }
             print_function_body(node->_ast_val._function._func_content, indent + 1);
             print_content_symbol(node->_ast_val._function._func_content, indent + 1);
@@ -175,7 +176,7 @@ print_ast(ast_node_t *node, int indent)
             for (uint32_t i = 0; i < node->_ast_val._struct._fields_count; i++) {
                 print_indent(indent + 2);
                 printf("- %s (%s)\n", node->_ast_val._struct._fields[i]->_ast_val._var_decl._var_name,
-                    get_write_data_type(node->_ast_val._struct._fields[i]->_ast_val._var_decl._var_type));
+                    get_write_data_type(node->_ast_val._struct._fields[i]->_ast_val._var_decl._var_type, FALSE));
             }
             break;
 

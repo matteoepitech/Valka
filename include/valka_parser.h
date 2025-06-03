@@ -8,7 +8,8 @@
 #ifndef _VALKA_PARSER_H_
     #define _VALKA_PARSER_H_
 
-    #include "misc/types.h"
+    #include "misc/defines.h"
+#include "misc/types.h"
 
 /**
  * @brief All token types.
@@ -70,10 +71,12 @@ typedef enum {
  */
 typedef struct data_types_s {
     uint32_t _id;
-    char _valka_ir[32];
-    char _llvm_ir[32];
+    char _valka_ir[64];
+    char _llvm_ir[64];
     uint32_t _bits_sz;
     int32_t _ptr_level;
+    uint32_t _array_dims[MAX_INDICES_DEPTH];
+    uint32_t _array_count; 
 } data_types_t;
 
 /**
@@ -390,7 +393,7 @@ data_types_t get_data_with_id(uint32_t id);
 data_types_t get_highest_data_type(data_types_t d1, data_types_t d2);
 data_types_t get_data_from_node(ast_node_t *node);
 data_types_t get_deref_data_type(data_types_t data);
-char *get_write_data_type(data_types_t data);
+char *get_write_data_type(data_types_t data, bool_t only_primitive);
 bin_ope_t get_operator_with_char(char op);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

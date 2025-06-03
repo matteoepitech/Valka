@@ -66,16 +66,34 @@ get_deref_data_type(data_types_t data)
  * @return The type.
  */
 char *
-get_write_data_type(data_types_t data)
+get_write_data_type(data_types_t data, bool_t only_primitive)
 {
-    uint32_t base_len = strlen(data._llvm_ir);
-    uint32_t total_len = base_len + data._ptr_level + 1;
-
-    char *result = MALLOC(total_len);
-    strcpy(result, data._llvm_ir);
-    for (int32_t i = 0; i < data._ptr_level; i++) {
-        result[base_len + i] = '*';
+    char *result;
+    uint32_t pos = 0;
+    uint32_t total_len = 0;
+    
+    if (only_primitive == TRUE)
+        return strdup(data._llvm_ir);
+    if (data._array_count > 0) {
+        for (uint32_t i = 0; i < data._array_count; i++) {
+            total_len += snprintf(NULL, 0, "[%d x ", data._array_dims[i]);
+        }
+        total_len += strlen(data._llvm_ir) + data._ptr_level + data._array_count + 1;
+    } else {
+        total_len = strlen(data._llvm_ir) + data._ptr_level + 1;
     }
-    result[total_len - 1] = '\0';
+    result = MALLOC(total_len);
+    for (uint32_t i = 0; i < data._array_count; i++) {
+        pos += sprintf(&result[pos], "[%d x ", data._array_dims[i]);
+    }
+    strcpy(&result[pos], data._llvm_ir);
+    pos += strlen(data._llvm_ir);
+    for (int i = 0; i < data._ptr_level; i++) {
+        result[pos++] = '*';
+    }
+    for (uint32_t i = 0; i < data._array_count; i++) {
+        result[pos++] = ']';
+    }
+    result[pos] = '\0';
     return result;
 }

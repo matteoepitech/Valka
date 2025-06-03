@@ -36,7 +36,7 @@ llvm_assign(ast_node_t *node, FILE *f)
         assigned_name = llvm_gen_value(assigned_node, f, data, FALSE);
     } 
     tmp_val = llvm_gen_value(value_node, f, data, FALSE);
-    llvm_type = get_write_data_type(data);
+    llvm_type = get_write_data_type(data, FALSE);
     fprintf(f, "store %s %%%s, %s* %%%s\n\n", llvm_type, tmp_val, llvm_type, assigned_name);
     return OK_OUTPUT;
 }

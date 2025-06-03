@@ -26,12 +26,12 @@ llvm_index(UNUSED ast_node_t *node, FILE *f, char *dest, bool_t load_val)
 
     if (load_val == TRUE) {
         fprintf(f, "%%%s = load %s, %s* %%%s\n", dest,
-            get_write_data_type(current_val_type),
-            get_write_data_type(current_val_type), address_tmp);        
+            get_write_data_type(current_val_type, FALSE),
+            get_write_data_type(current_val_type, FALSE), address_tmp);        
     } else {
         fprintf(f, "%%%s = bitcast %s* %%%s to %s*\n", dest,
-            get_write_data_type(current_val_type), address_tmp,
-            get_write_data_type(current_val_type));
+            get_write_data_type(current_val_type, FALSE), address_tmp,
+            get_write_data_type(current_val_type, FALSE));
     }
     return OK_OUTPUT;
 }

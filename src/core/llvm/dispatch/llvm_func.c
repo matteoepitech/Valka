@@ -21,7 +21,7 @@ llvm_declare_func(ast_node_t *node, FILE *f)
     const char *func_name = node->_ast_val._function._func_name;
     data_types_t func_ret = node->_ast_val._function._return_data;
 
-    fprintf(f, "declare %s @%s(", get_write_data_type(func_ret), func_name);
+    fprintf(f, "declare %s @%s(", get_write_data_type(func_ret, FALSE), func_name);
     for (uint32_t i = 0; i < node->_ast_val._function._params_count; i++) {
         if (i != 0)
             fprintf(f, ", ");
@@ -30,7 +30,7 @@ llvm_declare_func(ast_node_t *node, FILE *f)
             continue;
         }
         fprintf(f, "%s %%%s",
-            get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type),
+            get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type, FALSE),
             node->_ast_val._function._params[i]->_ast_val._var_decl._var_name);
     }
     fprintf(f, ")\n\n");
@@ -59,7 +59,7 @@ llvm_func(ast_node_t *node, FILE *f)
         if (i != 0)
             fprintf(f, ", ");
         fprintf(f, "%s %%%s",
-            get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type),
+            get_write_data_type(node->_ast_val._function._params[i]->_ast_val._var_decl._var_type, FALSE),
             node->_ast_val._function._params[i]->_ast_val._var_decl._var_name);
     }
     fprintf(f, ")\n");

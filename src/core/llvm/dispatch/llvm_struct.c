@@ -28,7 +28,7 @@ llvm_struct(ast_node_t *node, FILE *f)
             fprintf(f, ", ");
         }
         fprintf(f, "%s",
-            get_write_data_type(fields[i]->_ast_val._var_decl._var_type));
+            get_write_data_type(fields[i]->_ast_val._var_decl._var_type, FALSE));
     }
     fprintf(f, "}\n\n");
     return OK_OUTPUT;

@@ -28,7 +28,7 @@ write_cast_prototype(functions_prototype_t prototype, FILE *f)
     for (uint32_t i = 0; i < prototype._params_count; i++) {
         if (i != 0)
             fprintf(f, ", ");
-        fprintf(f, "%s", get_write_data_type(prototype._params[i]->_ast_val._var_decl._var_type));
+        fprintf(f, "%s", get_write_data_type(prototype._params[i]->_ast_val._var_decl._var_type, FALSE));
     }
     fprintf(f, ") ");
 }
@@ -56,11 +56,11 @@ llvm_call_sym(ast_node_t *node, FILE *f, char *dest)
     }
     if (dest != NULL)
         fprintf(f, "%%%s = ", dest);
-    fprintf(f, "call %s ", get_write_data_type(prototype._return));
+    fprintf(f, "call %s ", get_write_data_type(prototype._return, FALSE));
     write_cast_prototype(prototype, f);
     fprintf(f, "@%s(", func_name);
     for (uint32_t i = 0; i < argc; i++) {
-        llvm_type = get_write_data_type(get_data_from_node(node->_ast_val._call_sym._args[i]));
+        llvm_type = get_write_data_type(get_data_from_node(node->_ast_val._call_sym._args[i]), FALSE);
         fprintf(f, "%s %%%s", llvm_type, arg_vars[i]);
         if (i < argc - 1)
             fprintf(f, ", ");

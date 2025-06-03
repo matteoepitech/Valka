@@ -1,50 +1,17 @@
-function <i32> putchar(<i32> char);
+function <i32> printf(<char*> string, <...>);
+function <i32> dprintf(<i32> fd, <char*> string, <...>);
+function <char*> calloc(<i32> size);
+function <char*> strdup(<char*> string);
 
-function <void> put_nbr(<i32> n)
+function <i32> main(<i32> argc, <char**> argv)
 {
-    var <i32> tmp = 0;
+    printf("================%c", 10);
 
-    if (n >= 10) {
-        put_nbr(n / 10);
-    }
-    tmp = n % 10;
-    putchar(tmp + 48);
-}
 
-function <i32> my_strcmp(<char*> s1, <char*> s2)
-{
-    var <i32> i = 0;
-    var <i32> result = 0;
-    var <i32> done = 0;
+    var <i32[10]> my_int_array;
 
-    while (done == 0) {
-        var <i32> c1 = #<i32> s1[i];
-        var <i32> c2 = #<i32> s2[i];
-        if (c1 != c2) {
-            result = c1 - c2;
-            done = 1;
-        }
-        if (done == 0) {
-            if (c1 == 0) {
-                result = 0;
-                done = 1;
-            }
-        }
-        i = i + 1;
-    }
-    return result;
-}
+    my_int_array[0] = 10;
 
-function <i32> main()
-{
-    var <char*> string = "My_String";
-    var <char*> string_2 = "My_String";
-
-    put_nbr(my_strcmp(string, string_2));
-    putchar(10);
-    for (var <i32> i = 0; #<i32> string[i] != 0; i = i + 1) {
-        putchar(#<i32> string[i]);
-    }
-    putchar(10);
+    printf("================%c", 10);
     return 0;
 }

@@ -24,7 +24,7 @@ llvm_math(ast_node_t *node, FILE *f, char *dest)
     data_types_t data_type = get_highest_data_type(get_data_from_node(left), get_data_from_node(right));
     char *left_val = llvm_gen_value(left, f, data_type, TRUE);
     char *right_val = llvm_gen_value(right, f, data_type, TRUE);
-    char *llvm_type = get_write_data_type(data_type);
+    char *llvm_type = get_write_data_type(data_type, FALSE);
     const char *op_ir = op._llvm_ir;
 
     if (data_type._id == T_FLOAT) {

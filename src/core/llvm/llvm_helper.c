@@ -55,11 +55,11 @@ generate_load_literal(char *dest, data_types_t var_type, char *var_name, FILE *f
         return KO_OUTPUT;
     if (var_type._id == T_FLOAT) {
         fprintf(f, "%%%s = fadd %s %.6e, %%%s\n",
-            dest, get_write_data_type(var_type), 0.0f, var_name);
+            dest, get_write_data_type(var_type, FALSE), 0.0f, var_name);
     }
     else {
         fprintf(f, "%%%s = add %s 0, %%%s\n",
-            dest, get_write_data_type(var_type), var_name);
+            dest, get_write_data_type(var_type, FALSE), var_name);
     }
     return OK_OUTPUT;
 }
@@ -78,7 +78,7 @@ char *
 llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type, bool_t load_val)
 {
     char *tmp = get_random_var_name();
-    char *llvm_type = get_write_data_type(type);
+    char *llvm_type = get_write_data_type(type, FALSE);
 
     switch (node->_type) {
         case AST_LITERAL_INT:
@@ -144,7 +144,7 @@ llvm_gen_address(ast_node_t *node, FILE *f, bool_t need_load)
         deref_type = get_deref_data_type(current_val_type);
         index_tmp = llvm_gen_value(node->_ast_val._index._indices[i], f, idx_type, FALSE);
         ptr_tmp = get_random_var_name();
-        llvm_type = get_write_data_type(deref_type); 
+        llvm_type = get_write_data_type(deref_type, FALSE); 
         fprintf(f, "%%%s = getelementptr inbounds %s, %s* %%%s, i32 %%%s\n",
             ptr_tmp, llvm_type, llvm_type, current_tmp, index_tmp);
         if (need_load && i < node->_ast_val._index._index_count - 1) {

@@ -21,7 +21,7 @@ llvm_var(ast_node_t *node, FILE *f)
     const char *var_name = node->_ast_val._var_decl._var_name;
     ast_node_t *value_node = node->_ast_val._var_decl._value;
     data_types_t data = node->_ast_val._var_decl._var_type;
-    char *llvm_type = get_write_data_type(data);
+    char *llvm_type = get_write_data_type(data, FALSE);
     char *tmp_val = NULL;
 
     fprintf(f, "%%%s = alloca %s\n", var_name, llvm_type);
