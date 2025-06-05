@@ -1,4 +1,5 @@
 function <i32> printf(<char*> string, <...>);
+function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> malloc(<i32> size);
 function <i32> atoi(<char*> string);
 function <i32> rand();
