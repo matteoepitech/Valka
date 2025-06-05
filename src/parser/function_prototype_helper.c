@@ -24,7 +24,7 @@ add_function_prototype(ast_node_t *func_node)
     new_count = functions_count + 1;
     functions_prototype = REALLOC(functions_prototype, sizeof(functions_prototype_t) * new_count);
     new_proto = &functions_prototype[functions_count];
-    new_proto->_func_name = strdup(func_node->_ast_val._function._func_name);
+    new_proto->_func_name = strdup_valka(func_node->_ast_val._function._func_name);
     new_proto->_return = func_node->_ast_val._function._return_data;
     new_proto->_params = func_node->_ast_val._function._params;
     new_proto->_params_count = func_node->_ast_val._function._params_count;

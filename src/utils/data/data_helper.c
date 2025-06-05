@@ -73,7 +73,7 @@ get_write_data_type(data_types_t data, bool_t only_primitive)
     uint32_t total_len = 0;
     
     if (only_primitive == TRUE)
-        return strdup(data._llvm_ir);
+        return strdup_valka(data._llvm_ir);
     if (data._array_count > 0) {
         for (uint32_t i = 0; i < data._array_count; i++) {
             total_len += snprintf(NULL, 0, "[%d x ", data._array_dims[i]);

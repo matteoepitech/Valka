@@ -80,5 +80,6 @@ char *get_random_var_name(void);
  * Folder : utils/strings/
  */
 char *strndup_valka(const char *string, unsigned long size);
+char *strdup_valka(const char *string);
 
 #endif /* ifndef _VALKA_H_ */

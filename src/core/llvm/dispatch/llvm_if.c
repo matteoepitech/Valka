@@ -31,7 +31,7 @@ llvm_if(ast_node_t *node, FILE *f)
     fprintf(f, "br label %%%s\n", if_end_label);
 
     fprintf(f, "%s:\n", if_false_label);
-    if (node->_ast_val._if_statement._else_body)
+    if (node->_ast_val._if_statement._else_body->_statement_head)
         generate_llvm_global(f, node->_ast_val._if_statement._else_body);
     fprintf(f, "br label %%%s\n", if_end_label);
 

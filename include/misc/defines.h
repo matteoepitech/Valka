@@ -72,6 +72,7 @@
     #define IDENTIFIER_ID_FOR 5
     #define IDENTIFIER_ID_WHILE 6
     #define IDENTIFIER_ID_STRUCT 7
+    #define IDENTIFIER_ID_ELSE 8
 
 
 #endif /* ifndef _VALKA_DEFINES_H_ */

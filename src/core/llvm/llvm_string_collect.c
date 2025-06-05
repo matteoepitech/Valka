@@ -70,6 +70,9 @@ collect_strings(ast_node_t *node, FILE *f)
             for (ast_statement_t *tmp = node->_ast_val._if_statement._if_body->_statement_head; tmp != NULL; tmp = tmp->_next) {
                 collect_strings(tmp->_ast_node, f);
             }
+            for (ast_statement_t *tmp = node->_ast_val._if_statement._else_body->_statement_head; tmp != NULL; tmp = tmp->_next) {
+                collect_strings(tmp->_ast_node, f);
+            }
             break;
 
         case AST_FOR:
@@ -98,6 +101,9 @@ collect_strings(ast_node_t *node, FILE *f)
                 collect_strings(node->_ast_val._index._indices[i], f);
             collect_strings(node->_ast_val._index._sym, f);
             break;
+
+        case AST_FIELD:
+            collect_strings(node->_ast_val._field._symbol, f);
 
         default:
             break;

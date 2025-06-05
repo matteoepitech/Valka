@@ -24,6 +24,7 @@ function <i32> main()
 ## Data Types
 
 ### Primitive Types
+- `<float>` - 64-bit signed float
 - `<i32>` - 32-bit signed integer
 - `<char>` - 8-bit Character
 - `<bool>` - 1-bit Bool
@@ -42,6 +43,36 @@ var <type> identifier = value;
 var <i32> counter = 0;
 var <i32> result = 1;
 var <char*> message = "Hello World";
+```
+
+## Structures
+A struct can contains every other type, pointer, array, normal variables.
+
+```
+struct my_struct {
+    var <i32> my_int,
+    var <float> my_float
+}
+```
+And field can be accessed by doing this:
+```
+my_struct.my_int;
+my_struct.my_float;
+```
+
+## Arrays
+An array can be done with any type of variables/structures and can contains pointer and multi-dimensionnal arrays.
+This will init an array called my_array with no value intialized. (Of size 10 (10 * sizeof(int)))
+```
+var <i32[10]> my_array;
+```
+
+```
+var <i32[10][10]> my_array_double;
+```
+
+```
+var <struct my_struct[10]> my_struct_array;
 ```
 
 ## Function Declarations
@@ -107,6 +138,14 @@ while (condition) {
 ```
 if (condition) {
     // if body
+}
+```
+With else :
+```
+if (condition) {
+    // if body
+} else {
+    // else body
 }
 ```
 

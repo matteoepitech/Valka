@@ -1,8 +1,24 @@
+function <i32> printf(<char*> string, <...>);
+function <i32> dprintf(<i32> fd, <char*> string, <...>);
+function <char*> calloc(<i32> size);
+function <char*> strdup(<char*> string);
+
 function <i32> main()
 {
     var <i32> my_var = 0;
-    var <i32> iteration_x = my_var;
 
-    my_var = 0;
+    if (my_var == 1) {
+        printf("Salut la team%c", 10);
+    } else {
+        if (my_var == 5) {
+            printf("AH O0%c", 10);
+        } else {
+            if (my_var == 0) {
+                printf("AH O1110%c", 10);
+            } else {
+                printf("NONONOO%c", 10);
+            }
+        }
+    }
     return 0;
 }

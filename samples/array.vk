@@ -3,7 +3,7 @@ function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> calloc(<i32> size);
 function <char*> strdup(<char*> string);
 
-structure my_struct {
+struct my_struct {
     var <i32> my_number;
     var <i32[10]> numbers;
 }

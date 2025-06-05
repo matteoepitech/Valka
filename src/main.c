@@ -18,14 +18,14 @@ uint32_t structures_count = 0;
 
 // All Valka data types (extern in valka_parser.h)
 const data_types_t data_types[] = {
-    {T_I32, "i32", "i32", sizeof(int) * 8, 0},
-    {T_BOOL, "bool", "i1", 1, 0},
-    {T_CHAR, "char", "i8", sizeof(char) * 8, 0},
-    {T_VOID, "void", "void", 0, 0},
-    {T_VARG, "...", "...", 0, 0},
-    {T_FLOAT, "float", "double", sizeof(float) * 8, 0},
-    {T_STRUCT, "", "", 0, 0},
-    {0, "", "", 0, 0},
+    {T_I32, "i32", "i32", sizeof(int) * 8, 0, {0}, 0},
+    {T_BOOL, "bool", "i1", 1, 0, {0}, 0},
+    {T_CHAR, "char", "i8", sizeof(char) * 8, 0, {0}, 0},
+    {T_VOID, "void", "void", 0, 0, {0}, 0},
+    {T_VARG, "...", "...", 0, 0, {0}, 0},
+    {T_FLOAT, "float", "double", sizeof(float) * 8, 0, {0}, 0},
+    {T_STRUCT, "", "", 0, 0, {0}, 0},
+    {0, "", "", 0, 0, {0}, 0},
 };
 
 // All Valka binary operation (extern in valka_parser.h)

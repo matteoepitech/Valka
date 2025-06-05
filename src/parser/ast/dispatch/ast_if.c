@@ -6,6 +6,7 @@
 */
 
 #include "valka.h"
+#include "valka_parser.h"
 
 /**
  * @brief Fill the content of the if.
@@ -35,6 +36,40 @@ fill_if_content(token_t **current_token, ast_node_t *node)
 }
 
 /**
+ * @brief Fill the content of the else.
+ *
+ * @param current_token  The current token position
+ * @param node           The node of the function
+ */
+static void
+fill_else_content(token_t **current_token, ast_node_t *node)
+{
+    ast_node_t *tmp_node = NULL;
+    token_t *curr = *current_token;
+
+    if (curr->_type != TOKEN_IDENTIFIER || curr->_type_id != IDENTIFIER_ID_ELSE) {
+        if ((*current_token)->_type == TOKEN_BRACKET_CLOSE)
+            move_token(current_token, 1);
+        return;
+    }
+    while (curr && curr->_type != TOKEN_BRACKET_CLOSE &&
+        curr->_type != TOKEN_END) {
+        tmp_node = dispatch_ast(current_token, node->_ast_val._if_statement._else_body);
+        if (tmp_node == NULL) {
+            move_token(current_token, 1);
+            curr = *current_token;
+            continue;
+        }
+        create_statement(node->_ast_val._if_statement._else_body, tmp_node);
+        curr = *current_token;
+        if (tmp_node->_type == AST_VAR_DECL)
+            add_content_symbol(tmp_node, node->_ast_val._if_statement._else_body);
+    }
+    if ((*current_token)->_type == TOKEN_BRACKET_CLOSE)
+        move_token(current_token, 1);
+}
+
+/**
  * @brief Make the AST for a if declaration.
  *
  * @param current_token The current token
@@ -57,6 +92,11 @@ make_ast_if(token_t **current_token, ast_program_t *parent)
     node->_ast_val._if_statement._if_body->_statement_tail = NULL;
     node->_ast_val._if_statement._if_body->_parent = node;
     node->_ast_val._if_statement._if_body->_statements_amount = 0;
+    node->_ast_val._if_statement._else_body = MALLOC(sizeof(ast_program_t));
+    node->_ast_val._if_statement._else_body->_statement_head = NULL;
+    node->_ast_val._if_statement._else_body->_statement_tail = NULL;
+    node->_ast_val._if_statement._else_body->_parent = node;
+    node->_ast_val._if_statement._else_body->_statements_amount = 0;
     move_token(current_token, 2);
     node->_ast_val._if_statement._condition = dispatch_ast(current_token, parent);
     move_token(current_token, 1);
@@ -66,5 +106,6 @@ make_ast_if(token_t **current_token, ast_program_t *parent)
     fill_if_content(current_token, node);
     if ((*current_token)->_type == TOKEN_BRACKET_CLOSE)
         move_token(current_token, 1);
+    fill_else_content(current_token, node);
     return node;
 }

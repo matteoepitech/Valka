@@ -3,11 +3,11 @@ function <i32> dprintf(<i32> fd, <char*> string, <...>);
 function <char*> calloc(<i32> size);
 function <char*> strdup(<char*> string);
 
-structure city {
+struct city {
     var <i32> size
 }
 
-structure person {
+struct person {
     var <i32> age,
     var <struct city*> city
     var <i32[10][1]> array_of_int;

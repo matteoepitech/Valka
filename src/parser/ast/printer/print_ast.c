@@ -188,7 +188,12 @@ print_ast(ast_node_t *node, int indent)
         case AST_IF:
             printf("If statement:\n");
             print_ast(node->_ast_val._if_statement._condition, indent);
-            print_function_body(node->_ast_val._if_statement._if_body, indent + 1);
+            print_indent(indent + 1);
+            printf("IF BODY :\n");
+            print_function_body(node->_ast_val._if_statement._if_body, indent + 2);
+            print_indent(indent + 1);
+            printf("ELSE BODY :\n");
+            print_function_body(node->_ast_val._if_statement._else_body, indent + 2);
             break;
 
         case AST_FOR:
