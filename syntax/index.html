@@ -421,6 +421,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structures
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arrays
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#function-declarations" class="md-nav__link">
     <span class="md-ellipsis">
       Function Declarations
@@ -671,6 +689,7 @@
 <h2 id="data-types">Data Types</h2>
 <h3 id="primitive-types">Primitive Types</h3>
 <ul>
+<li><code>&lt;float&gt;</code> - 64-bit signed float</li>
 <li><code>&lt;i32&gt;</code> - 32-bit signed integer</li>
 <li><code>&lt;char&gt;</code> - 8-bit Character</li>
 <li><code>&lt;bool&gt;</code> - 1-bit Bool</li>
@@ -684,6 +703,26 @@
 <pre><code>var &lt;i32&gt; counter = 0;
 var &lt;i32&gt; result = 1;
 var &lt;char*&gt; message = &quot;Hello World&quot;;
+</code></pre>
+<h2 id="structures">Structures</h2>
+<p>A struct can contains every other type, pointer, array, normal variables.</p>
+<pre><code>struct my_struct {
+    var &lt;i32&gt; my_int,
+    var &lt;float&gt; my_float
+}
+</code></pre>
+<p>And field can be accessed by doing this:</p>
+<pre><code>my_struct.my_int;
+my_struct.my_float;
+</code></pre>
+<h2 id="arrays">Arrays</h2>
+<p>An array can be done with any type of variables/structures and can contains pointer and multi-dimensionnal arrays.
+This will init an array called my_array with no value intialized. (Of size 10 (10 * sizeof(int)))</p>
+<pre><code>var &lt;i32[10]&gt; my_array;
+</code></pre>
+<pre><code>var &lt;i32[10][10]&gt; my_array_double;
+</code></pre>
+<pre><code>var &lt;struct my_struct[10]&gt; my_struct_array;
 </code></pre>
 <h2 id="function-declarations">Function Declarations</h2>
 <p>Functions are declared using the <code>function</code> keyword with explicit return type annotation:</p>
@@ -732,6 +771,13 @@ var &lt;char*&gt; message = &quot;Hello World&quot;;
 <h3 id="conditional-statements">Conditional Statements</h3>
 <pre><code>if (condition) {
     // if body
+}
+</code></pre>
+<p>With else :</p>
+<pre><code>if (condition) {
+    // if body
+} else {
+    // else body
 }
 </code></pre>
 <h2 id="operators">Operators</h2>
