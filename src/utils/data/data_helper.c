@@ -68,31 +68,27 @@ get_deref_data_type(data_types_t data)
 char *
 get_write_data_type(data_types_t data, bool_t only_primitive)
 {
-    char *result;
-    uint32_t pos = 0;
-    uint32_t total_len = 0;
-    
-    if (only_primitive == TRUE)
+    size_t ir_len = strlen(data._llvm_ir);
+    int total_len = 1024;
+    char *result = NULL;
+    size_t pos = 0;
+
+    if (only_primitive == TRUE) {
         return strdup_valka(data._llvm_ir);
-    if (data._array_count > 0) {
-        for (uint32_t i = 0; i < data._array_count; i++) {
-            total_len += snprintf(NULL, 0, "[%d x ", data._array_dims[i]);
-        }
-        total_len += strlen(data._llvm_ir) + data._ptr_level + data._array_count + 1;
-    } else {
-        total_len = strlen(data._llvm_ir) + data._ptr_level + 1;
     }
-    result = MALLOC(total_len);
+    result = MALLOC(sizeof(char) * total_len);
     for (uint32_t i = 0; i < data._array_count; i++) {
         pos += sprintf(&result[pos], "[%d x ", data._array_dims[i]);
     }
-    strcpy(&result[pos], data._llvm_ir);
-    pos += strlen(data._llvm_ir);
+    memcpy(&result[pos], data._llvm_ir, ir_len);
+    pos += ir_len;
     for (int i = 0; i < data._ptr_level; i++) {
-        result[pos++] = '*';
+        result[pos] = '*';
+        pos++;
     }
     for (uint32_t i = 0; i < data._array_count; i++) {
-        result[pos++] = ']';
+        result[pos] = ']';
+        pos++;
     }
     result[pos] = '\0';
     return result;

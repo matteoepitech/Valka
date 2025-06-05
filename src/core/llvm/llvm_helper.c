@@ -6,7 +6,6 @@
 */
 
 #include "valka.h"
-#include "valka_parser.h"
 
 /**
  * @brief Generate the parameter loading from a function.
@@ -100,7 +99,7 @@ llvm_gen_value(ast_node_t *node, FILE *f, data_types_t type, bool_t load_val)
                 fprintf(f, "%%%s = load %s, %s* %%%s\n", tmp,
                     llvm_type, llvm_type, node->_ast_val._symbol._sym_name);
             } else {
-                fprintf(f, "%%%s = bitcast %s* %%%s to %s*\n", tmp,
+                fprintf(f, "%%%s = bitcast %s* %%%s to %s* ; ZZZZZ\n", tmp,
                     llvm_type, node->_ast_val._symbol._sym_name, llvm_type);
             }
             break;
@@ -137,7 +136,7 @@ char *
 llvm_gen_address(ast_node_t *node, FILE *f, UNUSED bool_t need_load)
 {
     data_types_t current_val_type = get_data_from_node(node->_ast_val._index._sym);
-    char *current_tmp = llvm_gen_value(node->_ast_val._index._sym, f, current_val_type, FALSE);
+    char *current_tmp = NULL;
     data_types_t idx_type = {0};
     data_types_t deref_type = {0};
     char *index_tmp = NULL;
@@ -146,6 +145,10 @@ llvm_gen_address(ast_node_t *node, FILE *f, UNUSED bool_t need_load)
     char *current_llvm_type = NULL;
     char *deref_llvm_type = NULL;
     
+    if ((int) node->_ast_val._index._index_count == current_val_type._ptr_level)
+        current_tmp = llvm_gen_value(node->_ast_val._index._sym, f, current_val_type, TRUE);
+    else
+        current_tmp = llvm_gen_value(node->_ast_val._index._sym, f, current_val_type, FALSE);
     for (size_t i = 0; i < node->_ast_val._index._index_count; i++) {
         idx_type = get_data_from_node(node->_ast_val._index._indices[i]);
         deref_type = get_deref_data_type(current_val_type);

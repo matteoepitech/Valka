@@ -1,0 +1,68 @@
+function <i32> printf(<char*> string, <...>);
+function <char*> malloc(<i32> size);
+function <i32> atoi(<char*> string);
+function <i32> rand();
+function <i32> srand();
+function <long> time();
+function <long> read(<i32> fildes, <char*> buf, <long> nbyte);
+
+function <i32> try_one(<i32> number_to_find)
+{
+    var <i32> finished = 0;
+    var <i32> result = 0;
+    var <char*> buffer = malloc(1024);
+    var <i32> i = 0;
+
+    while (finished == 0) {
+        var <char*> c = malloc(1);
+        var <long> bytes_read = read(0, c, #<long> 1);
+        if (bytes_read <= 0) {
+            finished = 1;
+        }
+        if (c[0] == #<char> 10) {
+            finished = 1;
+        }
+        buffer[i] = c[0];
+        i = i + 1;
+    }
+    buffer[i - 1] = #<char> 0;
+    result = atoi(buffer);
+    if (result > number_to_find) {
+        printf("Wrong! It's less!%c", 10);
+    }
+    if (result < number_to_find) {
+        printf("Wrong! It's more!%c", 10);
+    }
+    if (result == number_to_find) {
+        return 1;
+    }
+    return 0;
+}
+
+function <i32> start_the_game(<i32> max_number)
+{
+    var <i32> number_to_find;
+    var <i32> attempt = 1;
+    var <bool> found = 0;
+
+    srand(time(0));
+    number_to_find = rand() % max_number;
+    while (try_one(number_to_find) != 1) {
+        attempt = attempt + 1;
+    }
+    printf("GG you found in %d attempt(s)%c", attempt, 10);
+    return 0;
+}
+
+function <i32> main(<i32> argc, <char**> argv)
+{
+    var <i32> max_number;
+
+    if (argc <= 1) {
+        dprintf(2, "Error: Not enough arguments!%c", 10);
+        return 1;
+    }
+    max_number = atoi(argv[1]);
+    printf("A random number has been generated between 0 and %d%c", max_number, 10);
+    return start_the_game(max_number);
+}

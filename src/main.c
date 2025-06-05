@@ -25,6 +25,7 @@ const data_types_t data_types[] = {
     {T_VARG, "...", "...", 0, 0, {0}, 0},
     {T_FLOAT, "float", "double", sizeof(float) * 8, 0, {0}, 0},
     {T_STRUCT, "", "", 0, 0, {0}, 0},
+    {T_I64, "long", "i64", sizeof(int) * 2 * 8, 0, {0}, 0},
     {0, "", "", 0, 0, {0}, 0},
 };
 

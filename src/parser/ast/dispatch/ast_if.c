@@ -48,8 +48,6 @@ fill_else_content(token_t **current_token, ast_node_t *node)
     token_t *curr = *current_token;
 
     if (curr->_type != TOKEN_IDENTIFIER || curr->_type_id != IDENTIFIER_ID_ELSE) {
-        if ((*current_token)->_type == TOKEN_BRACKET_CLOSE)
-            move_token(current_token, 1);
         return;
     }
     while (curr && curr->_type != TOKEN_BRACKET_CLOSE &&
