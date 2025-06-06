@@ -17,16 +17,10 @@ If you want to use **ValkaC** (Valka Compiler), be sure to have these dependenci
 
 ## Build
 
-To build the compiler `valkc` for `Linux` or `MacOS` run this:
+To build the compiler `valkc` for `Linux` or `MacOS` or `Windows` run this:
 
 ```bash
-./build_linux_mac.sh
-```
-
-To build the compiler `valkc` for `Windows` run this:
-
-```bash
-./build_windows.sh
+./build.sh
 ```
 
 ## Usage/Examples
