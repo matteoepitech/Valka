@@ -9,7 +9,7 @@
     #define _VALKA_PARSER_H_
 
     #include "misc/defines.h"
-#include "misc/types.h"
+    #include "misc/types.h"
 
 /**
  * @brief All token types.
@@ -38,7 +38,8 @@ typedef enum {
     TOKEN_CAST = 20,
     TOKEN_FLOAT_LITERAL = 21,
     TOKEN_DOT = 22,
-    TOKEN_END = 22,
+    TOKEN_MISC = 23,
+    TOKEN_END = 24,
 } token_type_t;
 
 /**
@@ -106,6 +107,14 @@ typedef struct token_s {
     uint32_t _type_id;
     struct token_s *_next;
 } token_t;
+
+/**
+ * @brief Definition is used to transfom false into 0 for example.
+ */
+typedef struct definition_s {
+    char *_def;
+    char *_val;
+} definition_t;
 
 /**
  * @brief The main structure for the parsing of 1 file only.
@@ -299,6 +308,9 @@ extern uint32_t functions_count;
 extern structs_prototype_t *structures_prototype;
 extern uint32_t structures_count;
 
+extern definition_t *definitions_src;
+extern uint32_t definitions_count;
+
 /*
  * Folder : src/parser/tokens/
  */
@@ -327,6 +339,7 @@ parsing_src_file_t *condition_token(parsing_src_file_t *p);
 parsing_src_file_t *cast_token(parsing_src_file_t *p);
 parsing_src_file_t *square_brackets_token(parsing_src_file_t *p);
 parsing_src_file_t *dot_token(parsing_src_file_t *p);
+parsing_src_file_t *misc_token(parsing_src_file_t *p);
 
 /*
  * Folder : src/parser/tokens/printer/
@@ -384,17 +397,5 @@ functions_prototype_t get_prototype_from_name(const char *func_name);
 void add_structure_prototype(ast_node_t *struct_node);
 structs_prototype_t get_struct_prototype_from_name(const char *struct_name);
 uint32_t get_struct_field_index(structs_prototype_t structure, const char *field_name);
-
-/*
- * Folder : src/utils/data/
- */
-data_types_t get_data_type_from_token(token_t *token);
-data_types_t get_data_with_id(uint32_t id);
-data_types_t get_highest_data_type(data_types_t d1, data_types_t d2);
-data_types_t get_data_from_node(ast_node_t *node);
-data_types_t get_deref_data_type(data_types_t data);
-char *get_write_data_type(data_types_t data, bool_t only_primitive);
-data_types_t get_array_elem_data(data_types_t array_type);
-bin_ope_t get_operator_with_char(char op);
 
 #endif /* ifndef _VALKA_PARSER_H_ */

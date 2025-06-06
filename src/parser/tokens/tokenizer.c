@@ -47,6 +47,8 @@ dispatch_tokenizer(parsing_src_file_t *p)
 {
     char c = p->_buffer[p->_current_index];
 
+    if (c == '@')
+        return misc_token(p);
     if (is_valid_condition(&p->_buffer[p->_current_index]))
         return condition_token(p);
     if (isdigit(c) || (c == '-' && isdigit(p->_buffer[p->_current_index + 1])))
@@ -93,6 +95,8 @@ tokenize_source_code(char *filepath)
 
     if (p == NULL)
         return NULL;
+    create_base_definitions();
+    prepass_buffer(p);
     while (p->_current_index < p->_buffer_size) {
         dispatch_tokenizer(p);
     }

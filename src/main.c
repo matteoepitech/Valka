@@ -16,6 +16,10 @@ uint32_t functions_count = 0;
 structs_prototype_t *structures_prototype = NULL;
 uint32_t structures_count = 0;
 
+// Used for definitions of variables
+definition_t *definitions_src = NULL;
+uint32_t definitions_count = 0;
+
 // All Valka data types (extern in valka_parser.h)
 const data_types_t data_types[] = {
     {T_I32, "i32", "i32", sizeof(int) * 8, 0, {0}, 0},
@@ -62,8 +66,8 @@ int
 main(UNUSED int argc, UNUSED char *argv[])
 {
     parsing_src_file_t *p = NULL;
-    ast_program_t *prg = NULL;
-    FILE *out_llvm = NULL;
+    UNUSED ast_program_t *prg = NULL;
+    UNUSED FILE *out_llvm = NULL;
 
     if (argc <= 1)
         return cleanup_mem(KO_OUTPUT);

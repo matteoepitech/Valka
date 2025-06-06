@@ -5,20 +5,10 @@ function <char*> strdup(<char*> string);
 
 function <i32> main()
 {
-    var <i32> my_var = 0;
+    var <bool> my_bool = false;
 
-    if (my_var == 1) {
-        printf("Salut la team%c", 10);
-    } else {
-        if (my_var == 5) {
-            printf("AH O0%c", 10);
-        } else {
-            if (my_var == 0) {
-                printf("AH O1110%c", 10);
-            } else {
-                printf("NONONOO%c", 10);
-            }
-        }
+    if (my_bool == true) {
+        return 1;
     }
     return 0;
 }

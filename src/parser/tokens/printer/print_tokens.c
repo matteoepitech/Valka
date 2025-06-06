@@ -20,7 +20,7 @@ print_type_token(token_type_t type)
         "INT_LITERAL", "STRING", "COMMENT_BIG", "COMMENT_SMALL", "PARENT_OPEN",
         "PARENT_CLOSE", "BRACKET_OPEN", "BRACKET_CLOSE", "SQUARE_BRACKET_OPEN",
         "SQUARE_BRACKET_CLOSE", "MATH_OPERATOR", "SEMICOLON", "COMMA",
-        "CONDITION", "CAST", "FLOAT_LITERAL", "END"
+        "CONDITION", "CAST", "FLOAT_LITERAL", "DOT", "MISC", "END"
     };
     if (type < 0 || type >= (sizeof(type_names) / sizeof(type_names[0]))) {
         printf("UNKNOWN_TOKEN_TYPE");

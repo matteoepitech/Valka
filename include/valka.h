@@ -72,6 +72,11 @@ uint8_t llvm_struct(ast_node_t *node, FILE *f);
 uint8_t llvm_field(ast_node_t *node, FILE *f, char *dest, bool_t load_val);
 
 /*
+ * Folder : src/core/prepass/
+ */
+void prepass_buffer(parsing_src_file_t *p);
+
+/*
  * Folder : utils/
  */
 char *get_random_var_name(void);
@@ -81,5 +86,23 @@ char *get_random_var_name(void);
  */
 char *strndup_valka(const char *string, unsigned long size);
 char *strdup_valka(const char *string);
+
+/*
+ * Folder : utils/definitions/
+ */
+uint8_t create_base_definitions(void);
+uint8_t add_definition(char *def, char *val);
+
+/*
+ * Folder : src/utils/data/
+ */
+data_types_t get_data_type_from_token(token_t *token);
+data_types_t get_data_with_id(uint32_t id);
+data_types_t get_highest_data_type(data_types_t d1, data_types_t d2);
+data_types_t get_data_from_node(ast_node_t *node);
+data_types_t get_deref_data_type(data_types_t data);
+char *get_write_data_type(data_types_t data, bool_t only_primitive);
+data_types_t get_array_elem_data(data_types_t array_type);
+bin_ope_t get_operator_with_char(char op);
 
 #endif /* ifndef _VALKA_H_ */
