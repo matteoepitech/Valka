@@ -10,7 +10,7 @@
 /**
  * @brief Skip whitespace characters.
  *
- * @param p The parsing structure
+ * @param p             The parsing source struct
  */
 static void
 skip_whitespace(parsing_src_file_t *p)
@@ -24,31 +24,32 @@ skip_whitespace(parsing_src_file_t *p)
 /**
  * @brief Extract a word from the buffer.
  *
- * @param p The parsing structure
+ * @param p             The parsing source struct
  *
- * @return The extracted word (must be freed) or NULL.
+ * @return The a word.
  */
 static char *
 extract_word(parsing_src_file_t *p)
 {
-    size_t start = p->_current_index;
-    char *word = NULL;
+    size_t start = 0;
     size_t len = 0;
+    char *word = NULL;
 
     while (p->_current_index < p->_buffer_size && 
            !isalnum(p->_buffer[p->_current_index]) && 
            p->_buffer[p->_current_index] != '_') {
         p->_current_index++;
-    } 
+    }   
     start = p->_current_index;
+    len = 0;
     while (p->_current_index < p->_buffer_size && 
            (isalnum(p->_buffer[p->_current_index]) || 
             p->_buffer[p->_current_index] == '_')) {
         p->_current_index++;
         len++;
-    } 
+    }
     if (len == 0)
-        return NULL;
+        return NULL;     
     word = MALLOC(len + 1);
     strncpy(word, &p->_buffer[start], len);
     word[len] = '\0';
@@ -58,19 +59,20 @@ extract_word(parsing_src_file_t *p)
 /**
  * @brief Extract a value (can contain spaces and special characters).
  *
- * @param p The parsing structure
+ * @param p             The parsing source struct
  *
- * @return The extracted value or NULL.
+ * @return The value.
  */
 static char *
 extract_value(parsing_src_file_t *p)
 {
-    size_t start = p->_current_index;
     char *value = NULL;
+    size_t start = 0;
     size_t len = 0;
 
     skip_whitespace(p);
     start = p->_current_index;
+    len = 0;
     while (p->_current_index < p->_buffer_size && 
            p->_buffer[p->_current_index] != '\n' &&
            p->_buffer[p->_current_index] != '\r') {
@@ -85,16 +87,16 @@ extract_value(parsing_src_file_t *p)
         return NULL;
     value = MALLOC(len + 1);
     strncpy(value, &p->_buffer[start], len);
-    value[len] = '\0'; 
+    value[len] = '\0';
     return value;
 }
 
 /**
  * @brief Parse a @def directive.
  *
- * @param p The parsing structure
+ * @param p             The parsing source struct
  *
- * @return TRUE if successfully parsed, FALSE otherwise.
+ * @return TRUE or FALSE.
  */
 static bool_t
 parse_def_directive(parsing_src_file_t *p)
@@ -106,7 +108,7 @@ parse_def_directive(parsing_src_file_t *p)
     skip_whitespace(p);
     def_name = extract_word(p);
     if (def_name == NULL)
-        return FALSE;
+        return FALSE;    
     skip_whitespace(p);
     def_value = extract_value(p);
     if (def_value == NULL)
@@ -118,87 +120,27 @@ parse_def_directive(parsing_src_file_t *p)
 /**
  * @brief Check if current position matches a string.
  *
- * @param p   The parsing structure
- * @param str The string to match
+ * @param buffer                The buffer
+ * @param buffer_size           The buffer size
+ * @param pos                   The current pos index
+ * @param str                   The string to check
  *
- * @return TRUE if matches, FALSE otherwise.
+ * @return TRUE or FALSE.
  */
 static bool_t
-matches_string(parsing_src_file_t *p, const char *str)
+matches_string_at_pos(const char *buffer, size_t buffer_size, size_t pos,
+    const char *str)
 {
     size_t len = strlen(str);
-
-    if (p->_current_index + len > p->_buffer_size)
-        return FALSE;    
-    return strncmp(&p->_buffer[p->_current_index], str, len) == 0;
-}
-
-/**
- * @brief Replace definitions in the buffer.
- *
- * @param p The parsing structure
- */
-static void
-replace_definitions(parsing_src_file_t *p)
-{
-    size_t new_buffer_size = p->_buffer_size * 2;
-    char *new_buffer = MALLOC(new_buffer_size);
-    size_t new_index = 0;
-    size_t old_index = 0;
-
-    while (old_index < p->_buffer_size) {
-        bool_t found_replacement = FALSE;
-        for (uint32_t i = 0; i < definitions_count && !found_replacement; i++) {
-            if (definitions_src[i]._def == NULL)
-                continue;
-            size_t def_len = strlen(definitions_src[i]._def);
-            
-            if (old_index + def_len <= p->_buffer_size &&
-                strncmp(&p->_buffer[old_index], definitions_src[i]._def, def_len) == 0) {
-                bool_t is_complete_word = TRUE;
-                
-                if (old_index > 0 && 
-                    (isalnum(p->_buffer[old_index - 1]) || 
-                     p->_buffer[old_index - 1] == '_'))
-                    is_complete_word = FALSE;
-                
-                if (old_index + def_len < p->_buffer_size &&
-                    (isalnum(p->_buffer[old_index + def_len]) || 
-                     p->_buffer[old_index + def_len] == '_'))
-                    is_complete_word = FALSE;
-                
-                if (is_complete_word && definitions_src[i]._val) {
-                    size_t val_len = strlen(definitions_src[i]._val);
- 
-                    while (new_index + val_len >= new_buffer_size) {
-                        new_buffer_size *= 2;
-                        new_buffer = REALLOC(new_buffer, new_buffer_size);
-                    }
- 
-                    strcpy(&new_buffer[new_index], definitions_src[i]._val);
-                    new_index += val_len;
-                    old_index += def_len;
-                    found_replacement = TRUE;
-                }
-            }
-        } 
-        if (found_replacement == FALSE) {
-            if (new_index >= new_buffer_size) {
-                new_buffer_size *= 2;
-                new_buffer = REALLOC(new_buffer, new_buffer_size);
-            }
-            new_buffer[new_index++] = p->_buffer[old_index++];
-        }
-    }
-    p->_buffer = new_buffer;
-    p->_buffer_size = new_index;
-    p->_current_index = 0;
+    if (pos + len > buffer_size)
+        return FALSE;
+    return strncmp(&buffer[pos], str, len) == 0;
 }
 
 /**
  * @brief Remove @def lines from buffer
  *
- * @param p The parsing structure
+ * @param p             The parsing source struct
  */
 static void
 remove_def_lines(parsing_src_file_t *p)
@@ -208,21 +150,15 @@ remove_def_lines(parsing_src_file_t *p)
     size_t old_index = 0;
 
     while (old_index < p->_buffer_size) {
-        if (matches_string((parsing_src_file_t*) &(parsing_src_file_t)
-            {
-            ._buffer = p->_buffer,
-            ._buffer_size = p->_buffer_size,
-            ._current_index = old_index
-            },
-            "@def")) {
+        if (matches_string_at_pos(p->_buffer, p->_buffer_size, old_index, "@def")) {
             while (old_index < p->_buffer_size && 
                    p->_buffer[old_index] != '\n' &&
                    p->_buffer[old_index] != '\r') {
                 old_index++;
             }
             while (old_index < p->_buffer_size && 
-                (p->_buffer[old_index] == '\n' ||
-                p->_buffer[old_index] == '\r')) {
+                   (p->_buffer[old_index] == '\n' ||
+                    p->_buffer[old_index] == '\r')) {
                 old_index++;
             }
         } else {
@@ -234,10 +170,28 @@ remove_def_lines(parsing_src_file_t *p)
 }
 
 /**
+ * @brief Check if current position matches a string.
+ *
+ * @param p             The parsing source struct
+ * @param str           The string to match
+ *
+ * @return TRUE or FALSE.
+ */
+static bool_t
+matches_string(parsing_src_file_t *p, const char *str)
+{
+    return matches_string_at_pos(
+        p->_buffer,
+        p->_buffer_size,
+        p->_current_index,
+        str);
+}
+
+/**
  * @brief Prepass and get the array of words in the buffer
  *        and change them if needed by the definitions.
  *
- * @param p     Parsing source structure
+ * @param p             The parsing source struct
  */
 void
 prepass_buffer(parsing_src_file_t *p)
@@ -259,5 +213,4 @@ prepass_buffer(parsing_src_file_t *p)
     }
     remove_def_lines(p);
     replace_definitions(p);
-    p->_current_index = 0;
 }

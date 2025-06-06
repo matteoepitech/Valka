@@ -92,6 +92,7 @@ char *strdup_valka(const char *string);
  */
 uint8_t create_base_definitions(void);
 uint8_t add_definition(char *def, char *val);
+void replace_definitions(parsing_src_file_t *p);
 
 /*
  * Folder : src/utils/data/
