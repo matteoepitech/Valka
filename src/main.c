@@ -7,20 +7,20 @@
 
 #include "valka.h"
 
-// Used to generate random tmp variable
+// @INFO Used to generate random tmp variable
 uint32_t register_id = 0;
 
-// Used for prototypes functions/structures
+// @INFO Used for prototypes functions/structures
 functions_prototype_t *functions_prototype = NULL;
 uint32_t functions_count = 0;
 structs_prototype_t *structures_prototype = NULL;
 uint32_t structures_count = 0;
 
-// Used for definitions of variables
+// @INFO Used for definitions of variables
 definition_t *definitions_src = NULL;
 uint32_t definitions_count = 0;
 
-// All Valka data types (extern in valka_parser.h)
+// @INFO All Valka data types (extern in valka_parser.h)
 const data_types_t data_types[] = {
     {T_I32, "i32", "i32", sizeof(int) * 8, 0, {0}, 0},
     {T_BOOL, "bool", "i1", 1, 0, {0}, 0},
@@ -33,7 +33,7 @@ const data_types_t data_types[] = {
     {0, "", "", 0, 0, {0}, 0},
 };
 
-// All Valka binary operation (extern in valka_parser.h)
+// @INFO All Valka binary operation (extern in valka_parser.h)
 const bin_ope_t bin_operations[] = {
     {'+', "add"},
     {'-', "sub"},
@@ -43,7 +43,7 @@ const bin_ope_t bin_operations[] = {
     {0, ""}
 };
 
-// All Valka conditions operation (extern in valka_parser.h)
+// @INFO All Valka conditions operation (extern in valka_parser.h)
 const condition_operator_t condition_operators[] =  {
     {"==", OP_EQUAL},
     {">=", OP_GREATER_EQ},

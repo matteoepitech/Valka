@@ -24,7 +24,7 @@ function <i32> try_one(<i32> number_to_find)
             finished = #<bool> true;
         }
         buffer[i] = c[0];
-        i = i + 1;
+        i++;
     }
     buffer[i - 1] = #<char> 0;
     result = atoi(buffer);

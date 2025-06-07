@@ -382,6 +382,7 @@ ast_node_t *make_ast_while(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_index(token_t **current_token, ast_program_t *parent, ast_node_t *base_expr);
 ast_node_t *make_ast_float_literal(token_t **current_token, ast_program_t *parent);
 ast_node_t *make_ast_struct(token_t **current_token, ast_program_t *parent);
+ast_node_t *make_ast_increment(token_t **current_token, ast_program_t *parent);
 
 /*
  * Folder : src/parser/ast/printer/
